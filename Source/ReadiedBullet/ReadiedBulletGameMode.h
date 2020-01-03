@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "ReadiedBullet.h"
 #include "GameFramework/GameModeBase.h"
 #include "ReadiedBulletGameMode.generated.h"
 
@@ -13,6 +13,8 @@ class AReadiedBulletGameMode : public AGameModeBase
 
 public:
 	AReadiedBulletGameMode();
+
+	virtual void PostLogin(APlayerController* NewPlayer) override; //플레이어가 로그인을 완료하면 호출되는 이벤트 함수
 };
 
 
