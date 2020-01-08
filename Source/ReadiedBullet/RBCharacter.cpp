@@ -73,7 +73,7 @@ void ARBCharacter::PossessedBy(AController* NewController)
 
 	if (IsPlayerControlled())
 	{
-		SetControlMode(EControlMode::DIABLO);
+		SetControlMode(EControlMode::GTA);
 	}
 
 }
