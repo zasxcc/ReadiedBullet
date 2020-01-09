@@ -3,7 +3,6 @@
 #include "ReadiedBulletGameMode.h"
 #include "RBCharacter.h"
 #include "RBPlayerController.h"
-#include "UObject/ConstructorHelpers.h"
 
 AReadiedBulletGameMode::AReadiedBulletGameMode()
 {
@@ -14,7 +13,5 @@ AReadiedBulletGameMode::AReadiedBulletGameMode()
 
 void AReadiedBulletGameMode::PostLogin(APlayerController* NewPlayer)
 {
-	
 	Super::PostLogin(NewPlayer);
-	// test commit
 }

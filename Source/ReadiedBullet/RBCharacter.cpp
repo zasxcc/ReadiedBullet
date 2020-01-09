@@ -20,10 +20,18 @@ ARBCharacter::ARBCharacter()
 	SpringArm->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
 
 
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_RBCHARACTER(TEXT("/Game/Mannequin/Character/Mesh/SK_Mannequin.SK_Mannequin"));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_RBCHARACTER(TEXT("/Game/ParagonWraith/Characters/Heroes/Wraith/Meshes/Wraith.Wraith"));
 	if (SK_RBCHARACTER.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(SK_RBCHARACTER.Object);
+	}
+
+	GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
+
+	static ConstructorHelpers::FClassFinder<UAnimInstance> WARRIOR_ANIM(TEXT("/Game/Animation/RBAnimBP.RBAnimBP_C"));
+	if (WARRIOR_ANIM.Succeeded())
+	{
+		GetMesh()->SetAnimInstanceClass(WARRIOR_ANIM.Class);
 	}
 
 	SetControlMode(EControlMode::GTA);
