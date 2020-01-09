@@ -16,5 +16,5 @@ void AReadiedBulletGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	
 	Super::PostLogin(NewPlayer);
-	
+	// test commit
 }
