@@ -50,11 +50,14 @@ public:
 	//UPROPERTY(VisibleAnywhere, Category = Visual)
 	//USkeletalMeshComponent* Mesh;
 
-	UPROPERTY(VisibleAnywhere, Category = Camera)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite,Category = Camera, Meta = (AllowPrivateAccess = true))
 	USpringArmComponent* SpringArm;
 
-	UPROPERTY(VisibleAnywhere, Category = Camera)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, Meta = (AllowPrivateAccess = true))
 	UCameraComponent* Camera;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Attack, Meta = (AllowPrivateAccess = true))
+	bool IsAttacking;
 
 private:
 	void UpDown(float NewAxisValue);
@@ -62,6 +65,7 @@ private:
 	void LookUP(float NewAxisValue);
 	void Turn(float NewAxisValue);
 	void ViewChange();
+	void Attack();
 
 private:
 

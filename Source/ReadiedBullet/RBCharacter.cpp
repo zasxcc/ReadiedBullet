@@ -38,6 +38,8 @@ ARBCharacter::ARBCharacter()
 	ArmLengthSpeed = 3.0f;
 	ArmRotationSpeed = 10.0f;
 	GetCharacterMovement()->JumpZVelocity = 500.0f;
+
+	IsAttacking = false;
 }
 
 // Called when the game starts or when spawned
@@ -93,11 +95,13 @@ void ARBCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	PlayerInputComponent->BindAction(TEXT("ViewChange"), EInputEvent::IE_Pressed, this, &ARBCharacter::ViewChange);
 	PlayerInputComponent->BindAction(TEXT("JUMP"), EInputEvent::IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &ARBCharacter::Attack);
 	
 	PlayerInputComponent->BindAxis(TEXT("UpDown"), this, &ARBCharacter::UpDown);
 	PlayerInputComponent->BindAxis(TEXT("LeftRight"), this, &ARBCharacter::LeftRight);
 	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &ARBCharacter::LookUP);
 	PlayerInputComponent->BindAxis(TEXT("Turn"), this, &ARBCharacter::Turn);
+	
 }
 
 void ARBCharacter::SetControlMode(EControlMode NewControlMode)
@@ -119,9 +123,9 @@ void ARBCharacter::SetControlMode(EControlMode NewControlMode)
 		bUseControllerRotationYaw = false;
 
 		//캐릭터가 카메라에 맞춰 회전
-		GetCharacterMovement()->bOrientRotationToMovement = true;
+		GetCharacterMovement()->bOrientRotationToMovement = false;
 		//캐릭터의 컨트롤 회전이 뚝뚝 끊기는게 아닌 부드럽게 회전 (true일때)
-		GetCharacterMovement()->bUseControllerDesiredRotation = false;
+		GetCharacterMovement()->bUseControllerDesiredRotation = true;
 		//캐릭터 회전 속도 설정
 		GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f);
 		break;
@@ -191,6 +195,17 @@ void ARBCharacter::Turn(float NewAxisValue)
 	case EControlMode::GTA:
 		AddControllerYawInput(NewAxisValue);
 		break;
+	}
+}
+
+void ARBCharacter::Attack()
+{
+	if (IsAttacking)
+	{
+		IsAttacking = false;
+	}
+	else {
+		IsAttacking = true;
 	}
 }
 
