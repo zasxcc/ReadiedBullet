@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "RBCharacter.generated.h"
 
+
 UCLASS()
 class READIEDBULLET_API ARBCharacter : public ACharacter
 {
@@ -42,6 +43,7 @@ public:
 	virtual void PossessedBy(AController* NewController) override;
 
 	// Called to bind functionality to input
+	virtual void PostInitializeComponents() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UPROPERTY(VisibleAnywhere, Category = Collision)
@@ -59,6 +61,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Attack, Meta = (AllowPrivateAccess = true))
 	bool IsAttacking;
 
+
 private:
 	void UpDown(float NewAxisValue);
 	void LeftRight(float NewAxisValue);
@@ -66,7 +69,5 @@ private:
 	void Turn(float NewAxisValue);
 	void ViewChange();
 	void Attack();
-
-private:
 
 };

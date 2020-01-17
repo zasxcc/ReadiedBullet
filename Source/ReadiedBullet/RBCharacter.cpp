@@ -42,6 +42,13 @@ ARBCharacter::ARBCharacter()
 	IsAttacking = false;
 }
 
+void ARBCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+}
+
+
 // Called when the game starts or when spawned
 void ARBCharacter::BeginPlay()
 {
@@ -201,12 +208,9 @@ void ARBCharacter::Turn(float NewAxisValue)
 void ARBCharacter::Attack()
 {
 	if (IsAttacking)
-	{
-		IsAttacking = false;
-	}
-	else {
-		IsAttacking = true;
-	}
+		return;
+
+	IsAttacking = true;
 }
 
 void ARBCharacter::ViewChange()
