@@ -17,6 +17,7 @@ ARBCharacter::ARBCharacter()
 
 	GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -88.0f), FRotator(0.0f, -90.0f, 0.0f));
 	SpringArm->TargetArmLength = 400.0f;
+	SpringArm->SetRelativeLocation(FVector(0.0f, 0.0f, 100.0f));
 	SpringArm->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
 
 
@@ -121,7 +122,7 @@ void ARBCharacter::SetControlMode(EControlMode NewControlMode)
 	case EControlMode::GTA:
 		//SpringArm->TargetArmLength = 450.0f;
 		//SpringArm->SetRelativeRotation(FRotator::ZeroRotator);
-		ArmLengthTo = 450.0f;
+		ArmLengthTo = 100.0f;
 		SpringArm->bUsePawnControlRotation = true;
 		SpringArm->bInheritPitch = true;
 		SpringArm->bInheritRoll = true;
