@@ -63,8 +63,8 @@ public:
 
 
 private:
-	void UpDown(float NewAxisValue);
-	void LeftRight(float NewAxisValue);
+	void MoveForward(float NewAxisValue);
+	void MoveRight(float NewAxisValue);
 	void LookUP(float NewAxisValue);
 	void Turn(float NewAxisValue);
 	void ViewChange();

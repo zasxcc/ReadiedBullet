@@ -21,7 +21,7 @@ ARBCharacter::ARBCharacter()
 	SpringArm->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
 
 
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_RBCHARACTER(TEXT("/Game/ParagonWraith/Characters/Heroes/Wraith/Meshes/Wraith.Wraith"));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_RBCHARACTER(TEXT("/Game/ParagonWraith/Characters/Heroes/Wraith/Meshes/Wraith"));
 	if (SK_RBCHARACTER.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(SK_RBCHARACTER.Object);
@@ -29,7 +29,7 @@ ARBCharacter::ARBCharacter()
 
 	GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
 
-	static ConstructorHelpers::FClassFinder<UAnimInstance> WARRIOR_ANIM(TEXT("/Game/Animation/RBAnimBP_Cafe"));
+	static ConstructorHelpers::FClassFinder<UAnimInstance> WARRIOR_ANIM(TEXT("/Game/Animation/RB_AnimOffsetBP"));
 	if (WARRIOR_ANIM.Succeeded())
 	{
 		GetMesh()->SetAnimInstanceClass(WARRIOR_ANIM.Class);
@@ -102,11 +102,11 @@ void ARBCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAction(TEXT("ViewChange"), EInputEvent::IE_Pressed, this, &ARBCharacter::ViewChange);
-	PlayerInputComponent->BindAction(TEXT("JUMP"), EInputEvent::IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &ARBCharacter::Attack);
 	
-	PlayerInputComponent->BindAxis(TEXT("UpDown"), this, &ARBCharacter::UpDown);
-	PlayerInputComponent->BindAxis(TEXT("LeftRight"), this, &ARBCharacter::LeftRight);
+	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &ARBCharacter::MoveForward);
+	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &ARBCharacter::MoveRight);
 	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &ARBCharacter::LookUP);
 	PlayerInputComponent->BindAxis(TEXT("Turn"), this, &ARBCharacter::Turn);
 	
@@ -160,50 +160,28 @@ void ARBCharacter::SetControlMode(EControlMode NewControlMode)
 	}
 }
 
-void ARBCharacter::UpDown(float NewAxisValue)
+void ARBCharacter::MoveForward(float NewAxisValue)
 {
-	switch (CurrentControlMode) {
-	case EControlMode::GTA:
-		AddMovementInput(FRotationMatrix(FRotator(0.0f, GetControlRotation().Yaw, 0.0f)).GetUnitAxis(EAxis::X), NewAxisValue);
-		break;
-
-	case EControlMode::DIABLO:
-		DirectionToMove.X = NewAxisValue;
-		break;
-	}
+	AddMovementInput(GetActorForwardVector(), NewAxisValue);
 }
 
-void ARBCharacter::LeftRight(float NewAxisValue)
+void ARBCharacter::MoveRight(float NewAxisValue)
 {
-	switch (CurrentControlMode) {
-	case EControlMode::GTA:
-		AddMovementInput(FRotationMatrix(FRotator(0.0f, GetControlRotation().Yaw, 0.0f)).GetUnitAxis(EAxis::Y), NewAxisValue);
-		break;
-
-	case EControlMode::DIABLO:
-		DirectionToMove.Y = NewAxisValue;
-		break;
-	}
+	AddMovementInput(GetActorRightVector(), NewAxisValue);
 }
 
 void ARBCharacter::LookUP(float NewAxisValue)
 {
-	switch (CurrentControlMode)
-	{
-	case EControlMode::GTA:
-		AddControllerPitchInput(NewAxisValue);
-		break;
-	}
+
+	AddControllerPitchInput(NewAxisValue);
+
 }
 
 void ARBCharacter::Turn(float NewAxisValue)
 {
-	switch (CurrentControlMode)
-	{
-	case EControlMode::GTA:
-		AddControllerYawInput(NewAxisValue);
-		break;
-	}
+
+	AddControllerYawInput(NewAxisValue);
+
 }
 
 void ARBCharacter::Attack()
