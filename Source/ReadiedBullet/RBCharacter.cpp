@@ -21,7 +21,7 @@ ARBCharacter::ARBCharacter()
 	SpringArm->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
 
 
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_RBCHARACTER(TEXT("/Game/ParagonWraith/Characters/Heroes/Wraith/Meshes/Wraith"));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_RBCHARACTER(TEXT("/Game/AnimStarterPack/UE4_Mannequin/Mesh/SK_Mannequin"));
 	if (SK_RBCHARACTER.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(SK_RBCHARACTER.Object);
