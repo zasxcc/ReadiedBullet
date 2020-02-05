@@ -15,13 +15,13 @@ ARBCharacter::ARBCharacter()
 	SpringArm->SetupAttachment(GetCapsuleComponent());
 	Camera->SetupAttachment(SpringArm);
 
-	GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -88.0f), FRotator(0.0f, -90.0f, 0.0f));
+	GetMesh()->SetRelativeLocationAndRotation(FVector(100.0f, 0.0f, -88.0f), FRotator(0.0f, -90.0f, 0.0f));
 	SpringArm->TargetArmLength = 400.0f;
 	SpringArm->SetRelativeLocation(FVector(0.0f, 0.0f, 100.0f));
 	SpringArm->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
 
 
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_RBCHARACTER(TEXT("/Game/AnimStarterPack/UE4_Mannequin/Mesh/SK_Mannequin"));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_RBCHARACTER(TEXT("/Game/Biotech_Hornet/Mesh/SK_Biotech_Hornet"));
 	if (SK_RBCHARACTER.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(SK_RBCHARACTER.Object);
@@ -29,7 +29,7 @@ ARBCharacter::ARBCharacter()
 
 	GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
 
-	static ConstructorHelpers::FClassFinder<UAnimInstance> WARRIOR_ANIM(TEXT("/Game/Animation/RB_AnimOffsetBP"));
+	static ConstructorHelpers::FClassFinder<UAnimInstance> WARRIOR_ANIM(TEXT("/Game/Biotech_Hornet/Animations/Biotech_Hornet_AnimBlueprint"));
 	if (WARRIOR_ANIM.Succeeded())
 	{
 		GetMesh()->SetAnimInstanceClass(WARRIOR_ANIM.Class);
