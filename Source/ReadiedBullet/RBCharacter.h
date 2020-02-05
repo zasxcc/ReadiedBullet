@@ -3,6 +3,9 @@
 #pragma once
 
 #include "ReadiedBullet.h"
+#include "RBWeapon.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/PawnMovementComponent.h"
 #include "GameFramework/Character.h"
 #include "RBCharacter.generated.h"
 
@@ -16,58 +19,57 @@ public:
 	// Sets default values for this character's properties
 	ARBCharacter();
 
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	enum class EControlMode
-	{
-		GTA,
-		DIABLO,
-		NPC
-	};
+	void MoveForward(float Value);
+	void MoveRight(float Value);
 
-	void SetControlMode(EControlMode NewControlMode);
-	EControlMode CurrentControlMode = EControlMode::GTA;
-	FVector DirectionToMove = FVector::ZeroVector; //ZeroVector(0, 0, 0) ∫∏≈Î √ ±‚∞™ ¡ˆ¡§¿∏∑Œ ∏π¿Ã æ∏
+	//æ…±‚
+	void BeginCrouch();
+	void EndCrouch();
 
-	float ArmLengthTo = 0.0f;
-	FRotator ArmRotationTo = FRotator::ZeroRotator;
-	float ArmLengthSpeed = 0.0f;
-	float ArmRotationSpeed = 0.0f;
+	//¡‹
+	void BeginZoom();
+	void EndZoom();
 
-public:	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UCameraComponent* CameraComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	USpringArmComponent* SpringArmComp;
+
+
+	bool bWantsToZoom;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Player")
+	float ZoomedFOV;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Player", meta = (ClampMin = 0.0, ClampMax = 100))
+	float ZoomInterpSpeed;
+
+	/*Default FOV set during begin play*/
+	float DefaultFOV;
+
+	ARBWeapon* CurrentWeapon;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Player")
+	TSubclassOf<ARBWeapon> StarterWeaponClass;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = "Player")
+	FName WeaponAttachSocketName;
+
+	void Fire();
+
+
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	virtual void PossessedBy(AController* NewController) override;
 
 	// Called to bind functionality to input
-	virtual void PostInitializeComponents() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UPROPERTY(VisibleAnywhere, Category = Collision)
-	UCapsuleComponent* Capsule;
-
-	//UPROPERTY(VisibleAnywhere, Category = Visual)
-	//USkeletalMeshComponent* Mesh;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite,Category = Camera, Meta = (AllowPrivateAccess = true))
-	USpringArmComponent* SpringArm;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Camera, Meta = (AllowPrivateAccess = true))
-	UCameraComponent* Camera;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Attack, Meta = (AllowPrivateAccess = true))
-	bool IsAttacking;
-
-
-private:
-	void MoveForward(float NewAxisValue);
-	void MoveRight(float NewAxisValue);
-	void LookUP(float NewAxisValue);
-	void Turn(float NewAxisValue);
-	void ViewChange();
-	void Attack();
+	virtual FVector GetPawnViewLocation() const;
 
 };

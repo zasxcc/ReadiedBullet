@@ -3,58 +3,87 @@
 
 #include "RBCharacter.h"
 
+
 // Sets default values
 ARBCharacter::ARBCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SPRINGARM"));
-	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CAMERA"));
+	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
+	SpringArmComp->bUsePawnControlRotation = true;
+	SpringArmComp->SetupAttachment(RootComponent);
 
-	SpringArm->SetupAttachment(GetCapsuleComponent());
-	Camera->SetupAttachment(SpringArm);
+	//앉기 활성화
+	GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true;
 
-	GetMesh()->SetRelativeLocationAndRotation(FVector(100.0f, 0.0f, -88.0f), FRotator(0.0f, -90.0f, 0.0f));
-	SpringArm->TargetArmLength = 400.0f;
-	SpringArm->SetRelativeLocation(FVector(0.0f, 0.0f, 100.0f));
-	SpringArm->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
+	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
+	CameraComp->SetupAttachment(SpringArmComp);
 
+	ZoomedFOV = 65.0f;
+	ZoomInterpSpeed = 20;
 
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_RBCHARACTER(TEXT("/Game/Biotech_Hornet/Mesh/SK_Biotech_Hornet"));
-	if (SK_RBCHARACTER.Succeeded())
-	{
-		GetMesh()->SetSkeletalMesh(SK_RBCHARACTER.Object);
-	}
-
-	GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
-
-	static ConstructorHelpers::FClassFinder<UAnimInstance> WARRIOR_ANIM(TEXT("/Game/Biotech_Hornet/Animations/Biotech_Hornet_AnimBlueprint"));
-	if (WARRIOR_ANIM.Succeeded())
-	{
-		GetMesh()->SetAnimInstanceClass(WARRIOR_ANIM.Class);
-	}
-
-	SetControlMode(EControlMode::GTA);
-	ArmLengthSpeed = 3.0f;
-	ArmRotationSpeed = 10.0f;
-	GetCharacterMovement()->JumpZVelocity = 500.0f;
-
-	IsAttacking = false;
+	WeaponAttachSocketName = "WeaponSocket";
 }
-
-void ARBCharacter::PostInitializeComponents()
-{
-	Super::PostInitializeComponents();
-
-}
-
 
 // Called when the game starts or when spawned
 void ARBCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	DefaultFOV = CameraComp->FieldOfView;
+
+	//Spawn a Default Weapon
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	CurrentWeapon = GetWorld()->SpawnActor<ARBWeapon>(StarterWeaponClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
+	if (CurrentWeapon)
+	{
+		CurrentWeapon->SetOwner(this);
+		CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponAttachSocketName);
+	}
+}
+
+void ARBCharacter::MoveForward(float Value)
+{
+	AddMovementInput(GetActorForwardVector() * Value);
+}
+
+void ARBCharacter::MoveRight(float Value)
+{
+	AddMovementInput(GetActorRightVector() * Value);
+}
+
+void ARBCharacter::BeginCrouch()
+{
+	//앉기 
+	Crouch();
+}
+
+void ARBCharacter::EndCrouch()
+{
+	//앉기 풀기
+	UnCrouch();
+}
+
+void ARBCharacter::BeginZoom()
+{
+	bWantsToZoom = true;
+}
+
+void ARBCharacter::EndZoom()
+{
+	bWantsToZoom = false;
+}
+
+
+void ARBCharacter::Fire()
+{
+	if (CurrentWeapon)
+	{
+		CurrentWeapon->Fire();
+	}
 }
 
 // Called every frame
@@ -62,37 +91,10 @@ void ARBCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//InterpTo(움직일 놈, 목표, 시간 ,움직이는 속도) - 움직일 놈을 목표까지 움직이는 속도로 부드럽게 이동)
-	SpringArm->TargetArmLength = FMath::FInterpTo(SpringArm->TargetArmLength, ArmLengthTo, DeltaTime, ArmLengthSpeed);
+	float TargetFOV = bWantsToZoom ? ZoomedFOV : DefaultFOV;
+	float NewFOV = FMath::FInterpTo(CameraComp->FieldOfView, TargetFOV, DeltaTime, ZoomInterpSpeed);
 
-	switch (CurrentControlMode)
-	{
-	case EControlMode::DIABLO:
-		SpringArm->RelativeRotation = FMath::RInterpTo(SpringArm->RelativeRotation, ArmRotationTo, DeltaTime, ArmRotationSpeed);
-		break;
-	}
-
-	switch (CurrentControlMode)
-	{
-	case EControlMode::DIABLO:
-		if (DirectionToMove.SizeSquared() > 0.0f)
-		{
-			GetController()->SetControlRotation(FRotationMatrix::MakeFromX(DirectionToMove).Rotator());
-			AddMovementInput(DirectionToMove);
-		}
-		break;
-	}
-
-}
-
-void ARBCharacter::PossessedBy(AController* NewController)
-{
-	Super::PossessedBy(NewController);
-
-	if (IsPlayerControlled())
-	{
-		SetControlMode(EControlMode::GTA);
-	}
+	CameraComp->SetFieldOfView(NewFOV);
 
 }
 
@@ -101,109 +103,28 @@ void ARBCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAction(TEXT("ViewChange"), EInputEvent::IE_Pressed, this, &ARBCharacter::ViewChange);
-	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &ARBCharacter::Attack);
-	
-	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &ARBCharacter::MoveForward);
-	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &ARBCharacter::MoveRight);
-	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &ARBCharacter::LookUP);
-	PlayerInputComponent->BindAxis(TEXT("Turn"), this, &ARBCharacter::Turn);
-	
+	PlayerInputComponent->BindAxis("MoveForward", this, &ARBCharacter::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &ARBCharacter::MoveRight);
+
+	PlayerInputComponent->BindAxis("LookUp", this, &ARBCharacter::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("Turn", this, &ARBCharacter::AddControllerYawInput);
+
+	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &ARBCharacter::BeginCrouch);
+	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &ARBCharacter::EndCrouch);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+
+	PlayerInputComponent->BindAction("Zoom", IE_Pressed, this, &ARBCharacter::BeginZoom);
+	PlayerInputComponent->BindAction("Zoom", IE_Released, this, &ARBCharacter::EndZoom);
+
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ARBCharacter::Fire);
 }
 
-void ARBCharacter::SetControlMode(EControlMode NewControlMode)
+FVector ARBCharacter::GetPawnViewLocation() const
 {
-	CurrentControlMode = NewControlMode;
-
-
-	switch (CurrentControlMode)
+	if (CameraComp)
 	{
-	case EControlMode::GTA:
-		//SpringArm->TargetArmLength = 450.0f;
-		//SpringArm->SetRelativeRotation(FRotator::ZeroRotator);
-		ArmLengthTo = 100.0f;
-		SpringArm->bUsePawnControlRotation = true;
-		SpringArm->bInheritPitch = true;
-		SpringArm->bInheritRoll = true;
-		SpringArm->bInheritYaw = true;
-		SpringArm->bDoCollisionTest = true;
-		bUseControllerRotationYaw = false;
-
-		//캐릭터가 카메라에 맞춰 회전
-		GetCharacterMovement()->bOrientRotationToMovement = false;
-		//캐릭터의 컨트롤 회전이 뚝뚝 끊기는게 아닌 부드럽게 회전 (true일때)
-		GetCharacterMovement()->bUseControllerDesiredRotation = true;
-		//캐릭터 회전 속도 설정
-		GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f);
-		break;
-
-	case EControlMode::DIABLO:
-		//SpringArm->TargetArmLength = 800.0f;
-		//SpringArm->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
-		ArmLengthTo = 800.0f;
-		ArmRotationTo = FRotator(-45.0f, 0.0f, 0.0f);
-		SpringArm->bUsePawnControlRotation = false;
-		SpringArm->bInheritPitch = false;
-		SpringArm->bInheritRoll = false;
-		SpringArm->bInheritYaw = false;
-		SpringArm->bDoCollisionTest = false;
-		bUseControllerRotationYaw = false;
-
-		//캐릭터가 카메라에 맞춰 회전
-		GetCharacterMovement()->bOrientRotationToMovement = false;
-		//캐릭터의 컨트롤 회전이 뚝뚝 끊기는게 아닌 부드럽게 회전 (true일때)
-		GetCharacterMovement()->bUseControllerDesiredRotation = true;
-		//캐릭터 회전 속도 설정
-		GetCharacterMovement()->RotationRate = FRotator(0.0f, 360.0f, 0.0f);
-		break;
+		return CameraComp->GetComponentLocation();
 	}
-}
 
-void ARBCharacter::MoveForward(float NewAxisValue)
-{
-	AddMovementInput(GetActorForwardVector(), NewAxisValue);
-}
-
-void ARBCharacter::MoveRight(float NewAxisValue)
-{
-	AddMovementInput(GetActorRightVector(), NewAxisValue);
-}
-
-void ARBCharacter::LookUP(float NewAxisValue)
-{
-
-	AddControllerPitchInput(NewAxisValue);
-
-}
-
-void ARBCharacter::Turn(float NewAxisValue)
-{
-
-	AddControllerYawInput(NewAxisValue);
-
-}
-
-void ARBCharacter::Attack()
-{
-	if (IsAttacking)
-		return;
-
-	IsAttacking = true;
-}
-
-void ARBCharacter::ViewChange()
-{
-	switch (CurrentControlMode)
-	{
-	case EControlMode::GTA:
-		GetController()->SetControlRotation(GetActorRotation());
-		SetControlMode(EControlMode::DIABLO);
-		break;
-
-	case EControlMode::DIABLO:
-		GetController()->SetControlRotation(SpringArm->RelativeRotation);
-		SetControlMode(EControlMode::GTA);
-		break;
-	}
+	return Super::GetPawnViewLocation();
 }
