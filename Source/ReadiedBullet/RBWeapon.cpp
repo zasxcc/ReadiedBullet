@@ -19,6 +19,17 @@ ARBWeapon::ARBWeapon()
 
 	MuzzleSocketName = "MuzzleFlashSocket";
 	TracerTargetName = "Target";
+
+	BaseDamage = 20.0f;
+
+	RateOfFire = 600;
+}
+
+void ARBWeapon::BeginPlay()
+{
+	Super::BeginPlay();
+
+	TimeBetweenShots = 60 / RateOfFire;
 }
 
 
@@ -67,7 +78,21 @@ void ARBWeapon::Fire()
 		}
 
 		PlayFireEffects(TracerEndPoint);
+
+		LastFireTime = GetWorld()->TimeSeconds;
 	}
+}
+
+void ARBWeapon::StartFire()
+{
+	float FireDelay = FMath::Max(LastFireTime + TimeBetweenShots - GetWorld()->TimeSeconds, 0.0f);
+
+	GetWorldTimerManager().SetTimer(TimerHandle_TimeBetweenShots, this, &ARBWeapon::Fire, TimeBetweenShots, true, FireDelay);
+}
+
+void ARBWeapon::StopFire()
+{
+	GetWorldTimerManager().ClearTimer(TimerHandle_TimeBetweenShots);
 }
 
 

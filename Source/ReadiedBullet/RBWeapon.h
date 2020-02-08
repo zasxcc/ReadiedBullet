@@ -19,6 +19,7 @@ public:
 	ARBWeapon();
 
 protected:
+	virtual void BeginPlay() override;
 
 	void PlayFireEffects(FVector TraceEnd);
 
@@ -46,8 +47,26 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	TSubclassOf<UCameraShake> FireCamShake;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	float BaseDamage;
+
+	FTimerHandle TimerHandle_TimeBetweenShots;
+
+	float LastFireTime;
+
+	/*ºÐ´ç ÃÑ¾Ë ½î´Â ¼Óµµ RPM*/
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	float RateOfFire;
+
+	//RateOfFireÀ» ³ª´²ÁØ´Ù.
+	float TimeBetweenShots;
+
+	void Fire();
+
 public:
-	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	virtual void Fire();
+
+	virtual void StartFire();
+
+	void StopFire();
 
 };
