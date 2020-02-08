@@ -4,6 +4,7 @@
 
 #include "ReadiedBullet.h"
 #include "RBWeapon.h"
+#include "RBPlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "GameFramework/Character.h"
