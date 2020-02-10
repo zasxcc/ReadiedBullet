@@ -71,7 +71,6 @@ void ARBWeapon::Fire()
 				ActualDamage *= 2.0f;
 			}
 
-
 			UGameplayStatics::ApplyPointDamage(HitActor, ActualDamage, ShotDirection, Hit, MyOwner->GetInstigatorController(), this, DamageType);
 
 			UParticleSystem* SelectedEffect = nullptr;
