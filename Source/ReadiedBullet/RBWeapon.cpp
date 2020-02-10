@@ -62,11 +62,38 @@ void ARBWeapon::Fire()
 			// Blocking hit! Process Damage
 			AActor* HitActor = Hit.GetActor();
 
-			UGameplayStatics::ApplyPointDamage(HitActor, 20.0f, ShotDirection, Hit, MyOwner->GetInstigatorController(), this, DamageType);
+			EPhysicalSurface SurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
 
-			if (ImpactEffect)
+			float ActualDamage = BaseDamage;
+			//물리표면타입이 SURFACE_FLESHVULNERABLE 라면 // SURFACE_FLESHVULNERABLE 는 머리쪽에 지정해논 콜리전서페이트타
+			if (SurfaceType == SURFACE_FLESHVULNERABLE)
 			{
-				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, Hit.ImpactPoint, Hit.ImpactNormal.Rotation());
+				ActualDamage *= 2.0f;
+			}
+
+
+			UGameplayStatics::ApplyPointDamage(HitActor, ActualDamage, ShotDirection, Hit, MyOwner->GetInstigatorController(), this, DamageType);
+
+			UParticleSystem* SelectedEffect = nullptr;
+			switch (SurfaceType)
+			{
+				//CoopGame.h에 Define된 내용
+				//#define SURFACE_FLESHDEFAULT    SurfaceType1 
+				//#define SURFACE_FLESHVULNERABLE SurfaceType2
+			case SURFACE_FLESHDEFAULT:
+				SelectedEffect = FleshImpactEffect;
+				break;
+			case SURFACE_FLESHVULNERABLE:
+				SelectedEffect = FleshImpactEffect;
+				break;
+			default:
+				SelectedEffect = DefaultImpactEffect;
+				break;
+			}
+
+			if (SelectedEffect)
+			{
+				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SelectedEffect, Hit.ImpactPoint, Hit.ImpactNormal.Rotation());
 			}
 
 			TracerEndPoint = Hit.ImpactPoint;
