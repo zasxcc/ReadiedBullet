@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Engine.h"
 #include "BulletComp_BOX.h"
+#include "Engine.h"
 
 // Sets default values
 ABulletComp_BOX::ABulletComp_BOX()
@@ -17,8 +17,32 @@ ABulletComp_BOX::ABulletComp_BOX()
 	FrontBox = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Front"));
 	BackBox = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Back"));
 
+	RootComponent = BoxComp;
+	LeftBox->SetupAttachment(BoxComp);
+	RightBox->SetupAttachment(BoxComp);
+	UpBox->SetupAttachment(BoxComp);
+	DownBox->SetupAttachment(BoxComp);
+	FrontBox->SetupAttachment(BoxComp);
+	BackBox->SetupAttachment(BoxComp);
+
+	//델리게이트 함수 연결
 	LeftBox->OnComponentBeginOverlap.AddDynamic(this, &ABulletComp_BOX::OnOverlapBegin_LeftBox);
 	LeftBox->OnComponentEndOverlap.AddDynamic(this, &ABulletComp_BOX::OnOverlapEnd_LeftBox);
+
+	RightBox->OnComponentBeginOverlap.AddDynamic(this, &ABulletComp_BOX::OnOverlapBegin_RightBox);
+	RightBox->OnComponentEndOverlap.AddDynamic(this, &ABulletComp_BOX::OnOverlapEnd_RightBox);
+
+	UpBox->OnComponentBeginOverlap.AddDynamic(this, &ABulletComp_BOX::OnOverlapBegin_UpBox);
+	UpBox->OnComponentEndOverlap.AddDynamic(this, &ABulletComp_BOX::OnOverlapEnd_UpBox);
+
+	DownBox->OnComponentBeginOverlap.AddDynamic(this, &ABulletComp_BOX::OnOverlapBegin_DownBox);
+	DownBox->OnComponentEndOverlap.AddDynamic(this, &ABulletComp_BOX::OnOverlapEnd_DownBox);
+
+	FrontBox->OnComponentBeginOverlap.AddDynamic(this, &ABulletComp_BOX::OnOverlapBegin_FrontBox);
+	FrontBox->OnComponentEndOverlap.AddDynamic(this, &ABulletComp_BOX::OnOverlapEnd_FrontBox);
+
+	BackBox->OnComponentBeginOverlap.AddDynamic(this, &ABulletComp_BOX::OnOverlapBegin_BackBox);
+	BackBox->OnComponentEndOverlap.AddDynamic(this, &ABulletComp_BOX::OnOverlapEnd_BackBox);
 
 	BoxComp->OnClicked.AddDynamic(this, &ABulletComp_BOX::BoxCompOnClicked);
 	BoxComp->OnReleased.AddDynamic(this, &ABulletComp_BOX::BoxCompOnReleased);
@@ -32,6 +56,14 @@ void ABulletComp_BOX::BeginPlay()
 	bOnCursor = false;
 
 	LeftBox->SetCollisionObjectType(ECC_GameTraceChannel1);
+	RightBox->SetCollisionObjectType(ECC_GameTraceChannel1);
+	UpBox->SetCollisionObjectType(ECC_GameTraceChannel1);
+	DownBox->SetCollisionObjectType(ECC_GameTraceChannel1);
+	FrontBox->SetCollisionObjectType(ECC_GameTraceChannel1);
+	BackBox->SetCollisionObjectType(ECC_GameTraceChannel1);
+
+	BoxComp->SetCollisionObjectType(ECC_WorldStatic);
+
 }
 
 //큐브 매시에 마우스 클릭했을떄 호출되는 함수
@@ -43,20 +75,126 @@ void ABulletComp_BOX::BoxCompOnClicked(class UPrimitiveComponent* TouchedCompone
 void ABulletComp_BOX::BoxCompOnReleased(class UPrimitiveComponent* TouchedComponent, FKey ButtonPressed)
 {
 	bOnCursor = false;
+
+	if (bOverlap == true)
+	{
+		if (bOverlapLeftBox == true)
+		{
+
+		}
+		else if (bOverlapRightBox == true)
+		{
+
+		}
+		else if (bOverlapUpBox == true)
+		{
+
+		}
+		else if (bOverlapDownBox == true)
+		{
+
+		}
+		else if (bOverlapFrontBox == true)
+		{
+
+		}
+		else if (bOverlapBackBox == true)
+		{
+
+		}
+		BoxComp->SetWorldLocation(WorldLocation, false);
+	}
+	UE_LOG(LogTemp, Log, TEXT("%s %s %s"), *FString::SanitizeFloat(WorldLocation.X), *FString::SanitizeFloat(WorldLocation.Y), *FString::SanitizeFloat(WorldLocation.Z));
 }
 
 //왼쪽 노란네모 박스에 컴포넌트가 겹쳣을때 호출되는 함수
 void ABulletComp_BOX::OnOverlapBegin_LeftBox(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	
+	bOverlap = true;
+	bOverlapLeftBox = true;
+
+	WorldLocation = OtherActor->GetRootComponent()->GetChildComponent(1)->GetComponentLocation();
+
+	UE_LOG(LogTemp, Log, TEXT("%s %s %s"), *FString::SanitizeFloat(WorldLocation.X), *FString::SanitizeFloat(WorldLocation.Y), *FString::SanitizeFloat(WorldLocation.Z));
 }
 
 //왼쪽 노란네모 박스에서 컴포넌트 겹침이 풀릴때 호출되는 함수
 void ABulletComp_BOX::OnOverlapEnd_LeftBox(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	
+	bOverlap = false;
+	bOverlapLeftBox = false;
 }
 
+
+void ABulletComp_BOX::OnOverlapBegin_RightBox(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	bOverlap = true;
+	bOverlapRightBox = true;
+
+	WorldLocation = OtherActor->GetRootComponent()->GetChildComponent(0)->GetComponentLocation();
+}
+
+void ABulletComp_BOX::OnOverlapEnd_RightBox(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	bOverlap = false;
+	bOverlapRightBox = false;
+}
+
+void ABulletComp_BOX::OnOverlapBegin_UpBox(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	bOverlap = true;
+	bOverlapUpBox = true;
+
+	WorldLocation = OtherActor->GetRootComponent()->GetChildComponent(3)->GetComponentLocation();
+}
+
+void ABulletComp_BOX::OnOverlapEnd_UpBox(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	bOverlap = false;
+	bOverlapUpBox = false;
+}
+
+void ABulletComp_BOX::OnOverlapBegin_DownBox(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	bOverlap = true;
+	bOverlapDownBox = true;
+
+	WorldLocation = OtherActor->GetRootComponent()->GetChildComponent(2)->GetComponentLocation();
+}
+
+void ABulletComp_BOX::OnOverlapEnd_DownBox(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	bOverlap = false;
+	bOverlapDownBox = false;
+}
+
+void ABulletComp_BOX::OnOverlapBegin_FrontBox(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	bOverlap = true;
+	bOverlapFrontBox = true;
+
+	WorldLocation = OtherActor->GetRootComponent()->GetChildComponent(5)->GetComponentLocation();
+}
+
+void ABulletComp_BOX::OnOverlapEnd_FrontBox(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	bOverlap = false;
+	bOverlapFrontBox = false;
+}
+
+void ABulletComp_BOX::OnOverlapBegin_BackBox(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	bOverlap = true;
+	bOverlapBackBox = true;
+
+	WorldLocation = OtherActor->GetRootComponent()->GetChildComponent(4)->GetComponentLocation();
+}
+
+void ABulletComp_BOX::OnOverlapEnd_BackBox(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	bOverlap = false;
+	bOverlapBackBox = false;
+}
 
 
 // Called every frame
@@ -76,6 +214,5 @@ void ABulletComp_BOX::Tick(float DeltaTime)
 
 		BoxComp->SetWorldLocation(NewWorldLocation, false);
 	}
-
 }
 
