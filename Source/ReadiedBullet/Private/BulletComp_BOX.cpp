@@ -204,7 +204,7 @@ void ABulletComp_BOX::Tick(float DeltaTime)
 
 	if (bOnCursor == true)
 	{
-		APlayerController* PlayerController = UGameplayStatics::GetPlayerController(BoxComp, 0);;
+		APlayerController* PlayerController = UGameplayStatics::GetPlayerController(BoxComp, 0);
 
 		PlayerController->GetHitResultUnderCursor(ECC_Visibility, true, HitResult);
 
