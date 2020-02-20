@@ -67,6 +67,10 @@ Build/*/**
 Saved/*
 Content/DesertRuins/*
 Content/ProceduralNaturePack/*
+Content/LandscapeStamps/*
+Content/ProceduralNaturePack/*
+Content/WaterMaterials/*
+
 # Compiled source files for the engine to use
 Intermediate/*
 Plugins/*/Intermediate/*
