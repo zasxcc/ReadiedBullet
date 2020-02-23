@@ -65,6 +65,8 @@ void ABulletComp_BOX::BeginPlay()
 
 	BoxComp->SetCollisionObjectType(ECC_WorldStatic);
 
+	
+
 }
 
 //큐브 매시에 마우스 클릭했을떄 호출되는 함수
@@ -73,11 +75,12 @@ void ABulletComp_BOX::BoxCompOnClicked(class UPrimitiveComponent* TouchedCompone
 	bOnCursor = true;
 
 	//문제점 : 자꾸 널포인트 반환댐
-	ACusPawn* PlayerPawn = Cast<ACusPawn>(UGameplayStatics::GetPlayerCharacter(this, 0));
-	if (PlayerPawn != nullptr)
+	ACusPawn* CusPawn = Cast<ACusPawn>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+
+	if (CusPawn != nullptr)
 	{
-		SpringArmRotator = PlayerPawn->GetSpringArmRotator();
-		UE_LOG(LogTemp, Log, TEXT("a %f %f %f"), SpringArmRotator.Roll, SpringArmRotator.Pitch, SpringArmRotator.Yaw);
+		SpringArmRotator = CusPawn->GetSpringArmRotator();
+		UE_LOG(LogTemp, Log, TEXT("Roll : %f  Pitch : %f  Yaw : %f"), SpringArmRotator.Roll, SpringArmRotator.Pitch, SpringArmRotator.Yaw);
 	}
 }
 //큐브 매시에 마우스 클릭 땟을때 호출되는 함수
@@ -213,13 +216,40 @@ void ABulletComp_BOX::Tick(float DeltaTime)
 
 	if (bOnCursor == true)
 	{
+
 		APlayerController* PlayerController = UGameplayStatics::GetPlayerController(BoxComp, 0);
 
 		PlayerController->GetHitResultUnderCursor(ECC_Visibility, true, HitResult);
 
-		NewWorldLocation.X = HitResult.Location.X;
-		NewWorldLocation.Y = HitResult.Location.Y;
-		NewWorldLocation.Z = 100.0f;
+		FVector CurrentLocation = BoxComp->GetComponentLocation();
+		CurrentLocation = NewWorldLocation;
+
+
+		//카메라 각도에 따른 마우스 커서와 액터 위치 대입 값 방식 변경
+		//위에서 아래를 볼때 or 아래에서 위를 볼때
+		if ( (SpringArmRotator.Pitch == 270 || SpringArmRotator.Pitch == 90) )
+		{
+			NewWorldLocation.X = HitResult.Location.X;
+			NewWorldLocation.Y = HitResult.Location.Y;
+			NewWorldLocation.Z = CurrentLocation.Z;
+		}
+		//정면에서 앞을 볼때 혹은 정면에서 뒤를 볼때
+		else if ((SpringArmRotator.Pitch == 360 || SpringArmRotator.Pitch == 180 || SpringArmRotator.Pitch == 0) &&
+				 (SpringArmRotator.Yaw == 180 || SpringArmRotator.Yaw == 360 || SpringArmRotator.Yaw == 0))
+		{
+			NewWorldLocation.X = CurrentLocation.X;
+			NewWorldLocation.Y = HitResult.Location.Y;
+			NewWorldLocation.Z = HitResult.Location.Z;
+		}
+		//엑터를 옆에서 볼때
+		else if ((SpringArmRotator.Pitch == 360 || SpringArmRotator.Pitch == 180 || SpringArmRotator.Pitch == 0) &&
+			(SpringArmRotator.Yaw == 270 || SpringArmRotator.Yaw == 90))
+		{
+			NewWorldLocation.X = HitResult.Location.X;
+			NewWorldLocation.Y = CurrentLocation.Y;
+			NewWorldLocation.Z = HitResult.Location.Z;
+		}
+
 
 		BoxComp->SetWorldLocation(NewWorldLocation, false);
 	}

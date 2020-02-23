@@ -65,11 +65,19 @@ void ACusPawn::PressedKeyboardA()
 	if (SpringArmRotator.Pitch == 180.0f || SpringArmRotator.Pitch == 360.0f || SpringArmRotator.Pitch == 0.0f) 
 	{
 		SpringArmRotator.Yaw += 90.0f;
+		if (SpringArmRotator.Yaw > 360.0f)
+		{
+			SpringArmRotator.Yaw = 90.0f;
+		}
 	}
 
 	if (SpringArmRotator.Pitch == 270.0f || SpringArmRotator.Pitch == 90.0f)
 	{
 		SpringArmRotator.Yaw += 90.0f;
+		if (SpringArmRotator.Yaw > 360.0f)
+		{
+			SpringArmRotator.Yaw = 90.0f;
+		}
 	}
 
 
@@ -82,11 +90,19 @@ void ACusPawn::PressedKeyboardD()
 	if (SpringArmRotator.Pitch == 180.0f || SpringArmRotator.Pitch == 360.0f || SpringArmRotator.Pitch == 0.0f)
 	{
 		SpringArmRotator.Yaw -= 90.0f;
+		if (SpringArmRotator.Yaw < 0.0f)
+		{
+			SpringArmRotator.Yaw = 270.0f;
+		}
 	}
 
 	if (SpringArmRotator.Pitch == 270.0f || SpringArmRotator.Pitch == 90.0f)
 	{
 		SpringArmRotator.Yaw -= 90.0f;
+		if (SpringArmRotator.Yaw < 0.0f)
+		{
+			SpringArmRotator.Yaw = 270.0f;
+		}
 	}
 	SpringArmComp->SetWorldRotation(SpringArmRotator);
 	UE_LOG(LogTemp, Log, TEXT("%f %f %f"), SpringArmRotator.Roll, SpringArmRotator.Pitch, SpringArmRotator.Yaw);

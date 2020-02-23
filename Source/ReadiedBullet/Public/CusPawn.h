@@ -42,6 +42,7 @@ protected:
 	FRotator SpringArmRotator;
 	FVector CamVector;
 
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
