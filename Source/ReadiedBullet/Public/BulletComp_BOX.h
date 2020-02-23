@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Kismet/GameplayStatics.h"
+#include "CusPawn.h"
 #include "GameFramework/PlayerController.h"
 #include "Components/StaticMeshComponent.h"
 #include "BulletComp_BOX.generated.h"
@@ -101,6 +102,9 @@ protected:
 	bool bOverlapDownBox;
 	bool bOverlapFrontBox;
 	bool bOverlapBackBox;
+
+	FRotator SpringArmRotator;
+	
 
 public:	
 	// Called every frame

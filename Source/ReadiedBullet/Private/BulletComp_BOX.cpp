@@ -46,6 +46,7 @@ ABulletComp_BOX::ABulletComp_BOX()
 
 	BoxComp->OnClicked.AddDynamic(this, &ABulletComp_BOX::BoxCompOnClicked);
 	BoxComp->OnReleased.AddDynamic(this, &ABulletComp_BOX::BoxCompOnReleased);
+
 }
 
 // Called when the game starts or when spawned
@@ -70,6 +71,14 @@ void ABulletComp_BOX::BeginPlay()
 void ABulletComp_BOX::BoxCompOnClicked(class UPrimitiveComponent* TouchedComponent, FKey ButtonPressed)
 {
 	bOnCursor = true;
+
+	//문제점 : 자꾸 널포인트 반환댐
+	ACusPawn* PlayerPawn = Cast<ACusPawn>(UGameplayStatics::GetPlayerCharacter(this, 0));
+	if (PlayerPawn != nullptr)
+	{
+		SpringArmRotator = PlayerPawn->GetSpringArmRotator();
+		UE_LOG(LogTemp, Log, TEXT("a %f %f %f"), SpringArmRotator.Roll, SpringArmRotator.Pitch, SpringArmRotator.Yaw);
+	}
 }
 //큐브 매시에 마우스 클릭 땟을때 호출되는 함수
 void ABulletComp_BOX::BoxCompOnReleased(class UPrimitiveComponent* TouchedComponent, FKey ButtonPressed)
