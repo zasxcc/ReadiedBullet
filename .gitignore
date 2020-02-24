@@ -71,6 +71,7 @@ Content/LandscapeStamps/*
 Content/ProceduralNaturePack/*
 Content/WaterMaterials/*
 Content/QuadrapedCreatures/*
+Content/Environment_Set/*
 
 # Compiled source files for the engine to use
 Intermediate/*
