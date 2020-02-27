@@ -74,7 +74,6 @@ void ABulletComp_BOX::BoxCompOnClicked(class UPrimitiveComponent* TouchedCompone
 {
 	bOnCursor = true;
 
-	//문제점 : 자꾸 널포인트 반환댐
 	ACusPawn* CusPawn = Cast<ACusPawn>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 
 	if (CusPawn != nullptr)

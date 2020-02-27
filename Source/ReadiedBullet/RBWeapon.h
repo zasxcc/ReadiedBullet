@@ -4,6 +4,7 @@
 
 #include "ReadiedBullet.h"
 #include "GameFramework/Actor.h"
+#include "Projectile.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "PhysicalMaterials/PhysicalMaterial.h"
@@ -14,10 +15,14 @@ UCLASS()
 class READIEDBULLET_API ARBWeapon : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ARBWeapon();
+
+	/** Projectile class to spawn */
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	TSubclassOf<AProjectile> ProjectileClass;
 
 protected:
 	virtual void BeginPlay() override;
@@ -25,34 +30,34 @@ protected:
 	void PlayFireEffects(FVector TraceEnd);
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	USkeletalMeshComponent* MeshComp;
+		USkeletalMeshComponent* MeshComp;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
-	TSubclassOf<UDamageType> DamageType;
+		TSubclassOf<UDamageType> DamageType;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
-	FName MuzzleSocketName;
+		FName MuzzleSocketName;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
-	UParticleSystem* MuzzleEffect;
+		UParticleSystem* MuzzleEffect;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
-	UParticleSystem* DefaultImpactEffect;
+		UParticleSystem* DefaultImpactEffect;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
-	UParticleSystem* FleshImpactEffect;
+		UParticleSystem* FleshImpactEffect;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
-	FName TracerTargetName;
+		FName TracerTargetName;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
-	UParticleSystem* TracerEffect;
+		UParticleSystem* TracerEffect;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	TSubclassOf<UCameraShake> FireCamShake;
+		TSubclassOf<UCameraShake> FireCamShake;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	float BaseDamage;
+		float BaseDamage;
 
 	FTimerHandle TimerHandle_TimeBetweenShots;
 
@@ -60,7 +65,7 @@ protected:
 
 	/*ºÐ´ç ÃÑ¾Ë ½î´Â ¼Óµµ RPM*/
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	float RateOfFire;
+		float RateOfFire;
 
 	//RateOfFireÀ» ³ª´²ÁØ´Ù.
 	float TimeBetweenShots;
@@ -68,7 +73,6 @@ protected:
 	void Fire();
 
 public:
-
 	virtual void StartFire();
 
 	void StopFire();

@@ -1,6 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-#pragma once
+﻿#pragma once
 
 #include "ReadiedBullet.h"
 #include "RBWeapon.h"
@@ -27,11 +25,11 @@ protected:
 	void MoveForward(float Value);
 	void MoveRight(float Value);
 
-	//�ɱ�
+	//¾É±â
 	void BeginCrouch();
 	void EndCrouch();
 
-	//��
+	//ÁÜ
 	void BeginZoom();
 	void EndZoom();
 
@@ -74,5 +72,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	virtual FVector GetPawnViewLocation() const;
+
+	FRotator GetCamRotator();
 
 };

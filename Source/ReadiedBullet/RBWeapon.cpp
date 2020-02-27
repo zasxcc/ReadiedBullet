@@ -37,76 +37,99 @@ void ARBWeapon::Fire()
 {
 	// Trace the world, from pawn eyes to crosshair location
 
+	//AActor* MyOwner = GetOwner();
+
+	//if (MyOwner)
+	//{
+	//	FVector EyeLocation;
+	//	FRotator EyeRotation;
+	//	MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
+
+	//	FVector ShotDirection = EyeRotation.Vector();
+	//	FVector TraceEnd = EyeLocation + (ShotDirection * 1000);
+
+	//	//파티클 "Target" 파라미터
+	//	FVector TracerEndPoint = TraceEnd;
+
+	//	FCollisionQueryParams QueryParams;
+	//	QueryParams.AddIgnoredActor(MyOwner);
+	//	QueryParams.AddIgnoredActor(this);
+	//	QueryParams.bTraceComplex = true;
+
+	//	FHitResult Hit;
+	//	if (GetWorld()->LineTraceSingleByChannel(Hit, EyeLocation, TraceEnd, COLLISION_WEAPON, QueryParams))
+	//	{
+	//		// Blocking hit! Process Damage
+	//		AActor* HitActor = Hit.GetActor();
+
+	//		EPhysicalSurface SurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
+
+	//		float ActualDamage = BaseDamage;
+	//		//물리표면타입이 SURFACE_FLESHVULNERABLE 라면 // SURFACE_FLESHVULNERABLE 는 머리쪽에 지정해논 콜리전서페이트타
+	//		if (SurfaceType == SURFACE_FLESHVULNERABLE)
+	//		{
+	//			ActualDamage *= 2.0f;
+	//		}
+
+	//		UGameplayStatics::ApplyPointDamage(HitActor, ActualDamage, ShotDirection, Hit, MyOwner->GetInstigatorController(), this, DamageType);
+
+	//		UParticleSystem* SelectedEffect = nullptr;
+	//		switch (SurfaceType)
+	//		{
+	//			//CoopGame.h에 Define된 내용
+	//			//#define SURFACE_FLESHDEFAULT    SurfaceType1 
+	//			//#define SURFACE_FLESHVULNERABLE SurfaceType2
+	//		case SURFACE_FLESHDEFAULT:
+	//			SelectedEffect = FleshImpactEffect;
+	//			break;
+	//		case SURFACE_FLESHVULNERABLE:
+	//			SelectedEffect = FleshImpactEffect;
+	//			break;
+	//		default:
+	//			SelectedEffect = DefaultImpactEffect;
+	//			break;
+	//		}
+
+	//		if (SelectedEffect)
+	//		{
+	//			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SelectedEffect, Hit.ImpactPoint, Hit.ImpactNormal.Rotation());
+	//		}
+
+	//		TracerEndPoint = Hit.ImpactPoint;
+	//	}
+
+	//	if (DebugWeaponDrawing > 0)
+	//	{
+	//		DrawDebugLine(GetWorld(), EyeLocation, TraceEnd, FColor::Red, false, 1.0f, 0, 1.0f);
+	//	}
+
+	//	PlayFireEffects(TracerEndPoint);
+
+	//	LastFireTime = GetWorld()->TimeSeconds;
+	//}
+
 	AActor* MyOwner = GetOwner();
 
-	if (MyOwner)
+	if (ProjectileClass)
 	{
+		//무기 위치 받아서 저장
+		FVector MuzzleLocation = MeshComp->GetSocketLocation("MuzzleFlashSocket");
+		//FRotator MuzzleRotation = MeshComp->GetSocketRotation("MuzzleFlashSocket");;
+
 		FVector EyeLocation;
 		FRotator EyeRotation;
+		//엑터가 바라보는 위치, 방향 저장
 		MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
+		
+		
+		//Set Spawn Collision Handling Override
+		FActorSpawnParameters ActorSpawnParams;
+		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
-		FVector ShotDirection = EyeRotation.Vector();
-		FVector TraceEnd = EyeLocation + (ShotDirection * 1000);
-
-		//파티클 "Target" 파라미터
-		FVector TracerEndPoint = TraceEnd;
-
-		FCollisionQueryParams QueryParams;
-		QueryParams.AddIgnoredActor(MyOwner);
-		QueryParams.AddIgnoredActor(this);
-		QueryParams.bTraceComplex = true;
-
-		FHitResult Hit;
-		if (GetWorld()->LineTraceSingleByChannel(Hit, EyeLocation, TraceEnd, COLLISION_WEAPON, QueryParams))
-		{
-			// Blocking hit! Process Damage
-			AActor* HitActor = Hit.GetActor();
-
-			EPhysicalSurface SurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
-
-			float ActualDamage = BaseDamage;
-			//물리표면타입이 SURFACE_FLESHVULNERABLE 라면 // SURFACE_FLESHVULNERABLE 는 머리쪽에 지정해논 콜리전서페이트타
-			if (SurfaceType == SURFACE_FLESHVULNERABLE)
-			{
-				ActualDamage *= 2.0f;
-			}
-
-			UGameplayStatics::ApplyPointDamage(HitActor, ActualDamage, ShotDirection, Hit, MyOwner->GetInstigatorController(), this, DamageType);
-
-			UParticleSystem* SelectedEffect = nullptr;
-			switch (SurfaceType)
-			{
-				//CoopGame.h에 Define된 내용
-				//#define SURFACE_FLESHDEFAULT    SurfaceType1 
-				//#define SURFACE_FLESHVULNERABLE SurfaceType2
-			case SURFACE_FLESHDEFAULT:
-				SelectedEffect = FleshImpactEffect;
-				break;
-			case SURFACE_FLESHVULNERABLE:
-				SelectedEffect = FleshImpactEffect;
-				break;
-			default:
-				SelectedEffect = DefaultImpactEffect;
-				break;
-			}
-
-			if (SelectedEffect)
-			{
-				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SelectedEffect, Hit.ImpactPoint, Hit.ImpactNormal.Rotation());
-			}
-
-			TracerEndPoint = Hit.ImpactPoint;
-		}
-
-		if (DebugWeaponDrawing > 0)
-		{
-			DrawDebugLine(GetWorld(), EyeLocation, TraceEnd, FColor::Red, false, 1.0f, 0, 1.0f);
-		}
-
-		PlayFireEffects(TracerEndPoint);
-
-		LastFireTime = GetWorld()->TimeSeconds;
+		// spawn the projectile at the muzzle
+		GetWorld()->SpawnActor<AProjectile>(ProjectileClass, MuzzleLocation, EyeRotation, ActorSpawnParams);
 	}
+
 }
 
 void ARBWeapon::StartFire()
@@ -150,4 +173,3 @@ void ARBWeapon::PlayFireEffects(FVector TraceEnd)
 		}
 	}
 }
-
