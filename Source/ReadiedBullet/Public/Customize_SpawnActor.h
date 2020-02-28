@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "BulletComp_BOX.h"
 #include "Customize_SpawnActor.generated.h"
 
 UCLASS()
