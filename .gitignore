@@ -72,6 +72,7 @@ Content/ProceduralNaturePack/*
 Content/WaterMaterials/*
 Content/QuadrapedCreatures/*
 Content/Environment_Set/*
+Content/ModularBuildingSet/*
 
 # Compiled source files for the engine to use
 Intermediate/*
