@@ -65,7 +65,7 @@ protected:
 
 	/*ºÐ´ç ÃÑ¾Ë ½î´Â ¼Óµµ RPM*/
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-		float RateOfFire;
+	float RateOfFire;
 
 	//RateOfFireÀ» ³ª´²ÁØ´Ù.
 	float TimeBetweenShots;

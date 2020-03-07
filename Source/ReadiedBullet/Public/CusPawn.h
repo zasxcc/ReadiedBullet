@@ -4,6 +4,7 @@
 
 #include "EngineMinimal.h"
 #include "CoreMinimal.h"
+#include "Components/WidgetComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/Pawn.h"
 #include "CusPawn.generated.h"
@@ -38,6 +39,15 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UStaticMeshComponent* StaticMeshComp;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Transfrom")
+	TArray<FTransform> TransformSlot1;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Transfrom")
+	TArray<FTransform> TransformSlot2;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Transfrom")
+	TArray<FTransform> TransformSlot3;
 
 	FRotator SpringArmRotator;
 	FVector CamVector;

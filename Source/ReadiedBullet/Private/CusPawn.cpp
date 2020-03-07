@@ -25,6 +25,8 @@ ACusPawn::ACusPawn()
 
 	SpringArmComp->SetWorldRotation(SpringArmRotator);
 	CameraComp->SetWorldLocation(CamVector);
+
+
 }
 
 // Called when the game starts or when spawned
