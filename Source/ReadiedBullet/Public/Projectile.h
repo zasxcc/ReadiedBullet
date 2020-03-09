@@ -4,8 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "RBGameInstance.h"
+#include "Kismet/GameplayStatics.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "Projectile.generated.h"
 
 UCLASS()
@@ -38,5 +41,14 @@ protected:
 	/** Projectile movement component */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	UProjectileMovementComponent* ProjectileMovement;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "StaticMeshComp")
+	TArray<UStaticMeshComponent*> StaticMeshArray; 
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "StaticMeshComp")
+	UStaticMeshComponent* StaticMesh;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Bullet")
+	TSubclassOf<AActor> ProjectileClass;
 
 };

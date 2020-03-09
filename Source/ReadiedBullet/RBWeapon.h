@@ -22,7 +22,7 @@ public:
 
 	/** Projectile class to spawn */
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
-	TSubclassOf<AProjectile> ProjectileClass;
+	TSubclassOf<AActor> ProjectileClass;
 
 protected:
 	virtual void BeginPlay() override;

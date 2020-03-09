@@ -14,4 +14,18 @@ class READIEDBULLET_API URBGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 	
+
+public:
+	//URBGameInstance();
+
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
+	TArray<FTransform>  InstanceBoxSlot1;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
+	TArray<FTransform>  InstanceCylinderSlot1;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
+	TArray<FTransform>  InstanceSphereSlot1;
+
 };

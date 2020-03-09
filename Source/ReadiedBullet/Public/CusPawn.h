@@ -49,6 +49,15 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Transfrom")
 	TArray<FTransform> TransformSlot3;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Transfrom")
+	TArray<FTransform> TransformSlotBox1;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Transfrom")
+	TArray<FTransform> TransformSlotCylinder1;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Transfrom")
+	TArray<FTransform> TransformSlotSphere1;
+
 	FRotator SpringArmRotator;
 	FVector CamVector;
 

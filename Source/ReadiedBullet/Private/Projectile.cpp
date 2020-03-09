@@ -27,6 +27,20 @@ AProjectile::AProjectile()
 	ProjectileMovement->bRotationFollowsVelocity = true;
 	ProjectileMovement->bShouldBounce = true;
 
+
+	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
+
+
+	StaticMeshArray.Init(StaticMesh,10);
+
+	/*for (int32 i = 0; i != StaticMeshArray.Num(); ++i)
+	{
+		StaticMeshArray[i] = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshArray"));
+	}*/
+
+
+	
+
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
 }
@@ -35,6 +49,10 @@ AProjectile::AProjectile()
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
+
+	//ACusPawn* CusPawn = Cast<ACusPawn>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(0));
+	
 	
 }
 
