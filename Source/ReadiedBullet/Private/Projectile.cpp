@@ -29,22 +29,22 @@ AProjectile::AProjectile()
 	ProjectileMovement->bShouldBounce = true;
 
 
-	//큐브 BP 연결
-	static ConstructorHelpers::FObjectFinder<UBlueprint> CubeItem(TEXT("/Game/Blueprints/Cube"));
+	//BP 연결
+	static ConstructorHelpers::FObjectFinder<UBlueprint> CubeItem(TEXT("/Game/Blueprints/BP_Cube"));
 
 	if (CubeItem.Object)
 	{
 		CubeBlueprint = (UClass*)CubeItem.Object->GeneratedClass;
 	}
 
-	static ConstructorHelpers::FObjectFinder<UBlueprint> CylinerItem(TEXT("/Game/Blueprints/Cylinder"));
+	static ConstructorHelpers::FObjectFinder<UBlueprint> CylinerItem(TEXT("/Game/Blueprints/BP_Cylinder"));
 
 	if (CylinerItem.Object)
 	{
 		CylinderBlueprint = (UClass*)CylinerItem.Object->GeneratedClass;
 	}
 
-	static ConstructorHelpers::FObjectFinder<UBlueprint> SphereItem(TEXT("/Game/Blueprints/Sphere"));
+	static ConstructorHelpers::FObjectFinder<UBlueprint> SphereItem(TEXT("/Game/Blueprints/BP_Sphere"));
 
 	if (SphereItem.Object)
 	{
@@ -106,17 +106,6 @@ void AProjectile::BeginPlay()
 		GetWorld()->SpawnActor<AActor>(SphereBlueprint, SpawnTransform);
 	}
 
-
-	TArray<AActor*> BulletActors;
-
-	UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("bullet"), BulletActors);
-	FTransform tr;
-	tr.SetLocation(FVector(10.0f, 0.0f, 0.0f));
-
-	for (int32 i = 0; i < BulletActors.Num(); ++i)
-	{
-		BulletActors[i]->AddActorWorldTransform(tr);
-	}
 }
 
 

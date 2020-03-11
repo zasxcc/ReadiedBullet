@@ -34,5 +34,8 @@ void ACube::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	FVector ForwardVector = StaticMesh->GetForwardVector();
+	ForwardVector = ForwardVector * 10;
+	StaticMesh->AddWorldOffset(ForwardVector);
 }
 

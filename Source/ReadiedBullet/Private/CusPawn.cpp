@@ -161,8 +161,8 @@ void ACusPawn::SaveGameInstance()
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
 	GameInstance->InstanceBoxSlot1= TransformSlotBox1;
-	GameInstance->InstanceCylinderSlot1 = TransformSlotSphere1;
-	GameInstance->InstanceSphereSlot1 = TransformSlotCylinder1;
+	GameInstance->InstanceCylinderSlot1 = TransformSlotCylinder1;
+	GameInstance->InstanceSphereSlot1 = TransformSlotSphere1;
 	
 }
 
