@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "RBGameInstance.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameFramework/Character.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -19,16 +20,20 @@ class READIEDBULLET_API AProjectile : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AProjectile();
+	virtual void PostInitializeComponents() override;
+	virtual void Tick(float DeltaTime) override;
 
 	/** called when projectile hits something */
-	UFUNCTION()
-	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	//UFUNCTION()
+	//void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 	/** Returns CollisionComp subobject **/
 	USphereComponent* GetCollisionComp() const { return CollisionComp; }
 
 	/** Returns ProjectileMovement subobject **/
 	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
+
+
 
 protected:
 	// Called when the game starts or when spawned
@@ -50,5 +55,23 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Bullet")
 	TSubclassOf<AActor> ProjectileClass;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Slot")
+	TArray<FTransform>  BoxTransform1;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Slot")
+	TArray<FTransform>  CylinderTransform1;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Slot")
+	TArray<FTransform>  SphereTransform1;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AActor> CubeBlueprint;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AActor> CylinderBlueprint;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AActor> SphereBlueprint;
 
 };

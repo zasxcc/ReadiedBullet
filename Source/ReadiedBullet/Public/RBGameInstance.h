@@ -17,8 +17,10 @@ class READIEDBULLET_API URBGameInstance : public UGameInstance
 
 public:
 	//URBGameInstance();
+	void SetInstanceBoxSlot1(TArray<FTransform> BoxSlot);
+	void SetInstanceCylinderSlot1(TArray<FTransform> CylinderSlot);
+	void SetInstanceSphereSlot1(TArray<FTransform> SphereSlot);
 
-protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
 	TArray<FTransform>  InstanceBoxSlot1;
 
@@ -27,5 +29,14 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
 	TArray<FTransform>  InstanceSphereSlot1;
+
+	TArray<FTransform> GetInstanceBoxSlot1();
+	TArray<FTransform> GetInstanceCylinderSlot1();
+	TArray<FTransform> GetInstanceSphereSlot1();
+
+protected:
+	
+
+	
 
 };

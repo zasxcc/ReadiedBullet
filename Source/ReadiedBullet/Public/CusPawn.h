@@ -4,6 +4,8 @@
 
 #include "EngineMinimal.h"
 #include "CoreMinimal.h"
+#include "RBGameInstance.h"
+#include "Kismet/GameplayStatics.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/Pawn.h"
@@ -40,14 +42,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UStaticMeshComponent* StaticMeshComp;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Transfrom")
-	TArray<FTransform> TransformSlot1;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Transfrom")
-	TArray<FTransform> TransformSlot2;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Transfrom")
-	TArray<FTransform> TransformSlot3;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Transfrom")
 	TArray<FTransform> TransformSlotBox1;
@@ -68,5 +63,11 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UFUNCTION(BlueprintCallable)
+	void SaveCustomCam();
+
+	UFUNCTION(BlueprintCallable)
+	void SaveGameInstance();
 	
 };
