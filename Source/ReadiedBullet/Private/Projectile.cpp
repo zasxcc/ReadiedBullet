@@ -51,7 +51,6 @@ AProjectile::AProjectile()
 		SphereBlueprint = (UClass*)SphereItem.Object->GeneratedClass;
 	}
 
-		
 
 	InitialLifeSpan = 3.0f;
 }
@@ -82,13 +81,13 @@ void AProjectile::BeginPlay()
 	Super::BeginPlay();
 
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-
-
+	
+	
 
 	auto PlayerCamera = UGameplayStatics::GetPlayerCameraManager(this, 0);
 	FTransform CameraTransform = PlayerCamera->GetTransform();
 	
-	for (int32 i = 0; i < BoxTransform1.Num(); ++i) 
+	for (int32 i = 0; i < BoxTransform1.Num(); ++i)
 	{
 		FTransform SpawnTransform = BoxTransform1[i] * CameraTransform;
 		GetWorld()->SpawnActor<AActor>(CubeBlueprint, SpawnTransform);

@@ -6,6 +6,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Actor.h"
+#include "CusPawn.h"
 #include "Cube.generated.h"
 
 UCLASS()
@@ -25,6 +26,7 @@ public:
 	// Called every frame
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "StaticMesh")
 	UStaticMeshComponent* StaticMesh;
+
 
 	virtual void Tick(float DeltaTime) override;
 

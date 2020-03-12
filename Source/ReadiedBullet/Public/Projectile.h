@@ -74,4 +74,6 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AActor> SphereBlueprint;
 
+
+	TArray<AActor*> BulletArray;
 };

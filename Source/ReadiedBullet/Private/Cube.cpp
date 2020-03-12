@@ -12,13 +12,14 @@ ACube::ACube()
 	PrimaryActorTick.bCanEverTick = true;
 
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
-	static ConstructorHelpers::FObjectFinder<UStaticMesh>
+
+	/*static ConstructorHelpers::FObjectFinder<UStaticMesh>
 		STATICMESH_BODY(TEXT("/Game/Geometry/Meshes/1M_Cube"));
 
 	if (STATICMESH_BODY.Succeeded())
 	{
 		StaticMesh->SetStaticMesh(STATICMESH_BODY.Object);
-	}
+	}*/
 
 }
 
