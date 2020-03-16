@@ -28,6 +28,7 @@ AProjectile::AProjectile()
 	ProjectileMovement->bRotationFollowsVelocity = true;
 	ProjectileMovement->bShouldBounce = true;
 
+	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Si"));
 
 	//BP ¿¬°á
 	static ConstructorHelpers::FObjectFinder<UBlueprint> CubeItem(TEXT("/Game/Blueprints/BP_Cube"));
@@ -35,6 +36,7 @@ AProjectile::AProjectile()
 	if (CubeItem.Object)
 	{
 		CubeBlueprint = (UClass*)CubeItem.Object->GeneratedClass;
+		
 	}
 
 	static ConstructorHelpers::FObjectFinder<UBlueprint> CylinerItem(TEXT("/Game/Blueprints/BP_Cylinder"));
@@ -51,6 +53,12 @@ AProjectile::AProjectile()
 		SphereBlueprint = (UClass*)SphereItem.Object->GeneratedClass;
 	}
 
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> SM_CUBE(TEXT("/Game/StarterContent/Props/SM_Lamp_Ceiling"));
+
+	if (SM_CUBE.Succeeded())
+	{
+		StaticMesh->SetStaticMesh(SM_CUBE.Object);
+	}
 
 	InitialLifeSpan = 3.0f;
 }
@@ -75,22 +83,26 @@ void AProjectile::Tick(float DeltaTime)
 	
 }
 
+
+
 // Called when the game starts or when spawned
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 
+
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	
-	
+		
 
 	auto PlayerCamera = UGameplayStatics::GetPlayerCameraManager(this, 0);
 	FTransform CameraTransform = PlayerCamera->GetTransform();
-	
+
+
 	for (int32 i = 0; i < BoxTransform1.Num(); ++i)
 	{
 		FTransform SpawnTransform = BoxTransform1[i] * CameraTransform;
 		GetWorld()->SpawnActor<AActor>(CubeBlueprint, SpawnTransform);
+
 	}
 
 	for (int32 i = 0; i < CylinderTransform1.Num(); ++i)

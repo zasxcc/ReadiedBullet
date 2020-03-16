@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "RBGameInstance.h"
+#include "UObject/ConstructorHelpers.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -32,7 +33,6 @@ public:
 
 	/** Returns ProjectileMovement subobject **/
 	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
-
 
 
 protected:
@@ -74,6 +74,4 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AActor> SphereBlueprint;
 
-
-	TArray<AActor*> BulletArray;
 };
