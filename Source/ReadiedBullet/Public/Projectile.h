@@ -32,7 +32,7 @@ public:
 	USphereComponent* GetCollisionComp() const { return CollisionComp; }
 
 	/** Returns ProjectileMovement subobject **/
-	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
+	//UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
 
 
 protected:
@@ -43,15 +43,14 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Projectile")
 	USphereComponent* CollisionComp;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Projectile")
+	USceneComponent* SceneComp;
+
+
 	/** Projectile movement component */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
-	UProjectileMovementComponent* ProjectileMovement;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
+	//UProjectileMovementComponent* ProjectileMovement;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "StaticMeshComp")
-	TArray<UStaticMeshComponent*> StaticMeshArray; 
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "StaticMeshComp")
-	UStaticMeshComponent* StaticMesh;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Bullet")
 	TSubclassOf<AActor> ProjectileClass;

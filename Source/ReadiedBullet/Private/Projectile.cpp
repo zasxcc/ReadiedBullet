@@ -7,6 +7,10 @@
 // Sets default values
 AProjectile::AProjectile()
 {
+	SceneComp = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComp"));
+
+	RootComponent = SceneComp;
+
 	// Use a sphere as a simple collision representation
 	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
 	CollisionComp->InitSphereRadius(5.0f);
@@ -18,17 +22,16 @@ AProjectile::AProjectile()
 	CollisionComp->CanCharacterStepUpOn = ECB_No;
 
 	// Set as root component
-	RootComponent = CollisionComp;
+	CollisionComp->SetupAttachment(SceneComp);
 
 	// Use a ProjectileMovementComponent to govern this projectile's movement
-	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileComp"));
+	/*ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileComp"));
 	ProjectileMovement->UpdatedComponent = CollisionComp;
 	ProjectileMovement->InitialSpeed = 3000.f;
 	ProjectileMovement->MaxSpeed = 3000.f;
 	ProjectileMovement->bRotationFollowsVelocity = true;
-	ProjectileMovement->bShouldBounce = true;
+	ProjectileMovement->bShouldBounce = true;*/
 
-	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Si"));
 
 	//BP ¿¬°á
 	static ConstructorHelpers::FObjectFinder<UBlueprint> CubeItem(TEXT("/Game/Blueprints/BP_Cube"));
@@ -53,14 +56,14 @@ AProjectile::AProjectile()
 		SphereBlueprint = (UClass*)SphereItem.Object->GeneratedClass;
 	}
 
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> SM_CUBE(TEXT("/Game/StarterContent/Props/SM_Lamp_Ceiling"));
+	/*static ConstructorHelpers::FObjectFinder<UStaticMesh> SM_CUBE(TEXT("/Game/StarterContent/Props/SM_Lamp_Ceiling"));
 
 	if (SM_CUBE.Succeeded())
 	{
 		StaticMesh->SetStaticMesh(SM_CUBE.Object);
-	}
+	}*/
 
-	InitialLifeSpan = 3.0f;
+	InitialLifeSpan = 80.0f;
 }
 
 void AProjectile::PostInitializeComponents()
@@ -91,7 +94,7 @@ void AProjectile::BeginPlay()
 	Super::BeginPlay();
 
 
-	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	/*URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 		
 
 	auto PlayerCamera = UGameplayStatics::GetPlayerCameraManager(this, 0);
@@ -115,7 +118,7 @@ void AProjectile::BeginPlay()
 	{
 		FTransform SpawnTransform = SphereTransform1[i] * CameraTransform;
 		GetWorld()->SpawnActor<AActor>(SphereBlueprint, SpawnTransform);
-	}
+	}*/
 
 }
 
