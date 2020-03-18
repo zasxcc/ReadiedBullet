@@ -65,8 +65,6 @@ void ABulletComp_BOX::BeginPlay()
 
 	BoxComp->SetCollisionObjectType(ECC_WorldStatic);
 
-	
-
 }
 
 //큐브 매시에 마우스 클릭했을떄 호출되는 함수

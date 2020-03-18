@@ -22,7 +22,7 @@ ARBWeapon::ARBWeapon()
 
 	BaseDamage = 20.0f;
 
-	RateOfFire = 600;
+	RateOfFire = 400;
 }
 
 void ARBWeapon::BeginPlay()
