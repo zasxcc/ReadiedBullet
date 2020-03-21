@@ -81,7 +81,7 @@ void ACusPawn::PressedKeyboardA()
 			SpringArmRotator.Yaw = 90.0f;
 		}
 	}
-
+	
 
 	SpringArmComp->SetWorldRotation(SpringArmRotator);
 	UE_LOG(LogTemp, Log, TEXT("%f %f %f"), SpringArmRotator.Roll, SpringArmRotator.Pitch, SpringArmRotator.Yaw);

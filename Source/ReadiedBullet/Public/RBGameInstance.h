@@ -34,6 +34,15 @@ public:
 	TArray<FTransform> GetInstanceCylinderSlot1();
 	TArray<FTransform> GetInstanceSphereSlot1();
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
+	float InstanceX;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
+	float InstanceY;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
+	float InstanceZ;
+
 protected:
 	
 
