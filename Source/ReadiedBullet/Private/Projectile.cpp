@@ -24,13 +24,6 @@ AProjectile::AProjectile()
 	// Set as root component
 	CollisionComp->SetupAttachment(SceneComp);
 
-	// Use a ProjectileMovementComponent to govern this projectile's movement
-	/*ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileComp"));
-	ProjectileMovement->UpdatedComponent = CollisionComp;
-	ProjectileMovement->InitialSpeed = 3000.f;
-	ProjectileMovement->MaxSpeed = 3000.f;
-	ProjectileMovement->bRotationFollowsVelocity = true;
-	ProjectileMovement->bShouldBounce = true;*/
 
 
 	//BP ¿¬°á
@@ -56,12 +49,9 @@ AProjectile::AProjectile()
 		SphereBlueprint = (UClass*)SphereItem.Object->GeneratedClass;
 	}
 
-	/*static ConstructorHelpers::FObjectFinder<UStaticMesh> SM_CUBE(TEXT("/Game/StarterContent/Props/SM_Lamp_Ceiling"));
-
-	if (SM_CUBE.Succeeded())
-	{
-		StaticMesh->SetStaticMesh(SM_CUBE.Object);
-	}*/
+	RotateVector.X = 10.0f;
+	RotateVector.Y = 0.0f;
+	RotateVector.Z = 0.0f;
 
 	InitialLifeSpan = 80.0f;
 }
@@ -83,7 +73,19 @@ void AProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
+
+
+	RotateVector.Y += RotateY;
+	RotateVector.Z += RotateZ;
 	
+	FTransform tf;
+	tf.SetLocation(RotateVector);
+
+	AddActorLocalTransform(tf, false);
+
+	
+	CollisionComp->AddLocalRotation(FRotator(RotateZ*200.0f, RotateY * 200.0f, 0.0f));
+
 }
 
 
@@ -93,32 +95,14 @@ void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 
+	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
-	/*URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-		
+	float rotateRatio = 0.05f;
 
-	auto PlayerCamera = UGameplayStatics::GetPlayerCameraManager(this, 0);
-	FTransform CameraTransform = PlayerCamera->GetTransform();
-
-
-	for (int32 i = 0; i < BoxTransform1.Num(); ++i)
-	{
-		FTransform SpawnTransform = BoxTransform1[i] * CameraTransform;
-		GetWorld()->SpawnActor<AActor>(CubeBlueprint, SpawnTransform);
-
-	}
-
-	for (int32 i = 0; i < CylinderTransform1.Num(); ++i)
-	{
-		FTransform SpawnTransform = CylinderTransform1[i] * CameraTransform;
-		GetWorld()->SpawnActor<AActor>(CylinderBlueprint, SpawnTransform);
-	}
-
-	for (int32 i = 0; i < SphereTransform1.Num(); ++i)
-	{
-		FTransform SpawnTransform = SphereTransform1[i] * CameraTransform;
-		GetWorld()->SpawnActor<AActor>(SphereBlueprint, SpawnTransform);
-	}*/
+	RotateX = (GameInstance->InstanceX * rotateRatio);
+	RotateY = (GameInstance->InstanceY * rotateRatio);
+	RotateZ = (GameInstance->InstanceZ * rotateRatio);
+	
 
 }
 

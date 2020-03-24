@@ -47,10 +47,6 @@ protected:
 	USceneComponent* SceneComp;
 
 
-	/** Projectile movement component */
-	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
-	//UProjectileMovementComponent* ProjectileMovement;
-
 
 	UPROPERTY(EditDefaultsOnly, Category = "Bullet")
 	TSubclassOf<AActor> ProjectileClass;
@@ -72,5 +68,17 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AActor> SphereBlueprint;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	float RotateX;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	float RotateY;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	float RotateZ;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	FVector RotateVector;
 
 };
