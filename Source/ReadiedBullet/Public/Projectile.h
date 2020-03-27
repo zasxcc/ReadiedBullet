@@ -46,6 +46,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Projectile")
 	USceneComponent* SceneComp;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Projectile")
+	UStaticMeshComponent* StaticMesh;
+
 
 
 	UPROPERTY(EditDefaultsOnly, Category = "Bullet")
@@ -80,5 +83,14 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	FVector RotateVector;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TArray<UStaticMeshComponent*> BoxActorArray;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TArray<UStaticMeshComponent*> CylinderActorArray;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TArray<UStaticMeshComponent*> SphereActorArray;
 
 };

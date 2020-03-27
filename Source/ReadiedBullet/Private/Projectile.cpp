@@ -24,30 +24,14 @@ AProjectile::AProjectile()
 	// Set as root component
 	CollisionComp->SetupAttachment(SceneComp);
 
-
+	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComp"));
 
 	//BP ¿¬°á
-	static ConstructorHelpers::FObjectFinder<UBlueprint> CubeItem(TEXT("/Game/Blueprints/BP_Cube"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeItem(TEXT("/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube"));
 
-	if (CubeItem.Object)
-	{
-		CubeBlueprint = (UClass*)CubeItem.Object->GeneratedClass;
-		
-	}
 
-	static ConstructorHelpers::FObjectFinder<UBlueprint> CylinerItem(TEXT("/Game/Blueprints/BP_Cylinder"));
+	//StaticMesh->SetStaticMesh(CubeItem.Object);
 
-	if (CylinerItem.Object)
-	{
-		CylinderBlueprint = (UClass*)CylinerItem.Object->GeneratedClass;
-	}
-
-	static ConstructorHelpers::FObjectFinder<UBlueprint> SphereItem(TEXT("/Game/Blueprints/BP_Sphere"));
-
-	if (SphereItem.Object)
-	{
-		SphereBlueprint = (UClass*)SphereItem.Object->GeneratedClass;
-	}
 
 	RotateVector.X = 10.0f;
 	RotateVector.Y = 0.0f;
@@ -73,8 +57,6 @@ void AProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-
-
 	RotateVector.Y += RotateY;
 	RotateVector.Z += RotateZ;
 	
@@ -83,9 +65,7 @@ void AProjectile::Tick(float DeltaTime)
 
 	AddActorLocalTransform(tf, false);
 
-	
 	CollisionComp->AddLocalRotation(FRotator(RotateZ*200.0f, RotateY * 200.0f, 0.0f));
-
 }
 
 
@@ -103,6 +83,11 @@ void AProjectile::BeginPlay()
 	RotateY = (GameInstance->InstanceY * rotateRatio);
 	RotateZ = (GameInstance->InstanceZ * rotateRatio);
 	
+
+	/*for (auto& x : BoxTransform1)
+	{
+		AddComponent("StaticMeshComponent", false, x.GetRelativeTransform(SceneComp->GetComponentTransform()), StaticMesh);
+	}*/
 
 }
 
