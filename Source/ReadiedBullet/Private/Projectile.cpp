@@ -67,8 +67,9 @@ void AProjectile::PostInitializeComponents()
 		BoxTransform3 = GameInstance->InstanceBoxSlot3;
 		CylinderTransform3 = GameInstance->InstanceCylinderSlot3;
 		SphereTransform3 = GameInstance->InstanceSphereSlot3;
+
+		SelectBulletSlot = GameInstance->SelectSlot;
 	}
-	SelectBulletSlot = GameInstance->SelectSlot;
 }
 
 void AProjectile::Tick(float DeltaTime)
