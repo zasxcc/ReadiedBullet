@@ -33,12 +33,15 @@ protected:
 	void BeginZoom();
 	void EndZoom();
 
+	void SelectSlot1();
+	void SelectSlot2();
+	void SelectSlot3();
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UCameraComponent* CameraComp;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USpringArmComponent* SpringArmComp;
-
 
 	bool bWantsToZoom;
 
@@ -58,6 +61,7 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Player")
 	FName WeaponAttachSocketName;
+
 
 	void StartFire();
 

@@ -63,6 +63,26 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Slot")
 	TArray<FTransform>  SphereTransform1;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Slot")
+	TArray<FTransform>  BoxTransform2;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Slot")
+	TArray<FTransform>  CylinderTransform2;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Slot")
+	TArray<FTransform>  SphereTransform2;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Slot")
+	TArray<FTransform>  BoxTransform3;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Slot")
+	TArray<FTransform>  CylinderTransform3;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Slot")
+	TArray<FTransform>  SphereTransform3;
+
+
+
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AActor> CubeBlueprint;
 
@@ -73,24 +93,74 @@ protected:
 	TSubclassOf<class AActor> SphereBlueprint;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	float RotateX;
+	float RotateX1;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	float RotateY;
+	float RotateY1;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	float RotateZ;
+	float RotateZ1;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	FVector RotateVector;
+	FVector RotateVector1;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	TArray<UStaticMeshComponent*> BoxActorArray;
+	float RotateX2;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	TArray<UStaticMeshComponent*> CylinderActorArray;
+	float RotateY2;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	TArray<UStaticMeshComponent*> SphereActorArray;
+	float RotateZ2;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	FVector RotateVector2;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	float RotateX3;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	float RotateY3;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	float RotateZ3;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	FVector RotateVector3;
+
+
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TArray<UStaticMeshComponent*> BoxActorArray1;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TArray<UStaticMeshComponent*> CylinderActorArray1;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TArray<UStaticMeshComponent*> SphereActorArray1;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TArray<UStaticMeshComponent*> BoxActorArray2;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TArray<UStaticMeshComponent*> CylinderActorArray2;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TArray<UStaticMeshComponent*> SphereActorArray2;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TArray<UStaticMeshComponent*> BoxActorArray3;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TArray<UStaticMeshComponent*> CylinderActorArray3;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TArray<UStaticMeshComponent*> SphereActorArray3;
+
+
+
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	int32 SelectBulletSlot;
 
 };

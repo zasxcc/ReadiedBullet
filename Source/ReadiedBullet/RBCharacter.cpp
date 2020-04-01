@@ -24,6 +24,7 @@ ARBCharacter::ARBCharacter()
 	ZoomInterpSpeed = 20;
 
 	WeaponAttachSocketName = "WeaponSocket";
+
 }
 
 // Called when the game starts or when spawned
@@ -77,6 +78,24 @@ void ARBCharacter::EndZoom()
 	bWantsToZoom = false;
 }
 
+void ARBCharacter::SelectSlot1()
+{
+	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	GameInstance->SelectSlot = 1;
+}
+
+void ARBCharacter::SelectSlot2()
+{
+	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	GameInstance->SelectSlot = 2;
+}
+
+void ARBCharacter::SelectSlot3()
+{
+	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	GameInstance->SelectSlot = 3;
+}
+
 void ARBCharacter::StartFire()
 {
 	if (CurrentWeapon)
@@ -125,6 +144,10 @@ void ARBCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ARBCharacter::StartFire);
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &ARBCharacter::StopFire);
+
+	PlayerInputComponent->BindAction("Slot1", IE_Pressed, this, &ARBCharacter::SelectSlot1);
+	PlayerInputComponent->BindAction("Slot2", IE_Pressed, this, &ARBCharacter::SelectSlot2);
+	PlayerInputComponent->BindAction("Slot3", IE_Pressed, this, &ARBCharacter::SelectSlot3);
 }
 
 FVector ARBCharacter::GetPawnViewLocation() const
@@ -136,6 +159,7 @@ FVector ARBCharacter::GetPawnViewLocation() const
 
 	return Super::GetPawnViewLocation();
 }
+
 
 FRotator ARBCharacter::GetCamRotator()
 {

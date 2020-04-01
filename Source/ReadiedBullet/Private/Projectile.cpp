@@ -32,10 +32,19 @@ AProjectile::AProjectile()
 
 	//StaticMesh->SetStaticMesh(CubeItem.Object);
 
+	SelectBulletSlot = 1;
 
-	RotateVector.X = 10.0f;
-	RotateVector.Y = 0.0f;
-	RotateVector.Z = 0.0f;
+	RotateVector1.X = 25.0f;
+	RotateVector1.Y = 0.0f;
+	RotateVector1.Z = 0.0f;
+
+	RotateVector2.X = 25.0f;
+	RotateVector2.Y = 0.0f;
+	RotateVector2.Z = 0.0f;
+
+	RotateVector3.X = 25.0f;
+	RotateVector3.Y = 0.0f;
+	RotateVector3.Z = 0.0f;
 
 	InitialLifeSpan = 80.0f;
 }
@@ -50,6 +59,14 @@ void AProjectile::PostInitializeComponents()
 		BoxTransform1 = GameInstance->InstanceBoxSlot1;
 		CylinderTransform1 = GameInstance->InstanceCylinderSlot1;
 		SphereTransform1 = GameInstance->InstanceSphereSlot1;
+
+		BoxTransform2 = GameInstance->InstanceBoxSlot2;
+		CylinderTransform2 = GameInstance->InstanceCylinderSlot2;
+		SphereTransform2 = GameInstance->InstanceSphereSlot3;
+
+		BoxTransform3 = GameInstance->InstanceBoxSlot3;
+		CylinderTransform3 = GameInstance->InstanceCylinderSlot3;
+		SphereTransform3 = GameInstance->InstanceSphereSlot3;
 	}
 }
 
@@ -57,15 +74,37 @@ void AProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	RotateVector.Y += RotateY;
-	RotateVector.Z += RotateZ;
 	
+
+	RotateVector1.Y += RotateY1;
+	RotateVector1.Z += RotateZ1;
+
 	FTransform tf;
-	tf.SetLocation(RotateVector);
-
+	tf.SetLocation(RotateVector1);
 	AddActorLocalTransform(tf, false);
+	CollisionComp->AddLocalRotation(FRotator(RotateZ1 * 200.0f, RotateY1 * 200.0f, 0.0f));
+	
 
-	CollisionComp->AddLocalRotation(FRotator(RotateZ*200.0f, RotateY * 200.0f, 0.0f));
+	/*if (SelectBulletSlot == 2) {
+		RotateVector2.Y += RotateY2;
+		RotateVector2.Z += RotateZ2;
+
+		FTransform tf;
+		tf.SetLocation(RotateVector2);
+		AddActorLocalTransform(tf, false);
+		CollisionComp->AddLocalRotation(FRotator(RotateZ2 * 200.0f, RotateY2 * 200.0f, 0.0f));
+	}
+
+	if (SelectBulletSlot == 3) {
+		RotateVector3.Y += RotateY3;
+		RotateVector3.Z += RotateZ3;
+
+		FTransform tf;
+		tf.SetLocation(RotateVector3);
+		AddActorLocalTransform(tf, false);
+		CollisionComp->AddLocalRotation(FRotator(RotateZ3 * 200.0f, RotateY3 * 200.0f, 0.0f));
+	}*/
+	
 }
 
 
@@ -78,17 +117,20 @@ void AProjectile::BeginPlay()
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
 	float rotateRatio = 0.05f;
-
-	RotateX = (GameInstance->InstanceX * rotateRatio);
-	RotateY = (GameInstance->InstanceY * rotateRatio);
-	RotateZ = (GameInstance->InstanceZ * rotateRatio);
 	
+	RotateX1 = (GameInstance->SaveSlot1_InstanceX * rotateRatio);
+	RotateY1 = (GameInstance->SaveSlot1_InstanceY * rotateRatio);
+	RotateZ1 = (GameInstance->SaveSlot1_InstanceZ * rotateRatio);
+	
+	RotateX2 = (GameInstance->SaveSlot2_InstanceX * rotateRatio);
+	RotateY2 = (GameInstance->SaveSlot2_InstanceY * rotateRatio);
+	RotateZ2 = (GameInstance->SaveSlot2_InstanceZ * rotateRatio);
 
-	/*for (auto& x : BoxTransform1)
-	{
-		AddComponent("StaticMeshComponent", false, x.GetRelativeTransform(SceneComp->GetComponentTransform()), StaticMesh);
-	}*/
+	RotateX3 = (GameInstance->SaveSlot3_InstanceX * rotateRatio);
+	RotateY3 = (GameInstance->SaveSlot3_InstanceY * rotateRatio);
+	RotateZ3 = (GameInstance->SaveSlot3_InstanceZ * rotateRatio);
 
+	SelectBulletSlot = GameInstance->SelectSlot;
 }
 
 
@@ -102,6 +144,7 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 
 	//무언가에 닿았을때 노이즈를 낸다.
 	MakeNoise(1.0f, Instigator);
+
 
 	Destroy();
 }

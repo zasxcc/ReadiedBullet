@@ -30,18 +30,57 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
 	TArray<FTransform>  InstanceSphereSlot1;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
+		TArray<FTransform>  InstanceBoxSlot2;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
+		TArray<FTransform>  InstanceCylinderSlot2;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
+		TArray<FTransform>  InstanceSphereSlot2;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
+		TArray<FTransform>  InstanceBoxSlot3;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
+		TArray<FTransform>  InstanceCylinderSlot3;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
+		TArray<FTransform>  InstanceSphereSlot3;
+
 	TArray<FTransform> GetInstanceBoxSlot1();
 	TArray<FTransform> GetInstanceCylinderSlot1();
 	TArray<FTransform> GetInstanceSphereSlot1();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
-	float InstanceX;
+	float SaveSlot1_InstanceX;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
-	float InstanceY;
+	float SaveSlot1_InstanceY;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
-	float InstanceZ;
+	float SaveSlot1_InstanceZ;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
+		float SaveSlot2_InstanceX;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
+		float SaveSlot2_InstanceY;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
+		float SaveSlot2_InstanceZ;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
+		float SaveSlot3_InstanceX;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
+		float SaveSlot3_InstanceY;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
+		float SaveSlot3_InstanceZ;
+
+
+	int32 SelectSlot;
 
 protected:
 	
