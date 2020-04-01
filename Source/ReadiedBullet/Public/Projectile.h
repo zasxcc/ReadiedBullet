@@ -34,6 +34,8 @@ public:
 	/** Returns ProjectileMovement subobject **/
 	//UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	int32 SelectBulletSlot;
 
 protected:
 	// Called when the game starts or when spawned
@@ -160,7 +162,6 @@ protected:
 
 
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	int32 SelectBulletSlot;
+	
 
 };

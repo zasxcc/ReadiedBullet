@@ -55,6 +55,7 @@ protected:
 	float DefaultFOV;
 
 	ARBWeapon* CurrentWeapon;
+	AProjectile* CurrentProjectile;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
 	TSubclassOf<ARBWeapon> StarterWeaponClass;

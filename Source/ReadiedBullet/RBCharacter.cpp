@@ -82,18 +82,33 @@ void ARBCharacter::SelectSlot1()
 {
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	GameInstance->SelectSlot = 1;
+
+	if (CurrentProjectile)
+	{
+		CurrentProjectile->SelectBulletSlot = 1;
+	}
 }
 
 void ARBCharacter::SelectSlot2()
 {
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	GameInstance->SelectSlot = 2;
+
+	if (CurrentProjectile)
+	{
+		CurrentProjectile->SelectBulletSlot = 2;
+	}
 }
 
 void ARBCharacter::SelectSlot3()
 {
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	GameInstance->SelectSlot = 3;
+
+	if (CurrentProjectile)
+	{
+		CurrentProjectile->SelectBulletSlot = 3;
+	}
 }
 
 void ARBCharacter::StartFire()

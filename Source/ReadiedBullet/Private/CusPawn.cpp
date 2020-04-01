@@ -163,6 +163,13 @@ void ACusPawn::SaveGameInstance()
 	GameInstance->InstanceBoxSlot1= TransformSlotBox1;
 	GameInstance->InstanceCylinderSlot1 = TransformSlotCylinder1;
 	GameInstance->InstanceSphereSlot1 = TransformSlotSphere1;
-	
+
+	GameInstance->InstanceBoxSlot2 = TransformSlotBox2;
+	GameInstance->InstanceCylinderSlot2 = TransformSlotCylinder2;
+	GameInstance->InstanceSphereSlot2 = TransformSlotSphere2;
+
+	GameInstance->InstanceBoxSlot3 = TransformSlotBox3;
+	GameInstance->InstanceCylinderSlot3 = TransformSlotCylinder3;
+	GameInstance->InstanceSphereSlot3 = TransformSlotSphere3;
 }
 
