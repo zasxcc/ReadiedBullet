@@ -12,15 +12,32 @@ ARBCharacter::ARBCharacter()
 
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 	SpringArmComp->bUsePawnControlRotation = true;
-	SpringArmComp->SetupAttachment(RootComponent);
+	
 
 	//¾É±â È°¼ºÈ­
 	GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true;
 
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
-	CameraComp->SetupAttachment(SpringArmComp);
 
-	ZoomedFOV = 65.0f;
+	HPBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBarWidget"));
+	
+
+	SpringArmComp->SetupAttachment(RootComponent);
+	CameraComp->SetupAttachment(SpringArmComp);
+	HPBarWidget->SetupAttachment(GetMesh());
+
+	HPBarWidget->SetRelativeLocation(FVector(0.0f, 0.0f, 180.0f));
+	HPBarWidget->SetWidgetSpace(EWidgetSpace::Screen);
+	static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(TEXT("/Game/UI/WBP_PlayerHPBar"));
+	if (UI_HUD.Succeeded())
+	{
+		HPBarWidget->SetWidgetClass(UI_HUD.Class);
+		HPBarWidget->SetDrawSize(FVector2D(250.0f, 100.0f));
+	}
+
+	MaxHP = 100.0f;
+	
+	ZoomedFOV = 40.0f;
 	ZoomInterpSpeed = 20;
 
 	WeaponAttachSocketName = "WeaponSocket";
@@ -31,6 +48,7 @@ ARBCharacter::ARBCharacter()
 void ARBCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
 
 	DefaultFOV = CameraComp->FieldOfView;
 
@@ -174,6 +192,7 @@ FVector ARBCharacter::GetPawnViewLocation() const
 
 	return Super::GetPawnViewLocation();
 }
+
 
 
 FRotator ARBCharacter::GetCamRotator()

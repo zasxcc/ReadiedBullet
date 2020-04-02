@@ -3,10 +3,13 @@
 #include "ReadiedBullet.h"
 #include "RBWeapon.h"
 #include "RBPlayerController.h"
+#include "Components/WidgetComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "GameFramework/Character.h"
 #include "RBCharacter.generated.h"
+
+DECLARE_MULTICAST_DELEGATE(FOnHPChangedDelegate);
 
 
 UCLASS()
@@ -78,6 +81,15 @@ public:
 
 	virtual FVector GetPawnViewLocation() const;
 
+
 	FRotator GetCamRotator();
 
+	UPROPERTY(VisibleAnywhere, Category = "UI")
+	class UWidgetComponent* HPBarWidget;
+
+	UPROPERTY(VisibleAnywhere, Category = "HP")
+	float CurrentHP;
+
+	UPROPERTY(VisibleAnywhere, Category = "HP")
+	float MaxHP;
 };
