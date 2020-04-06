@@ -13,6 +13,7 @@ ARBCharacter::ARBCharacter()
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 	SpringArmComp->bUsePawnControlRotation = true;
 	
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ARBCharacter::BeginOverlap);
 
 	//¾É±â È°¼ºÈ­
 	GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true;
@@ -199,4 +200,15 @@ FVector ARBCharacter::GetPawnViewLocation() const
 FRotator ARBCharacter::GetCamRotator()
 {
 	return CameraComp->GetRelativeRotation();
+}
+
+
+void ARBCharacter::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult& SweepResult)
+{
+	UE_LOG(LogTemp, Warning, TEXT("¸Â¾Ò¶¥!"));
 }
