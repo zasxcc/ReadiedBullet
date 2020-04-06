@@ -9,7 +9,7 @@ ARBCharacter::ARBCharacter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	Tags.Add(TEXT("Alive"));
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 	SpringArmComp->bUsePawnControlRotation = true;
 	
@@ -210,5 +210,5 @@ void ARBCharacter::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	bool bFromSweep,
 	const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("∏¬æ“∂•!"));
+	UE_LOG(LogTemp, Warning, TEXT("ê¨æ“∂•!"));
 }
