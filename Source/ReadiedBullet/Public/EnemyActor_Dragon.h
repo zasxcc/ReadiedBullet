@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Engine.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NavigationSystem.h"
@@ -19,8 +20,7 @@ public:
 	// Sets default values for this actor's properties
 	AEnemyActor_Dragon();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
-	USkeletalMeshComponent* SkeletalComp;
+	
 
 protected:
 	// Called when the game starts or when spawned
@@ -33,4 +33,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Collision)
+	UCapsuleComponent* Capsule;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Visual)
+	USkeletalMeshComponent* Mesh;
 };
