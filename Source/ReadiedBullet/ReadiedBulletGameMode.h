@@ -13,8 +13,12 @@ class AReadiedBulletGameMode : public AGameModeBase
 
 public:
 	AReadiedBulletGameMode();
-
+	virtual void BeginPlay() override;
 	virtual void PostLogin(APlayerController* NewPlayer) override; //플레이어가 로그인을 완료하면 호출되는 이벤트 함수
+
+	
+
+
 };
 
 

@@ -81,7 +81,8 @@ public:
 
 
 	int32 SelectSlot;
-	float MaxHP = 100.0f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
+	float PlayerMaxHP = 100.0f;
 
 protected:
 	

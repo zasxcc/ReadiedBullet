@@ -34,8 +34,6 @@ ARBCharacter::ARBCharacter()
 		HPBarWidget->SetWidgetClass(UI_HUD.Class);
 		HPBarWidget->SetDrawSize(FVector2D(250.0f, 100.0f));
 	}
-
-	MaxHP = 100.0f;
 	
 	ZoomedFOV = 40.0f;
 	ZoomInterpSpeed = 20;
@@ -63,7 +61,9 @@ void ARBCharacter::BeginPlay()
 		CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponAttachSocketName);
 	}
 
-	
+	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+
+	MaxHP = GameInstance->PlayerMaxHP;
 }
 
 void ARBCharacter::MoveForward(float Value)
@@ -210,5 +210,9 @@ void ARBCharacter::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	bool bFromSweep,
 	const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("ê¨æ“∂•!"));
+	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	GameInstance->PlayerMaxHP -= 10;
+	MaxHP = GameInstance->PlayerMaxHP;
+
+	UE_LOG(LogTemp, Warning, TEXT("MaxHP : %f,  InstanceHP : %f"), MaxHP, GameInstance->PlayerMaxHP);
 }

@@ -15,3 +15,9 @@ void AReadiedBulletGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
 }
+
+void AReadiedBulletGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+	
+}
