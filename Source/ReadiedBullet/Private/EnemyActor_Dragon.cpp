@@ -9,9 +9,11 @@ AEnemyActor_Dragon::AEnemyActor_Dragon()
 	
 	Capsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CAPSULE"));
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MESH"));
+	HPBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBarWidget"));
 
 	RootComponent = Capsule;
 	Mesh->SetupAttachment(Capsule);
+	HPBarWidget->SetupAttachment(Mesh);
 
 	Capsule->SetCapsuleHalfHeight(150.f);
 	Capsule->SetCapsuleRadius(100.f);
@@ -29,6 +31,16 @@ AEnemyActor_Dragon::AEnemyActor_Dragon()
 	{
 		Mesh->SetAnimInstanceClass(DRAGON_ANIM.Class);
 	}
+	
+	HPBarWidget->SetRelativeLocation(FVector(0.0f, 0.0f, 180.0f));
+	HPBarWidget->SetWidgetSpace(EWidgetSpace::Screen);
+
+	static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(TEXT("/Game/UI/WBP_HPBar"));
+	if (UI_HUD.Succeeded())
+	{
+		HPBarWidget->SetWidgetClass(UI_HUD.Class);
+		HPBarWidget->SetDrawSize(FVector2D(250.0f, 100.0f));
+	}
 }
 
 // Called when the game starts or when spawned
@@ -44,5 +56,18 @@ void AEnemyActor_Dragon::BeginPlay()
 void AEnemyActor_Dragon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	/*UMonsterWidget* test = Cast<UMonsterWidget>(HPBarWidget->GetUserWidgetObject());
+	test->HPProgressBar->SetPercent(0.5);*/
+}
 
+
+void AEnemyActor_Dragon::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult& SweepResult)
+{
+	//씨발 왜 안돼는데 개씨발 진짜 그지같네
+	UE_LOG(LogTemp, Warning, TEXT("asd"));
 }

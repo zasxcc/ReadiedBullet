@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Engine.h"
+#include "MonsterWidget.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Components/WidgetComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NavigationSystem.h"
 #include "GameFramework/Actor.h"
@@ -25,6 +27,12 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void BeginOverlap(UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult);
 
 
 
@@ -32,11 +40,19 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Stat)
+	float MaxHP;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Stat)
+	float CurrentHP;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Collision)
 	UCapsuleComponent* Capsule;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Visual)
 	USkeletalMeshComponent* Mesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "UI")
+	class UWidgetComponent* HPBarWidget;
+
 };

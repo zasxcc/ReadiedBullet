@@ -91,8 +91,6 @@ public:
 
 	FRotator GetCamRotator();
 
-	UPROPERTY(VisibleAnywhere, Category = "UI")
-	class UWidgetComponent* HPBarWidget;
 
 	UPROPERTY(VisibleAnywhere, Category = "HP")
 	float CurrentHP;
