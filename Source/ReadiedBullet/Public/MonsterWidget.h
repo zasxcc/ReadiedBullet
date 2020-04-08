@@ -20,6 +20,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Stat)
 	class UProgressBar* HPProgressBar;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Stat)
+	float HP = 1.0f;
+
 protected:
 	virtual void NativeConstruct() override;
 };
