@@ -105,6 +105,8 @@ protected:
 
 	FRotator SpringArmRotator;
 	
+	UPROPERTY()
+	class UParticleSystem* OverlapParticle;
 
 public:	
 	// Called every frame

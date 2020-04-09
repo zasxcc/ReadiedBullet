@@ -9,11 +9,11 @@ AEnemyActor_Dragon::AEnemyActor_Dragon()
 
 	Capsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CAPSULE"));
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MESH"));
-	HPBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBarWidget"));
+	//HPBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBarWidget"));
 
 	RootComponent = Capsule;
 	Mesh->SetupAttachment(Capsule);
-	HPBarWidget->SetupAttachment(Mesh);
+	//HPBarWidget->SetupAttachment(Mesh);
 
 	Capsule->SetCapsuleHalfHeight(150.f);
 	Capsule->SetCapsuleRadius(100.f);
@@ -32,16 +32,20 @@ AEnemyActor_Dragon::AEnemyActor_Dragon()
 		Mesh->SetAnimInstanceClass(DRAGON_ANIM.Class);
 	}
 
-	HPBarWidget->SetRelativeLocation(FVector(0.0f, 0.0f, 180.0f));
-	HPBarWidget->SetWidgetSpace(EWidgetSpace::Screen);
 
-	static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(TEXT("/Game/UI/WBP_HPBar"));
+	//왜안댐? 시발진짜
+	/*static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(TEXT("/Game/UI/WBP_HPBar"));
 	if (UI_HUD.Succeeded())
 	{
 		HPBarWidget->SetWidgetClass(UI_HUD.Class);
-		HPBarWidget->SetDrawSize(FVector2D(250.0f, 100.0f));
+		HPBarWidget->SetDrawSize(FVector2D(200.0f, 80.0));
 	}
-	
+
+	HPBarWidget->SetRelativeLocation(FVector(0.0f, 0.0f, 500.0f));
+	HPBarWidget->SetWidgetSpace(EWidgetSpace::Screen);*/
+
+
+	Mesh->OnComponentBeginOverlap.AddDynamic(this, &AEnemyActor_Dragon::OnOverlapBegin_Mesh);
 }
 
 // Called when the game starts or when spawned
@@ -60,17 +64,9 @@ void AEnemyActor_Dragon::Tick(float DeltaTime)
 }
 
 
-void AEnemyActor_Dragon::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
-	AActor* OtherActor,
-	UPrimitiveComponent* OtherComp,
-	int32 OtherBodyIndex,
-	bool bFromSweep,
-	const FHitResult& SweepResult)
+
+void AEnemyActor_Dragon::OnOverlapBegin_Mesh(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	//씨발 왜 안돼는데 개씨발 진짜 그지같네
-	UE_LOG(LogTemp, Warning, TEXT("asd"));
-	UMonsterWidget* test = Cast<UMonsterWidget>(HPBarWidget->GetUserWidgetObject());
-	if (NULL != test) {
-		test->HPProgressBar->SetPercent(0.2f);
-	}
+	//이건 왜 안댐? 시발
+	UE_LOG(LogTemp, Warning, TEXT("asdasdsad"));
 }

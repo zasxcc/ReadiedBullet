@@ -47,6 +47,12 @@ ABulletComp_BOX::ABulletComp_BOX()
 	BoxComp->OnClicked.AddDynamic(this, &ABulletComp_BOX::BoxCompOnClicked);
 	BoxComp->OnReleased.AddDynamic(this, &ABulletComp_BOX::BoxCompOnReleased);
 
+
+	static ConstructorHelpers::FObjectFinder<UParticleSystem> PARTICLE_OVERLAP(TEXT("/Game/Effects/InfinityBladeEffects/Effects/FX_Skill_Leap/P_Skill_Leap_Base_Charge_Weapon"));
+	if (PARTICLE_OVERLAP.Succeeded())
+	{
+		OverlapParticle = PARTICLE_OVERLAP.Object;
+	}
 }
 
 // Called when the game starts or when spawned
@@ -124,6 +130,8 @@ void ABulletComp_BOX::OnOverlapBegin_LeftBox(class UPrimitiveComponent* Overlapp
 
 	WorldLocation = OtherActor->GetRootComponent()->GetChildComponent(1)->GetComponentLocation();
 
+	UGameplayStatics::SpawnEmitterAttached(OverlapParticle, LeftBox);
+
 	UE_LOG(LogTemp, Log, TEXT("%s %s %s"), *FString::SanitizeFloat(WorldLocation.X), *FString::SanitizeFloat(WorldLocation.Y), *FString::SanitizeFloat(WorldLocation.Z));
 }
 
@@ -139,7 +147,7 @@ void ABulletComp_BOX::OnOverlapBegin_RightBox(class UPrimitiveComponent* Overlap
 {
 	bOverlap = true;
 	bOverlapRightBox = true;
-
+	UGameplayStatics::SpawnEmitterAttached(OverlapParticle, RightBox);
 	WorldLocation = OtherActor->GetRootComponent()->GetChildComponent(0)->GetComponentLocation();
 }
 
@@ -153,7 +161,7 @@ void ABulletComp_BOX::OnOverlapBegin_UpBox(class UPrimitiveComponent* Overlapped
 {
 	bOverlap = true;
 	bOverlapUpBox = true;
-
+	UGameplayStatics::SpawnEmitterAttached(OverlapParticle, UpBox);
 	WorldLocation = OtherActor->GetRootComponent()->GetChildComponent(3)->GetComponentLocation();
 }
 
@@ -167,7 +175,7 @@ void ABulletComp_BOX::OnOverlapBegin_DownBox(class UPrimitiveComponent* Overlapp
 {
 	bOverlap = true;
 	bOverlapDownBox = true;
-
+	UGameplayStatics::SpawnEmitterAttached(OverlapParticle, DownBox);
 	WorldLocation = OtherActor->GetRootComponent()->GetChildComponent(2)->GetComponentLocation();
 }
 
@@ -181,7 +189,7 @@ void ABulletComp_BOX::OnOverlapBegin_FrontBox(class UPrimitiveComponent* Overlap
 {
 	bOverlap = true;
 	bOverlapFrontBox = true;
-
+	UGameplayStatics::SpawnEmitterAttached(OverlapParticle, FrontBox);
 	WorldLocation = OtherActor->GetRootComponent()->GetChildComponent(5)->GetComponentLocation();
 }
 
@@ -195,7 +203,7 @@ void ABulletComp_BOX::OnOverlapBegin_BackBox(class UPrimitiveComponent* Overlapp
 {
 	bOverlap = true;
 	bOverlapBackBox = true;
-
+	UGameplayStatics::SpawnEmitterAttached(OverlapParticle, BackBox);
 	WorldLocation = OtherActor->GetRootComponent()->GetChildComponent(4)->GetComponentLocation();
 }
 
