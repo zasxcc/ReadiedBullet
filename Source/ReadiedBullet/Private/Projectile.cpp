@@ -15,7 +15,7 @@ AProjectile::AProjectile()
 	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
 	CollisionComp->InitSphereRadius(5.0f);
 	CollisionComp->SetCollisionProfileName("Projectile");
-	//CollisionComp->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);	// set up a notification for when this component hits something blocking
+	
 
 	// Players can't walk on it
 	CollisionComp->SetWalkableSlopeOverride(FWalkableSlopeOverride(WalkableSlope_Unwalkable, 0.f));
@@ -72,6 +72,29 @@ void AProjectile::PostInitializeComponents()
 	}
 }
 
+// Called when the game starts or when spawned
+void AProjectile::BeginPlay()
+{
+	Super::BeginPlay();
+
+	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+
+	float rotateRatio = 0.05f;
+
+	RotateX1 = (GameInstance->SaveSlot1_InstanceX * rotateRatio);
+	RotateY1 = (GameInstance->SaveSlot1_InstanceY * rotateRatio);
+	RotateZ1 = (GameInstance->SaveSlot1_InstanceZ * rotateRatio);
+
+	RotateX2 = (GameInstance->SaveSlot2_InstanceX * rotateRatio);
+	RotateY2 = (GameInstance->SaveSlot2_InstanceY * rotateRatio);
+	RotateZ2 = (GameInstance->SaveSlot2_InstanceZ * rotateRatio);
+
+	RotateX3 = (GameInstance->SaveSlot3_InstanceX * rotateRatio);
+	RotateY3 = (GameInstance->SaveSlot3_InstanceY * rotateRatio);
+	RotateZ3 = (GameInstance->SaveSlot3_InstanceZ * rotateRatio);
+
+}
+
 void AProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -111,44 +134,8 @@ void AProjectile::Tick(float DeltaTime)
 
 
 
-// Called when the game starts or when spawned
-void AProjectile::BeginPlay()
-{
-	Super::BeginPlay();
-
-	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-
-	float rotateRatio = 0.05f;
-	
-	RotateX1 = (GameInstance->SaveSlot1_InstanceX * rotateRatio);
-	RotateY1 = (GameInstance->SaveSlot1_InstanceY * rotateRatio);
-	RotateZ1 = (GameInstance->SaveSlot1_InstanceZ * rotateRatio);
-	
-	RotateX2 = (GameInstance->SaveSlot2_InstanceX * rotateRatio);
-	RotateY2 = (GameInstance->SaveSlot2_InstanceY * rotateRatio);
-	RotateZ2 = (GameInstance->SaveSlot2_InstanceZ * rotateRatio);
-
-	RotateX3 = (GameInstance->SaveSlot3_InstanceX * rotateRatio);
-	RotateY3 = (GameInstance->SaveSlot3_InstanceY * rotateRatio);
-	RotateZ3 = (GameInstance->SaveSlot3_InstanceZ * rotateRatio);
-
-	
-}
 
 
-//void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
-//{
-//	// Only add impulse and destroy projectile if we hit a physics
-//	if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics())
-//	{
-//		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
-//	}
-//
-//	//무언가에 닿았을때 노이즈를 낸다.
-//	MakeNoise(1.0f, Instigator);
-//
-//
-//	Destroy();
-//}
+
 
 

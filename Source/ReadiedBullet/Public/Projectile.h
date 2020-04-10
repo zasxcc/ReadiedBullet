@@ -26,7 +26,7 @@ public:
 
 	/** called when projectile hits something */
 	//UFUNCTION()
-	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	//void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 	/** Returns CollisionComp subobject **/
 	USphereComponent* GetCollisionComp() const { return CollisionComp; }
@@ -85,14 +85,14 @@ protected:
 
 
 
-	UPROPERTY(EditAnywhere)
+	/*UPROPERTY(EditAnywhere)
 	TSubclassOf<class AActor> CubeBlueprint;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AActor> CylinderBlueprint;
 
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<class AActor> SphereBlueprint;
+	TSubclassOf<class AActor> SphereBlueprint;*/
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	float RotateX1;
