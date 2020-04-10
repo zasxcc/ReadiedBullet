@@ -76,5 +76,8 @@ void AEnemyActor_Dragon::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	MaxHP -= 0.2f;
 	MW->HPProgressBar->SetPercent(MaxHP);
 
-
+	if (MaxHP <= 0.01f)
+	{
+		//여기다가 뒤지는 애니메이션 해주셈
+	}
 }
