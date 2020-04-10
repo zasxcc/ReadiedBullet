@@ -9,11 +9,11 @@ AEnemyActor_Dragon::AEnemyActor_Dragon()
 
 	Capsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CAPSULE"));
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MESH"));
-	//HPBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBarWidget"));
+	HPBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBarWidget"));
 
 	RootComponent = Capsule;
 	Mesh->SetupAttachment(Capsule);
-	//HPBarWidget->SetupAttachment(Mesh);
+	HPBarWidget->SetupAttachment(Mesh);
 
 	Capsule->SetCapsuleHalfHeight(150.f);
 	Capsule->SetCapsuleRadius(100.f);
@@ -34,7 +34,7 @@ AEnemyActor_Dragon::AEnemyActor_Dragon()
 
 
 	//왜안댐? 시발진짜
-	/*static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(TEXT("/Game/UI/WBP_HPBar"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(TEXT("/Game/UI/WBP_HPBar"));
 	if (UI_HUD.Succeeded())
 	{
 		HPBarWidget->SetWidgetClass(UI_HUD.Class);
@@ -42,17 +42,18 @@ AEnemyActor_Dragon::AEnemyActor_Dragon()
 	}
 
 	HPBarWidget->SetRelativeLocation(FVector(0.0f, 0.0f, 500.0f));
-	HPBarWidget->SetWidgetSpace(EWidgetSpace::Screen);*/
+	HPBarWidget->SetWidgetSpace(EWidgetSpace::Screen);
 
-
-	Mesh->OnComponentBeginOverlap.AddDynamic(this, &AEnemyActor_Dragon::OnOverlapBegin_Mesh);
+	MaxHP = 1.0f;
 }
 
 // Called when the game starts or when spawned
 void AEnemyActor_Dragon::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	Mesh->OnComponentBeginOverlap.AddDynamic(this, &AEnemyActor_Dragon::BeginOverlap);
+	Capsule->OnComponentBeginOverlap.AddDynamic(this, &AEnemyActor_Dragon::BeginOverlap);
 }
 
 
@@ -64,9 +65,16 @@ void AEnemyActor_Dragon::Tick(float DeltaTime)
 }
 
 
-
-void AEnemyActor_Dragon::OnOverlapBegin_Mesh(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void AEnemyActor_Dragon::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult& SweepResult)
 {
-	//이건 왜 안댐? 시발
-	UE_LOG(LogTemp, Warning, TEXT("asdasdsad"));
+	UMonsterWidget* MW = Cast<UMonsterWidget>(HPBarWidget->GetUserWidgetObject());
+	MaxHP -= 0.2f;
+	MW->HPProgressBar->SetPercent(MaxHP);
+
+
 }

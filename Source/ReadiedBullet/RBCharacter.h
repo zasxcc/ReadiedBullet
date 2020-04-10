@@ -9,7 +9,6 @@
 #include "GameFramework/Character.h"
 #include "RBCharacter.generated.h"
 
-DECLARE_MULTICAST_DELEGATE(FOnHPChangedDelegate);
 
 
 UCLASS()

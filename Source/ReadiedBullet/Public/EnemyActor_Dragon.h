@@ -27,12 +27,14 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	/*virtual void BeginOverlap(UPrimitiveComponent* OverlappedComponent,
+
+	UFUNCTION()
+	void BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 		AActor* OtherActor,
 		UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex,
 		bool bFromSweep,
-		const FHitResult& SweepResult);*/
+		const FHitResult& SweepResult);
 
 
 
@@ -52,10 +54,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Visual)
 	USkeletalMeshComponent* Mesh;
 
-	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "UI")
-	//UWidgetComponent* HPBarWidget;
-
-	UFUNCTION()
-	void OnOverlapBegin_Mesh(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "UI")
+	UWidgetComponent* HPBarWidget;
 
 };
