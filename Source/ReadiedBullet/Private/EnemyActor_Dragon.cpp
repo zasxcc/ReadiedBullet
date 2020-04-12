@@ -33,7 +33,6 @@ AEnemyActor_Dragon::AEnemyActor_Dragon()
 	}
 
 
-	//왜안댐? 시발진짜
 	static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(TEXT("/Game/UI/WBP_HPBar"));
 	if (UI_HUD.Succeeded())
 	{
