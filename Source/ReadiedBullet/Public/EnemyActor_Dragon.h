@@ -21,6 +21,7 @@ class READIEDBULLET_API AEnemyActor_Dragon : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AEnemyActor_Dragon();
+	void SetDeadAnim() { IsDead = true; };
 
 	
 
@@ -57,4 +58,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "UI")
 	UWidgetComponent* HPBarWidget;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = DRAGON, Meta = (AllowPrivateAccess = true))
+	bool IsDead;
 };

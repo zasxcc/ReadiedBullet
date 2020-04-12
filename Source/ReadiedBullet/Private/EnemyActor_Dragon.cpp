@@ -45,6 +45,7 @@ AEnemyActor_Dragon::AEnemyActor_Dragon()
 	HPBarWidget->SetWidgetSpace(EWidgetSpace::Screen);
 
 	MaxHP = 1.0f;
+	IsDead = false;
 }
 
 // Called when the game starts or when spawned
@@ -79,5 +80,6 @@ void AEnemyActor_Dragon::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	if (MaxHP <= 0.01f)
 	{
 		//여기다가 뒤지는 애니메이션 해주셈
+		SetDeadAnim();
 	}
 }
