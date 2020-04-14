@@ -1,0 +1,62 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "EnemyCharacter.h"
+
+// Sets default values
+AEnemyCharacter::AEnemyCharacter()
+{
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
+
+
+	HPBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBarWidget"));
+
+	HPBarWidget->SetupAttachment(GetMesh());
+
+
+
+	HPBarWidget->SetRelativeLocation(FVector(0.0f, 0.0f, 500.0f));
+	HPBarWidget->SetWidgetSpace(EWidgetSpace::Screen);
+
+	MaxHP = 1.0f;
+	IsDead = false;
+}
+
+// Called when the game starts or when spawned
+void AEnemyCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	GetMesh()->OnComponentBeginOverlap.AddDynamic(this, &AEnemyCharacter::BeginOverlap);
+}
+
+
+// Called every frame
+void AEnemyCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+}
+
+
+void AEnemyCharacter::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult& SweepResult)
+{
+	UMonsterWidget* MW = Cast<UMonsterWidget>(HPBarWidget->GetUserWidgetObject());
+	MaxHP -= 0.2f;
+	MW->HPProgressBar->SetPercent(MaxHP);
+
+	if (MaxHP <= 0.01f)
+	{
+		//여기다가 뒤지는 애니메이션 해주셈
+		SetDeadAnim();
+	}
+}
+
+
+
