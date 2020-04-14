@@ -19,6 +19,19 @@ ARBWeapon::ARBWeapon()
 
 	MuzzleSocketName = "MuzzleFlashSocket";
 	TracerTargetName = "Target";
+	//
+
+	static ConstructorHelpers::FObjectFinder<USoundBase>FIRESOUND(TEXT("/Game/Sound/GunFire.GunFire"));
+	if (FIRESOUND.Succeeded())
+	{
+		FireCue = FIRESOUND.Object;
+	}
+
+
+	// 오디오 컴포넌트 추가
+	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("PlayerAudio"));
+	AudioComponent->bAutoActivate = false;
+	AudioComponent->SetupAttachment(RootComponent);
 
 	BaseDamage = 20.0f;
 
@@ -36,7 +49,8 @@ void ARBWeapon::BeginPlay()
 void ARBWeapon::Fire()
 {
 	AActor* MyOwner = GetOwner();
-
+	AudioComponent->SetSound(FireCue);
+	AudioComponent->Play();
 	if (ProjectileClass)
 	{
 		//무기 위치 받아서 저장
@@ -73,7 +87,6 @@ void ARBWeapon::Fire()
 void ARBWeapon::StartFire()
 {
 	float FireDelay = FMath::Max(LastFireTime + TimeBetweenShots - GetWorld()->TimeSeconds, 0.0f);
-
 	GetWorldTimerManager().SetTimer(TimerHandle_TimeBetweenShots, this, &ARBWeapon::Fire, TimeBetweenShots, true, FireDelay);
 }
 

@@ -5,6 +5,8 @@
 #include "ReadiedBullet.h"
 #include "GameFramework/Actor.h"
 #include "Projectile.h"
+#include "Components/AudioComponent.h"
+#include "Sound/SoundBase.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "PhysicalMaterials/PhysicalMaterial.h"
@@ -58,6 +60,12 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 		float BaseDamage;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
+		class UAudioComponent* AudioComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
+		USoundBase* FireCue;
 
 	FTimerHandle TimerHandle_TimeBetweenShots;
 
