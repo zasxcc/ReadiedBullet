@@ -49,8 +49,10 @@ void ARBWeapon::BeginPlay()
 void ARBWeapon::Fire()
 {
 	AActor* MyOwner = GetOwner();
+
 	AudioComponent->SetSound(FireCue);
 	AudioComponent->Play();
+
 	if (ProjectileClass)
 	{
 		//무기 위치 받아서 저장
