@@ -69,6 +69,10 @@ void AProjectile::PostInitializeComponents()
 		SphereTransform3 = GameInstance->InstanceSphereSlot3;
 
 		SelectBulletSlot = GameInstance->SelectSlot;
+
+		BulletImpactSolt1 = GameInstance->BulletImpactSolt1;
+		BulletImpactSolt2 = GameInstance->BulletImpactSolt2;
+		BulletImpactSolt3 = GameInstance->BulletImpactSolt3;
 	}
 }
 
@@ -93,6 +97,8 @@ void AProjectile::BeginPlay()
 	RotateY3 = (GameInstance->SaveSlot3_InstanceY * rotateRatio);
 	RotateZ3 = (GameInstance->SaveSlot3_InstanceZ * rotateRatio);
 
+	
+	
 }
 
 void AProjectile::Tick(float DeltaTime)
@@ -129,10 +135,19 @@ void AProjectile::Tick(float DeltaTime)
 		AddActorLocalTransform(tf, false);
 		CollisionComp->AddLocalRotation(FRotator(RotateZ3 * 200.0f, RotateY3 * 200.0f, 0.0f));
 	}
-	
 }
 
 
+
+void AProjectile::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult& SweepResult)
+{
+	//바인딩 아직 안해놔서 작동안함
+}
 
 
 

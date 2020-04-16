@@ -81,8 +81,20 @@ public:
 
 
 	int32 SelectSlot;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
 	float PlayerMaxHP = 100.0f;
+
+
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
+	int32 BulletImpactSolt1;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
+	int32 BulletImpactSolt2;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
+	int32 BulletImpactSolt3;
 
 protected:
 	
