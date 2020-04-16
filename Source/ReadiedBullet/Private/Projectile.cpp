@@ -34,15 +34,16 @@ AProjectile::AProjectile()
 
 	SelectBulletSlot = 1;
 
-	RotateVector1.X = 25.0f;
+	RotateVector1.X = 35.0f;
 	RotateVector1.Y = 0.0f;
 	RotateVector1.Z = 0.0f;
 
-	RotateVector2.X = 25.0f;
+
+	RotateVector2.X = 35.0f;
 	RotateVector2.Y = 0.0f;
 	RotateVector2.Z = 0.0f;
 
-	RotateVector3.X = 25.0f;
+	RotateVector3.X = 35.0f;
 	RotateVector3.Y = 0.0f;
 	RotateVector3.Z = 0.0f;
 
@@ -70,6 +71,14 @@ void AProjectile::PostInitializeComponents()
 
 		SelectBulletSlot = GameInstance->SelectSlot;
 
+
+		//총알 가속도
+		RotateVector1.X = RotateVector1.X - (float)BoxTransform1.Num() - ((float)CylinderTransform1.Num() * 0.7f) - ((float)SphereTransform1.Num() * 0.5f);
+		RotateVector2.X = RotateVector2.X - (float)BoxTransform2.Num() - ((float)CylinderTransform2.Num() * 0.7f) - ((float)SphereTransform2.Num() * 0.5f);
+		RotateVector3.X = RotateVector3.X - (float)BoxTransform3.Num() - ((float)CylinderTransform3.Num() * 0.7f) - ((float)SphereTransform3.Num() * 0.5f);
+
+
+		//Bullet 효과 적용
 		BulletImpactSolt1 = GameInstance->BulletImpactSolt1;
 		BulletImpactSolt2 = GameInstance->BulletImpactSolt2;
 		BulletImpactSolt3 = GameInstance->BulletImpactSolt3;
@@ -96,10 +105,8 @@ void AProjectile::BeginPlay()
 	RotateX3 = (GameInstance->SaveSlot3_InstanceX * rotateRatio);
 	RotateY3 = (GameInstance->SaveSlot3_InstanceY * rotateRatio);
 	RotateZ3 = (GameInstance->SaveSlot3_InstanceZ * rotateRatio);
-
-	
-	
 }
+
 
 void AProjectile::Tick(float DeltaTime)
 {
@@ -113,6 +120,10 @@ void AProjectile::Tick(float DeltaTime)
 		FTransform tf;
 		tf.SetLocation(RotateVector1);
 		AddActorLocalTransform(tf, false);
+
+		
+
+		//회전
 		CollisionComp->AddLocalRotation(FRotator(RotateZ1 * 200.0f, RotateY1 * 200.0f, 0.0f));
 	}
 

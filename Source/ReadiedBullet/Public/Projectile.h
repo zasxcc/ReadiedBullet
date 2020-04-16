@@ -50,6 +50,7 @@ protected:
 
 	virtual void BeginPlay() override;
 
+
 	UFUNCTION()
 		void BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 			AActor* OtherActor,
