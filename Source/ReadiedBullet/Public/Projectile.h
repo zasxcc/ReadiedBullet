@@ -14,8 +14,9 @@
 #include "Projectile.generated.h"
 
 #define FIRE_IMPACT 10
-#define BLACKHOLE_IMPACT 11
-#define THUNDER_IMPACT 12
+#define THUNDER_IMPACT 11
+#define BLACKHOLE_IMPACT 12
+
 
 
 
