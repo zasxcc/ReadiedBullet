@@ -121,8 +121,7 @@ void AProjectile::Tick(float DeltaTime)
 		tf.SetLocation(RotateVector1);
 		AddActorLocalTransform(tf, false);
 
-		
-
+	
 		//회전
 		CollisionComp->AddLocalRotation(FRotator(RotateZ1 * 200.0f, RotateY1 * 200.0f, 0.0f));
 	}
@@ -134,6 +133,8 @@ void AProjectile::Tick(float DeltaTime)
 		FTransform tf;
 		tf.SetLocation(RotateVector2);
 		AddActorLocalTransform(tf, false);
+
+		//회전
 		CollisionComp->AddLocalRotation(FRotator(RotateZ2 * 200.0f, RotateY2 * 200.0f, 0.0f));
 	}
 
@@ -144,6 +145,8 @@ void AProjectile::Tick(float DeltaTime)
 		FTransform tf;
 		tf.SetLocation(RotateVector3);
 		AddActorLocalTransform(tf, false);
+
+		//회전
 		CollisionComp->AddLocalRotation(FRotator(RotateZ3 * 200.0f, RotateY3 * 200.0f, 0.0f));
 	}
 }
