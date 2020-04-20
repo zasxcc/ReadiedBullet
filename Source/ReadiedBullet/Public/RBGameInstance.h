@@ -96,8 +96,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
 	int32 BulletImpactSolt3;
 
-protected:
-	
 
 	
 

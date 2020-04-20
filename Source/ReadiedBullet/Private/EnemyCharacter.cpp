@@ -8,14 +8,12 @@ AEnemyCharacter::AEnemyCharacter()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-
+	Tags.Add(TEXT("Alive"));
+	
 	HPBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBarWidget"));
-
 	HPBarWidget->SetupAttachment(GetMesh());
 
-
-
+	RootComponent = GetMesh();
 	HPBarWidget->SetRelativeLocation(FVector(0.0f, 0.0f, 500.0f));
 	HPBarWidget->SetWidgetSpace(EWidgetSpace::Screen);
 
