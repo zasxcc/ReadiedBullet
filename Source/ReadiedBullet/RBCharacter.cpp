@@ -17,7 +17,6 @@ ARBCharacter::ARBCharacter()
 
 
 	
-
 	//¾É±â È°¼ºÈ­
 	GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true;
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));

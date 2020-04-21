@@ -34,7 +34,6 @@ ARBWeapon::ARBWeapon()
 	AudioComponent->SetupAttachment(RootComponent);
 
 	BaseDamage = 20.0f;
-
 	RateOfFire = 400;
 }
 
