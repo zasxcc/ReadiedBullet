@@ -13,7 +13,6 @@ AEnemyCharacter::AEnemyCharacter()
 	HPBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBarWidget"));
 	HPBarWidget->SetupAttachment(GetMesh());
 
-	RootComponent = GetMesh();
 	HPBarWidget->SetRelativeLocation(FVector(0.0f, 0.0f, 500.0f));
 	HPBarWidget->SetWidgetSpace(EWidgetSpace::Screen);
 

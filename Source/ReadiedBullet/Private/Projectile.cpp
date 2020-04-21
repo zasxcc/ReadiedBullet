@@ -27,9 +27,17 @@ AProjectile::AProjectile()
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComp"));
 
 	//BP ¿¬°á
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeItem(TEXT("/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube"));
+	//static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeItem(TEXT("/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube"));
 
-
+	/*static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeItem(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_WideCapsule.Shape_WideCapsule'"));
+	if (CubeItem.Succeeded())
+	{
+		for (int i = 0; i < 10; ++i)
+		{
+			BoxStaticMesh[i]->CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TEST"));
+			BoxStaticMesh[i]->SetStaticMesh(CubeItem.Object);
+		}
+	}*/
 	//StaticMesh->SetStaticMesh(CubeItem.Object);
 
 	SelectBulletSlot = 1;
@@ -91,6 +99,10 @@ void AProjectile::BeginPlay()
 	Super::BeginPlay();
 
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	
+	
+	
+	
 
 	float rotateRatio = 0.05f;
 
