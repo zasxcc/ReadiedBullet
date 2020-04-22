@@ -20,6 +20,7 @@ class READIEDBULLET_API AEnemyCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	AEnemyCharacter();
+	float GetFinalAttackRange() const;
 
 protected:
 	// Called when the game starts or when spawned

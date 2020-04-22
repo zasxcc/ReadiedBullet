@@ -20,6 +20,12 @@ AEnemyCharacter::AEnemyCharacter()
 	MaxHP = 1.0f;
 	IsDead = false;
 
+	bUseControllerRotationYaw = false;
+	GetCharacterMovement()->bUseControllerDesiredRotation = false;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->MaxWalkSpeed = 300.f;
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 480.f, 0.f);
+
 	AIControllerClass = ABarghestAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
@@ -59,5 +65,8 @@ void AEnemyCharacter::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	}
 }
 
-
+float AEnemyCharacter::GetFinalAttackRange() const
+{
+	return 50.f;
+}
 

@@ -8,6 +8,7 @@
 
 const FName ABarghestAIController::HomePosKey(TEXT("HomePos"));
 const FName ABarghestAIController::PatrolPosKey(TEXT("PatrolPos"));
+const FName ABarghestAIController::TargetKey(TEXT("Target"));
 
 ABarghestAIController::ABarghestAIController()
 {
