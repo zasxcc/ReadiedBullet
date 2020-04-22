@@ -11,12 +11,12 @@ const FName ABarghestAIController::PatrolPosKey(TEXT("PatrolPos"));
 
 ABarghestAIController::ABarghestAIController()
 {
-	static ConstructorHelpers::FObjectFinder<UBlackboardData> BBObject(TEXT("/Game/AI/BB_Barghest.BB_Barghest"));
+	static ConstructorHelpers::FObjectFinder<UBlackboardData> BBObject(TEXT("/Game/AI_TEST/BB_Enemy.BB_Enemy"));
 
 	if (BBObject.Succeeded())
 		BBAsset = BBObject.Object;
 
-	static ConstructorHelpers::FObjectFinder<UBehaviorTree> BTObject(TEXT("/Game/AI/BT_Barghest.BT_Barghest"));
+	static ConstructorHelpers::FObjectFinder<UBehaviorTree> BTObject(TEXT("/Game/AI_TEST/BT_Enemy.BT_Enemy"));
 
 	if (BTObject.Succeeded())
 		BTAsset = BTObject.Object;

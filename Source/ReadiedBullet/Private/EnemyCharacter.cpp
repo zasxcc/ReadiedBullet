@@ -2,6 +2,7 @@
 
 
 #include "EnemyCharacter.h"
+#include "BarghestAIController.h"
 
 // Sets default values
 AEnemyCharacter::AEnemyCharacter()
@@ -18,6 +19,9 @@ AEnemyCharacter::AEnemyCharacter()
 
 	MaxHP = 1.0f;
 	IsDead = false;
+
+	AIControllerClass = ABarghestAIController::StaticClass();
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 
 // Called when the game starts or when spawned
