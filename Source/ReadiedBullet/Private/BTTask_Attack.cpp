@@ -19,11 +19,11 @@ EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 	if (EnemyCharacter == nullptr)
 		return EBTNodeResult::Failed;
 
-	EnemyCharacter->Attack();
+	/*EnemyCharacter->Attack();
 	IsAttacking = true;
 	EnemyCharacter->OnAttackEnd.AddLambda([this]() -> void {
 		IsAttacking = false;
-	});
+	});*/
 
 	return EBTNodeResult::InProgress;
 }

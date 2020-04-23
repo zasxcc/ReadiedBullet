@@ -13,10 +13,23 @@ ARBCharacter::ARBCharacter()
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 	SpringArmComp->bUsePawnControlRotation = true;
 
-	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ARBCharacter::BeginOverlap);
+
+	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("PlayerAudio"));
+	AudioComponent->bAutoActivate = false;
 
 
-	
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> RELOAD(TEXT("AnimMontage'/Game/Animation/Reload_Montage.Reload_Montage'"));
+	if (RELOAD.Succeeded())
+	{
+		ReloadMontage = RELOAD.Object;
+	}
+
+	static ConstructorHelpers::FObjectFinder<USoundBase>RELOADSOUND(TEXT("SoundWave'/Game/Sound/Reload.Reload'"));
+	if (RELOADSOUND.Succeeded())
+	{
+		ReloadCue = RELOADSOUND.Object;
+	}
+
 	//¾É±â È°¼ºÈ­
 	GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true;
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
@@ -25,10 +38,10 @@ ARBCharacter::ARBCharacter()
 	SpringArmComp->SetupAttachment(RootComponent);
 	CameraComp->SetupAttachment(SpringArmComp);
 	
-	
 	ZoomedFOV = 40.0f;
 	ZoomInterpSpeed = 20;
 
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ARBCharacter::BeginOverlap);
 	WeaponAttachSocketName = "WeaponSocket";
 }
 
@@ -123,9 +136,14 @@ void ARBCharacter::SelectSlot3()
 
 void ARBCharacter::StartFire()
 {
-	if (CurrentWeapon)
-	{
-		CurrentWeapon->StartFire();
+	if (IsReloading) {
+		Magazine--;
+		if (Magazine >= 0) {
+			if (CurrentWeapon)
+			{
+				CurrentWeapon->StartFire();
+			}
+		}
 	}
 }
 
@@ -135,6 +153,15 @@ void ARBCharacter::StopFire()
 	{
 		CurrentWeapon->StopFire();
 	}
+}
+
+void ARBCharacter::Reload()
+{
+	IsReloading = false;
+	AudioComponent->SetSound(ReloadCue);
+	AudioComponent->Play();
+	PlayAnimMontage(ReloadMontage, 1.0f);
+	Magazine = 30;
 }
 
 // Called every frame
@@ -147,6 +174,16 @@ void ARBCharacter::Tick(float DeltaTime)
 
 	CameraComp->SetFieldOfView(NewFOV);
 
+	if (IsReloading == false)
+	{
+		ReloadCount += DeltaTime;
+		UE_LOG(LogTemp, Warning, TEXT("%f"), ReloadCount);
+		if (ReloadCount >= 2)
+		{
+			IsReloading = true;
+			ReloadCount = 0.0f;
+		}
+	}
 }
 
 // Called to bind functionality to input
@@ -169,6 +206,8 @@ void ARBCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ARBCharacter::StartFire);
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &ARBCharacter::StopFire);
+
+	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &ARBCharacter::Reload);
 
 	PlayerInputComponent->BindAction("Slot1", IE_Pressed, this, &ARBCharacter::SelectSlot1);
 	PlayerInputComponent->BindAction("Slot2", IE_Pressed, this, &ARBCharacter::SelectSlot2);

@@ -63,7 +63,7 @@ void ARBWeapon::Fire()
 
 		//엑터가 바라보는 위치, 방향 저장
 		MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
-		
+
 		//Set Spawn Collision Handling Override
 		FActorSpawnParameters ActorSpawnParams;
 		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;

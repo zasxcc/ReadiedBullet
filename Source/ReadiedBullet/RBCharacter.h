@@ -4,6 +4,9 @@
 #include "RBWeapon.h"
 #include "RBPlayerController.h"
 #include "Components/WidgetComponent.h"
+#include "Animation/AnimMontage.h"
+#include "Components/AudioComponent.h"
+#include "Sound/SoundBase.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "GameFramework/Character.h"
@@ -38,6 +41,8 @@ protected:
 	void SelectSlot1();
 	void SelectSlot2();
 	void SelectSlot3();
+	
+	void Reload();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UCameraComponent* CameraComp;
@@ -45,7 +50,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USpringArmComponent* SpringArmComp;
 
-
+	
 
 
 	bool bWantsToZoom;
@@ -99,4 +104,21 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = "HP")
 	float MaxHP;
+
+	bool IsReloading = true;
+
+	float ReloadCount = 0;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")
+	int32 Magazine = 30;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Anim", Meta = (AllowPrivateAccess = true))
+	UAnimMontage* ReloadMontage;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
+	USoundBase* ReloadCue;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
+	class UAudioComponent* AudioComponent;
+
 };
