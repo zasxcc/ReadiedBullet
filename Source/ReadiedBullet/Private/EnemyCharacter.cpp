@@ -70,3 +70,9 @@ float AEnemyCharacter::GetFinalAttackRange() const
 	return 50.f;
 }
 
+void AEnemyCharacter::Attack()
+{
+	// Attack Animation 추가해야 할 부분
+
+	// if (attack animation end?) OnAttackEnd.Broadcast();
+}

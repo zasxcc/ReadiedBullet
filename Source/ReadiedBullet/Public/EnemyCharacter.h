@@ -12,6 +12,8 @@
 #include "GameFramework/Character.h"
 #include "EnemyCharacter.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnAttackEndDelegate);
+
 UCLASS()
 class READIEDBULLET_API AEnemyCharacter : public ACharacter
 {
@@ -53,6 +55,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = DRAGON, Meta = (AllowPrivateAccess = true))
 	bool IsDead;
 
-
+	void Attack();
+	FOnAttackEndDelegate OnAttackEnd;
 
 };
