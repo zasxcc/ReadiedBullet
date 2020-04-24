@@ -28,7 +28,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-
+	virtual void Tick(float DeltaTime) override;
 	void PlayFireEffects(FVector TraceEnd);
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
@@ -65,7 +65,13 @@ protected:
 		class UAudioComponent* AudioComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
-		USoundBase* FireCue;
+	USoundBase* FireCue;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
+    USoundBase* ReloadCue;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
+    USoundBase* FireMissCue;
 
 	FTimerHandle TimerHandle_TimeBetweenShots;
 
@@ -84,5 +90,11 @@ public:
 	virtual void StartFire();
 
 	void StopFire();
+	void Reload();
 
+	bool IsReloading = false;
+	int32 Magazine;
+	int32 CurrentArmo;
+	
+	float ReloadCount = 0;
 };

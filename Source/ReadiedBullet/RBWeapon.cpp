@@ -14,6 +14,7 @@ FAutoConsoleVariableRef CVARDebugWeaponDrawing(
 // Sets default values
 ARBWeapon::ARBWeapon()
 {
+	PrimaryActorTick.bCanEverTick = true;
 	MeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshComp"));
 	RootComponent = MeshComp;
 
@@ -26,7 +27,18 @@ ARBWeapon::ARBWeapon()
 	{
 		FireCue = FIRESOUND.Object;
 	}
-
+	
+	static ConstructorHelpers::FObjectFinder<USoundBase>RELOADSOUND(TEXT("SoundWave'/Game/Sound/Reload.Reload'"));
+	if (RELOADSOUND.Succeeded())
+	{
+		ReloadCue = RELOADSOUND.Object;
+	}
+	static ConstructorHelpers::FObjectFinder<USoundBase>FIREMISSSOUND(TEXT("SoundWave'/Game/Sound/FireMiss.FireMiss'"));
+	if (FIREMISSSOUND.Succeeded())
+	{
+		FireMissCue = FIREMISSSOUND.Object;
+	}
+	
 
 	// 오디오 컴포넌트 추가
 	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("PlayerAudio"));
@@ -40,49 +52,91 @@ ARBWeapon::ARBWeapon()
 void ARBWeapon::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
+	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	CurrentArmo = GameInstance->CurrentArmo;
+	Magazine = GameInstance->Margazine;
+	
 	TimeBetweenShots = 60 / RateOfFire;
 }
+
+
+void ARBWeapon::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	
+	if (IsReloading == true)
+	{
+		ReloadCount += DeltaTime;
+
+		if (ReloadCount >= 2)
+		{
+			IsReloading = false;
+			ReloadCount = 0.0f;
+			URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+			GameInstance->IsReloading = IsReloading;
+		}
+	}
+}
+
 
 
 void ARBWeapon::Fire()
 {
 	AActor* MyOwner = GetOwner();
+	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
-	AudioComponent->SetSound(FireCue);
-	AudioComponent->Play();
-
-	if (ProjectileClass)
+	
+	if(CurrentArmo > 0 && IsReloading == false)
 	{
-		//무기 위치 받아서 저장
-		FVector MuzzleLocation = MeshComp->GetSocketLocation("MuzzleFlashSocket");
-		//FRotator MuzzleRotation = MeshComp->GetSocketRotation("MuzzleFlashSocket");;
+		AudioComponent->SetSound(FireCue);
+		AudioComponent->Play();
 
-		FVector EyeLocation;
-		FRotator EyeRotation;
-
-		//엑터가 바라보는 위치, 방향 저장
-		MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
-
-		//Set Spawn Collision Handling Override
-		FActorSpawnParameters ActorSpawnParams;
-		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-
-		// spawn the projectile at the muzzle
-		GetWorld()->SpawnActor<AProjectile>(ProjectileClass, MuzzleLocation, EyeRotation, ActorSpawnParams);
-	}
-
-	//카메라 흔들기
-	APawn* MyOwner2 = Cast<APawn>(GetOwner());
-	if (MyOwner2)
-	{
-		APlayerController* PC = Cast<APlayerController>(MyOwner2->GetController());
-		if (PC)
+		if (ProjectileClass)
 		{
-			PC->ClientPlayCameraShake(FireCamShake);
+			//무기 위치 받아서 저장
+			FVector MuzzleLocation = MeshComp->GetSocketLocation("MuzzleFlashSocket");
+			//FRotator MuzzleRotation = MeshComp->GetSocketRotation("MuzzleFlashSocket");;
+
+			FVector EyeLocation;
+			FRotator EyeRotation;
+
+			//엑터가 바라보는 위치, 방향 저장
+			MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
+
+			//Set Spawn Collision Handling Override
+			FActorSpawnParameters ActorSpawnParams;
+			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+
+			// spawn the projectile at the muzzle
+			GetWorld()->SpawnActor<AProjectile>(ProjectileClass, MuzzleLocation, EyeRotation, ActorSpawnParams);		
+		}
+
+		//카메라 흔들기
+		APawn* MyOwner2 = Cast<APawn>(GetOwner());
+		if (MyOwner2)
+		{
+			APlayerController* PC = Cast<APlayerController>(MyOwner2->GetController());
+			if (PC)
+			{
+				PC->ClientPlayCameraShake(FireCamShake);
+			}
 		}
 	}
+	
+	else
+	{
+		AudioComponent->SetSound(FireMissCue);
+		AudioComponent->Play();
+	}
 
+	if(CurrentArmo > 0)
+	{
+		CurrentArmo--;
+	}
+	
+	GameInstance->CurrentArmo = CurrentArmo;
+	UE_LOG(LogTemp, Warning, TEXT("%d / %d"), CurrentArmo, Magazine);
 }
 
 void ARBWeapon::StartFire()
@@ -96,6 +150,23 @@ void ARBWeapon::StopFire()
 	GetWorldTimerManager().ClearTimer(TimerHandle_TimeBetweenShots);
 }
 
+void ARBWeapon::Reload()
+{
+	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	
+	IsReloading = true;
+	AudioComponent->SetSound(ReloadCue);
+	AudioComponent->Play();
+	
+	Magazine -= 30 - CurrentArmo;
+	CurrentArmo = 30;
+	
+	GameInstance->Margazine = Magazine;
+	GameInstance->CurrentArmo = CurrentArmo;
+	UE_LOG(LogTemp, Warning, TEXT("%d / %d"), CurrentArmo, Magazine);
+}
+
+
 
 void ARBWeapon::PlayFireEffects(FVector TraceEnd)
 {
@@ -103,7 +174,6 @@ void ARBWeapon::PlayFireEffects(FVector TraceEnd)
 	{
 		UGameplayStatics::SpawnEmitterAttached(MuzzleEffect, MeshComp, MuzzleSocketName);
 	}
-
 
 	if (TracerEffect)
 	{

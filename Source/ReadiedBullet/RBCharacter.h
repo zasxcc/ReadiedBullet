@@ -105,13 +105,16 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "HP")
 	float MaxHP;
 
-	bool IsReloading = true;
+	bool IsReloading = false;
 
 	float ReloadCount = 0;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")
-	int32 Magazine = 30;
+	int32 Magazine = 90;
 
+	
+
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Anim", Meta = (AllowPrivateAccess = true))
 	UAnimMontage* ReloadMontage;
 
