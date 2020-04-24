@@ -4,6 +4,7 @@
 #include "BTDecorator_IsInAttackRange.h"
 #include "BarghestAIController.h"
 #include "EnemyCharacter.h"
+#include "ReadiedBullet/RBCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 UBTDecorator_IsInAttackRange::UBTDecorator_IsInAttackRange()
@@ -19,7 +20,7 @@ bool UBTDecorator_IsInAttackRange::CalculateRawConditionValue(UBehaviorTreeCompo
 	if (ControllingPawn == nullptr)
 		return false;
 
-	auto Target = Cast<AEnemyCharacter>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(ABarghestAIController::TargetKey));
+	auto Target = Cast<ARBCharacter>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(ABarghestAIController::TargetKey));
 	if (Target == nullptr)
 		return false;
 

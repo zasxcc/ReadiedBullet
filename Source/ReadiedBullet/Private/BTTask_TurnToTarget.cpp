@@ -4,6 +4,7 @@
 #include "BTTask_TurnToTarget.h"
 #include "BarghestAIController.h"
 #include "EnemyCharacter.h"
+#include "ReadiedBullet/RBCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 UBTTask_TurnToTarget::UBTTask_TurnToTarget()
@@ -19,7 +20,7 @@ EBTNodeResult::Type UBTTask_TurnToTarget::ExecuteTask(UBehaviorTreeComponent& Ow
 	if (EnemyCharacter == nullptr)
 		return EBTNodeResult::Failed;
 
-	auto Target = Cast<AEnemyCharacter>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(ABarghestAIController::TargetKey));
+	auto Target = Cast<ARBCharacter>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(ABarghestAIController::TargetKey));
 	if (Target == nullptr)
 		return EBTNodeResult::Failed;
 

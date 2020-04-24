@@ -30,5 +30,6 @@ void ABarghestAIController::OnPossess(APawn* InPawn)
 	if (UseBlackboard(BBAsset, Blackboard))
 	{
 		Blackboard->SetValueAsVector(HomePosKey, InPawn->GetActorLocation());
+		RunBehaviorTree(BTAsset);
 	}
 }
