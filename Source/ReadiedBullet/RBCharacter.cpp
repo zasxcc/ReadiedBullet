@@ -43,6 +43,8 @@ ARBCharacter::ARBCharacter()
 
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ARBCharacter::BeginOverlap);
 	WeaponAttachSocketName = "WeaponSocket";
+
+	GetCapsuleComponent()->SetCollisionProfileName(TEXT("RBCharacter"));
 }
 
 // Called when the game starts or when spawned
