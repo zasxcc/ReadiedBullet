@@ -24,11 +24,11 @@ ARBCharacter::ARBCharacter()
 		ReloadMontage = RELOAD.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<USoundBase>RELOADSOUND(TEXT("SoundWave'/Game/Sound/Reload.Reload'"));
-	if (RELOADSOUND.Succeeded())
-	{
-		ReloadCue = RELOADSOUND.Object;
-	}
+	// static ConstructorHelpers::FObjectFinder<USoundBase>RELOADSOUND(TEXT("SoundWave'/Game/Sound/Reload.Reload'"));
+	// if (RELOADSOUND.Succeeded())
+	// {
+	// 	ReloadCue = RELOADSOUND.Object;
+	// }
 
 	//¾É±â È°¼ºÈ­
 	GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true;
@@ -136,13 +136,12 @@ void ARBCharacter::SelectSlot3()
 
 void ARBCharacter::StartFire()
 {
-	if (IsReloading) {
-		Magazine--;
-		if (Magazine >= 0) {
-			if (CurrentWeapon)
-			{
-				CurrentWeapon->StartFire();
-			}
+	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	
+	if (IsReloading == false) {
+		if (CurrentWeapon)
+		{
+			CurrentWeapon->StartFire();
 		}
 	}
 }
@@ -157,11 +156,17 @@ void ARBCharacter::StopFire()
 
 void ARBCharacter::Reload()
 {
-	IsReloading = false;
+	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	
+	IsReloading = true;
 	AudioComponent->SetSound(ReloadCue);
 	AudioComponent->Play();
-	PlayAnimMontage(ReloadMontage, 1.0f);
-	Magazine = 30;
+
+	if(CurrentWeapon)
+	{
+		CurrentWeapon->Reload();
+		PlayAnimMontage(ReloadMontage, 1.0f);
+	}
 }
 
 // Called every frame
@@ -174,13 +179,13 @@ void ARBCharacter::Tick(float DeltaTime)
 
 	CameraComp->SetFieldOfView(NewFOV);
 
-	if (IsReloading == false)
+	if (IsReloading == true)
 	{
 		ReloadCount += DeltaTime;
-		UE_LOG(LogTemp, Warning, TEXT("%f"), ReloadCount);
+		//UE_LOG(LogTemp, Warning, TEXT("%f"), ReloadCount);
 		if (ReloadCount >= 2)
 		{
-			IsReloading = true;
+			IsReloading = false;
 			ReloadCount = 0.0f;
 		}
 	}

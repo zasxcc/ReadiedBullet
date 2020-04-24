@@ -96,7 +96,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
 	int32 BulletImpactSolt3;
 
-
-	
-
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Armo")
+	int32 CurrentArmo = 30;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Armo")
+	int32 Margazine = 90;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Armo")
+	bool IsReloading;
 };
