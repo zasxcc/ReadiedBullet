@@ -67,7 +67,7 @@ void AEnemyCharacter::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 
 float AEnemyCharacter::GetFinalAttackRange() const
 {
-	return 50.f;
+	return 150.f;
 }
 
 void AEnemyCharacter::Attack()
