@@ -185,7 +185,7 @@ void ARBCharacter::Tick(float DeltaTime)
 	{
 		ReloadCount += DeltaTime;
 		//UE_LOG(LogTemp, Warning, TEXT("%f"), ReloadCount);
-		if (ReloadCount >= 2)
+		if (ReloadCount >= 3.0f)
 		{
 			IsReloading = false;
 			ReloadCount = 0.0f;

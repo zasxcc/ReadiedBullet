@@ -13,6 +13,7 @@
 				"UMGEditor",
 				"UMG",
 				"AIModule",
+				"ApexDestruction"
 			]
 		}
 	],
@@ -31,6 +32,10 @@
 		},
 		{
 			"Name": "HoudiniNiagara",
+			"Enabled": true
+		},
+		{
+			"Name": "ApexDestruction",
 			"Enabled": true
 		}
 	]
