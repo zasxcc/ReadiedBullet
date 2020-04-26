@@ -28,6 +28,13 @@ AEnemyCharacter::AEnemyCharacter()
 
 	AIControllerClass = ABarghestAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> animObj(TEXT("/Game/QuadrapedCreatures/Barghest/Animations/BARGHEST_biteAggressive_Montage.BARGHEST_biteAggressive_Montage"));
+
+	if (animObj.Succeeded())
+	{
+		AttackMontage = animObj.Object;
+	}
 }
 
 // Called when the game starts or when spawned
@@ -73,6 +80,9 @@ float AEnemyCharacter::GetFinalAttackRange() const
 void AEnemyCharacter::Attack()
 {
 	// Attack Animation 추가해야 할 부분
+	//Montage_Play(AttackMontage, 1.f);
+
+	PlayAnimMontage(AttackMontage, 1.f);
 
 	// if (attack animation end?) OnAttackEnd.Broadcast();
 }

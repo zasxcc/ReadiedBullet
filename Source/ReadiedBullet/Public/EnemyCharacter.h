@@ -12,6 +12,7 @@
 #include "GameFramework/Character.h"
 #include "EnemyCharacter.generated.h"
 
+
 DECLARE_MULTICAST_DELEGATE(FOnAttackEndDelegate);
 
 UCLASS()
@@ -28,6 +29,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	void SetDeadAnim() { IsDead = true; };
+	void SetChaseAnim() { IsChase = true; };
 
 	UFUNCTION()
 		void BeginOverlap(UPrimitiveComponent* OverlappedComponent,
@@ -52,10 +54,18 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "UI")
 	UWidgetComponent* HPBarWidget;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = DRAGON, Meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Enemy, Meta = (AllowPrivateAccess = true))
 	bool IsDead;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = DRAGON, Meta = (AllowPrivateAccess = true))
+	bool IsChase;
+
+	/*UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	CharacterAnimState CAS;*/
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Anim", Meta = (AllowPrivateAccess = true))
+	UAnimMontage* AttackMontage;
 
 	void Attack();
 	FOnAttackEndDelegate OnAttackEnd;
-
 };

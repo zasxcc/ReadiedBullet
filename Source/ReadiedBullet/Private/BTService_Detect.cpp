@@ -4,6 +4,7 @@
 #include "BTService_Detect.h"
 #include "BarghestAIController.h"
 #include "ReadiedBullet/RBCharacter.h"
+#include "EnemyCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DrawDebugHelpers.h"
 
