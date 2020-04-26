@@ -18,6 +18,8 @@ class READIEDBULLET_API UEnemyAnimInstance : public UAnimInstance
 public:
 	UEnemyAnimInstance();
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+
+	void setState(CharacterAnimState state);
 	
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))

@@ -7,6 +7,7 @@
 #include "EnemyCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DrawDebugHelpers.h"
+#include "EnemyAnimInstance.h"
 
 UBTService_Detect::UBTService_Detect()
 {
@@ -55,10 +56,20 @@ void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 				DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Green, false, 0.2f);
 				DrawDebugPoint(World, RBCharacter->GetActorLocation(), 10.f, FColor::Blue, false, 0.2f);
 				DrawDebugLine(World, ControllingPawn->GetActorLocation(), RBCharacter->GetActorLocation(), FColor::Blue, false, 0.2f);
+				auto ec = Cast<AEnemyCharacter>(ControllingPawn);
+				auto ccc = Cast<UEnemyAnimInstance>(ec->GetMesh()->GetAnimInstance());
+
+				if (ccc != nullptr)
+				{
+					ccc->setState(CharacterAnimState::CHASE);
+				}
+
 				return;
 			}
 		}
 	}
 
 	DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Red, false, 0.2f);
+
+
 }

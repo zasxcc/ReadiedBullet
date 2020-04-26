@@ -15,12 +15,19 @@ UEnemyAnimInstance::UEnemyAnimInstance()
 	}
 }
 
+void UEnemyAnimInstance::setState(CharacterAnimState state)
+{
+	enemy_state = state;
+	UE_LOG(LogTemp, Error, TEXT("state changed"));
+}
+
 void UEnemyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
 
 	auto Pawn = TryGetPawnOwner();
 	if (!::IsValid(Pawn)) return;
+	
 
 	CurrentPawnSpeed = Pawn->GetVelocity().Size();
 
