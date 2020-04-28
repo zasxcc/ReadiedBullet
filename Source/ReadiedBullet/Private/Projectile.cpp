@@ -26,20 +26,18 @@ AProjectile::AProjectile()
 
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComp"));
 
-	//BP ¿¬°á
-	//static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeItem(TEXT("/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube"));
-
-	/*static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeItem(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_WideCapsule.Shape_WideCapsule'"));
+	/*static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeItem(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Pipe_180.Shape_Pipe_180'"));
 	if (CubeItem.Succeeded())
 	{
-		for (int i = 0; i < 10; ++i)
+		for (int32 i = 0; i < 5; ++i)
 		{
-			BoxStaticMesh[i]->CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TEST"));
-			BoxStaticMesh[i]->SetStaticMesh(CubeItem.Object);
+			FName name = *FString::Printf(TEXT("Cube %i"), i);
+			BoxStaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(name);
+			BoxStaticMesh->SetStaticMesh(CubeItem.Object);
+			BoxStaticMesh->AttachTo(this->CollisionComp);
 		}
 	}*/
-	//StaticMesh->SetStaticMesh(CubeItem.Object);
-
+	
 	SelectBulletSlot = 1;
 
 	RotateVector1.X = 35.0f;
@@ -99,7 +97,6 @@ void AProjectile::BeginPlay()
 	Super::BeginPlay();
 
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	
 	
 	
 	

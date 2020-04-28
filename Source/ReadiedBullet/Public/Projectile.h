@@ -191,6 +191,6 @@ protected:
 	
 
 	//UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "TEST")
-	TArray<UStaticMeshComponent*> BoxStaticMesh;
+	UStaticMeshComponent* BoxStaticMesh;
 
 };
