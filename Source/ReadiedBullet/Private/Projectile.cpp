@@ -24,19 +24,15 @@ AProjectile::AProjectile()
 	// Set as root component
 	CollisionComp->SetupAttachment(SceneComp);
 
-	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComp"));
 
-	/*static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeItem(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Pipe_180.Shape_Pipe_180'"));
-	if (CubeItem.Succeeded())
+	////////////////////////////////// 작업중인 곳
+	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComp"));
+	static ConstructorHelpers::FObjectFinder<UStaticMeshComponent> CubeItem(TEXT("/Game/StarterContent/Shapes/Shape_Pipe_180"));
+	if(CubeItem.Succeeded())
 	{
-		for (int32 i = 0; i < 5; ++i)
-		{
-			FName name = *FString::Printf(TEXT("Cube %i"), i);
-			BoxStaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(name);
-			BoxStaticMesh->SetStaticMesh(CubeItem.Object);
-			BoxStaticMesh->AttachTo(this->CollisionComp);
-		}
-	}*/
+		BoxStaticMesh = CubeItem.Object;
+	}
+	/////////////////////////////////////////////
 	
 	SelectBulletSlot = 1;
 
@@ -91,16 +87,23 @@ void AProjectile::PostInitializeComponents()
 	}
 }
 
+
+
 // Called when the game starts or when spawned
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	
-	
-	
 
+	
+	////////////////////////////////// 작업중인 곳
+	AddComponent(FName(TEXT("asd")), false, CollisionComp->GetComponentTransform(), BoxStaticMesh);
+	//CreateComponent(BoxStaticMesh, CollisionComp->GetComponentLocation(), CollisionComp->GetComponentRotation());
+	////////////////////////////////// 작업중인 곳
+
+
+	
 	float rotateRatio = 0.05f;
 
 	RotateX1 = (GameInstance->SaveSlot1_InstanceX * rotateRatio);
@@ -173,6 +176,24 @@ void AProjectile::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 }
 
 
+void AProjectile::CreateComponent(UStaticMeshComponent* CompClass, const FVector& Location, const FRotator& Rotation)
+{
+	FName YourObjectName("Hiiii");
+
+	//CompClass can be a BP
+	UPrimitiveComponent* NewComp = NewObject<UPrimitiveComponent>();
+	if(!NewComp) 
+	{
+		return;
+	}
+	//~~~~~~~~~~~~~
+
+	NewComp->RegisterComponent();        //You must ConstructObject with a valid Outer that has world, see above	 
+	NewComp->SetWorldLocation(Location); 
+	NewComp->SetWorldRotation(Rotation); 
+	NewComp->SetupAttachment(CollisionComp); 
+	//could use different than Root Comp
+}
 
 
 

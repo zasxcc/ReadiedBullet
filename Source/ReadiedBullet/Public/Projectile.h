@@ -40,15 +40,15 @@ public:
 	/** Returns CollisionComp subobject **/
 	USphereComponent* GetCollisionComp() const { return CollisionComp; }
 
-	/** Returns ProjectileMovement subobject **/
-	//UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	int32 SelectBulletSlot;
+
+	void CreateComponent(UStaticMeshComponent* CompClass, const FVector& Vector, const FRotator& Rotator);
 
 protected:
 	// Called when the game starts or when spawned
 
+	
 	virtual void BeginPlay() override;
 
 
@@ -191,6 +191,6 @@ protected:
 	
 
 	//UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "TEST")
-	UStaticMeshComponent* BoxStaticMesh;
+	USceneComponent* BoxStaticMesh;
 
 };
