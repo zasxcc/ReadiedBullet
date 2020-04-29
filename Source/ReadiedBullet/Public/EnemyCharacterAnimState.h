@@ -12,6 +12,7 @@ enum class CharacterAnimState : uint8
 	PEACE UMETA(DisplayName = "PEACE"),
 	CHASE UMETA(DisplayName = "CHASE"),
 	ATTACK UMETA(DisplayName = "ATTACK"),
+	HIT UMETA(DisplayName = "HIT"),
 	DEAD UMETA(DisplayName = "DEAD"),
 };
 

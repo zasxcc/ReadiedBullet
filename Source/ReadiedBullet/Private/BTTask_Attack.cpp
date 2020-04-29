@@ -4,6 +4,7 @@
 #include "BTTask_Attack.h"
 #include "BarghestAIController.h"
 #include "EnemyCharacter.h"
+#include "EnemyAnimInstance.h"
 
 UBTTask_Attack::UBTTask_Attack()
 {
@@ -20,12 +21,9 @@ EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 		return EBTNodeResult::Failed;
 
 
-	/* attack animation & attack end check 추가해야 됨 */
-	EnemyCharacter->Attack();
-	IsAttacking = true;
-	EnemyCharacter->OnAttackEnd.AddLambda([this]() -> void {
-		IsAttacking = false;
-	});
+	/* attack animation & attack end check 추가했음 */
+	auto casted_animinstance = Cast<UEnemyAnimInstance>(EnemyCharacter->GetMesh()->GetAnimInstance());
+	casted_animinstance->setState(CharacterAnimState::ATTACK);
 
 	return EBTNodeResult::InProgress;
 }

@@ -3,6 +3,7 @@
 
 #include "EnemyCharacter.h"
 #include "BarghestAIController.h"
+#include "EnemyAnimInstance.h"
 
 // Sets default values
 AEnemyCharacter::AEnemyCharacter()
@@ -18,7 +19,6 @@ AEnemyCharacter::AEnemyCharacter()
 	HPBarWidget->SetWidgetSpace(EWidgetSpace::Screen);
 
 	MaxHP = 1.0f;
-	IsDead = false;
 
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bUseControllerDesiredRotation = false;
@@ -28,13 +28,6 @@ AEnemyCharacter::AEnemyCharacter()
 
 	AIControllerClass = ABarghestAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
-
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> animObj(TEXT("/Game/QuadrapedCreatures/Barghest/Animations/BARGHEST_biteAggressive_Montage.BARGHEST_biteAggressive_Montage"));
-
-	if (animObj.Succeeded())
-	{
-		AttackMontage = animObj.Object;
-	}
 }
 
 // Called when the game starts or when spawned
@@ -64,25 +57,17 @@ void AEnemyCharacter::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	UMonsterWidget* MW = Cast<UMonsterWidget>(HPBarWidget->GetUserWidgetObject());
 	MaxHP -= 0.2f;
 	MW->HPProgressBar->SetPercent(MaxHP);
+	auto casted_animinstance = Cast<UEnemyAnimInstance>(GetMesh()->GetAnimInstance());
+
+	casted_animinstance->setState(CharacterAnimState::HIT);
 
 	if (MaxHP <= 0.01f)
 	{
-		//여기다가 뒤지는 애니메이션 해주셈
-		SetDeadAnim();
+		casted_animinstance->setState(CharacterAnimState::DEAD);
 	}
 }
 
 float AEnemyCharacter::GetFinalAttackRange() const
 {
 	return 150.f;
-}
-
-void AEnemyCharacter::Attack()
-{
-	// Attack Animation 추가해야 할 부분
-	//Montage_Play(AttackMontage, 1.f);
-
-	PlayAnimMontage(AttackMontage, 1.f);
-
-	// if (attack animation end?) OnAttackEnd.Broadcast();
 }

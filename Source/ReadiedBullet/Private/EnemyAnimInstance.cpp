@@ -18,7 +18,25 @@ UEnemyAnimInstance::UEnemyAnimInstance()
 void UEnemyAnimInstance::setState(CharacterAnimState state)
 {
 	enemy_state = state;
-	UE_LOG(LogTemp, Error, TEXT("state changed"));
+
+	switch (state)
+	{
+	case CharacterAnimState::PEACE:
+		UE_LOG(LogTemp, Error, TEXT("state changed : PEACE"));
+		break;
+	case CharacterAnimState::CHASE:
+		UE_LOG(LogTemp, Error, TEXT("state changed : CHASE"));
+		break;
+	case CharacterAnimState::ATTACK:
+		UE_LOG(LogTemp, Error, TEXT("state changed : ATTACK"));
+		break;
+	case CharacterAnimState::DEAD:
+		UE_LOG(LogTemp, Error, TEXT("state changed : DEAD"));
+		break;
+	case CharacterAnimState::HIT:
+		UE_LOG(LogTemp, Error, TEXT("state changed : HIT"));
+		break;
+	}
 }
 
 void UEnemyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
