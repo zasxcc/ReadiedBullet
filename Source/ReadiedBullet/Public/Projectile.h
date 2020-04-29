@@ -67,8 +67,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Projectile")
 	USceneComponent* SceneComp;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Projectile")
-	UStaticMeshComponent* StaticMesh;
+	
 
 
 
@@ -192,5 +191,8 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TEST")
 	TArray<UStaticMeshComponent*> BoxStaticMesh;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Projectile")
+    UStaticMeshComponent* StaticMesh;
 
 };

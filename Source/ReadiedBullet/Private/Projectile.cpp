@@ -23,22 +23,27 @@ AProjectile::AProjectile()
 
 	// Set as root component
 	CollisionComp->SetupAttachment(SceneComp);
-
+	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("sad"));
 
 	////////////////////////////////// 작업중인 곳
 	
-	static FName Bullets[] = {TEXT("test1"), TEXT("test2"), TEXT("test3")};
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeItem(TEXT("/Game/StarterContent/Shapes/Shape_Pipe_180"));
-	if(CubeItem.Succeeded())
-	{
-		for(auto Bullet : Bullets)
-		{
-			UStaticMeshComponent* BulletMesh = CreateDefaultSubobject<UStaticMeshComponent>(*Bullet.ToString());
-			BulletMesh->SetStaticMesh(CubeItem.Object);
-			BulletMesh->SetupAttachment(CollisionComp);
-			BoxStaticMesh.Add(BulletMesh);
-		}
-	}
+	// static FName Bullets[] = {TEXT("test1"), TEXT("test2"), TEXT("test3")};
+	// static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeItem(TEXT("/Game/StarterContent/Shapes/Shape_Pipe_180"));
+	// static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeItem2(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Wedge_A.Shape_Wedge_A'"));
+	// if(CubeItem2.Succeeded())
+	// {
+	// 	StaticMesh->SetStaticMesh(CubeItem2.Object);
+	// }
+	// if(CubeItem.Succeeded())
+	// {
+	// 	for(auto Bullet : Bullets)
+	// 	{
+	// 		UStaticMeshComponent* BulletMesh = CreateDefaultSubobject<UStaticMeshComponent>(*Bullet.ToString());
+	// 		BulletMesh->SetStaticMesh(CubeItem.Object);
+	// 		BulletMesh->SetupAttachment(CollisionComp);
+	// 		BoxStaticMesh.Add(BulletMesh);
+	// 	}
+	// }
 
 	/////////////////////////////////////////////
 	
@@ -112,9 +117,10 @@ void AProjectile::BeginPlay()
 	//AddComponent(FName(TEXT("asd")), false, CollisionComp->GetComponentTransform(), BoxStaticMesh);
 	//CreateComponent(BoxStaticMesh, CollisionComp->GetComponentLocation(), CollisionComp->GetComponentRotation());
 	//BoxStaticMesh.Add(NewObject<UStaticMeshComponent>(this, UStaticMeshComponent::StaticClass()));
-	
+	//BoxStaticMesh[0]->SetStaticMesh(StaticMesh->GetStaticMesh());
+	//BoxStaticMesh[0]->SetRelativeRotation(FRotator(45.0f, 45.0f,45.0f));
 	////////////////////////////////// 작업중인 곳
-	BoxStaticMesh[0]->SetRelativeRotation(FRotator(45.0f, 45.0f,45.0f));
+	
 
 	
 	float rotateRatio = 0.05f;
@@ -194,14 +200,15 @@ void AProjectile::CreateComponent(UStaticMeshComponent* CompClass, const FVector
 	FName YourObjectName("Hiiii");
 
 	//CompClass can be a BP
-	UPrimitiveComponent* NewComp = NewObject<UPrimitiveComponent>();
+	UStaticMeshComponent* NewComp = NewObject<UStaticMeshComponent>();
 	if(!NewComp) 
 	{
 		return;
 	}
 	//~~~~~~~~~~~~~
 
-	NewComp->RegisterComponent();        //You must ConstructObject with a valid Outer that has world, see above	 
+	NewComp->RegisterComponent();        //You must ConstructObject with a valid Outer that has world, see above
+	NewComp->SetStaticMesh(StaticMesh->GetStaticMesh());
 	NewComp->SetWorldLocation(Location); 
 	NewComp->SetWorldRotation(Rotation); 
 	NewComp->SetupAttachment(CollisionComp); 
