@@ -190,7 +190,7 @@ protected:
 	int32 BulletImpactSolt3;
 	
 
-	//UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "TEST")
-	USceneComponent* BoxStaticMesh;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "TEST")
+	TArray<UStaticMeshComponent*> BoxStaticMesh;
 
 };

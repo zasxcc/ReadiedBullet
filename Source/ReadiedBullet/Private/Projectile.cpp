@@ -26,12 +26,20 @@ AProjectile::AProjectile()
 
 
 	////////////////////////////////// 작업중인 곳
-	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComp"));
-	static ConstructorHelpers::FObjectFinder<UStaticMeshComponent> CubeItem(TEXT("/Game/StarterContent/Shapes/Shape_Pipe_180"));
+	
+	static FName Bullets[] = {TEXT("test1"), TEXT("test2"), TEXT("test3")};
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeItem(TEXT("/Game/StarterContent/Shapes/Shape_Pipe_180"));
 	if(CubeItem.Succeeded())
 	{
-		BoxStaticMesh = CubeItem.Object;
+		for(auto Bullet : Bullets)
+		{
+			UStaticMeshComponent* BulletMesh = CreateDefaultSubobject<UStaticMeshComponent>(*Bullet.ToString());
+			BulletMesh->SetStaticMesh(CubeItem.Object);
+			BulletMesh->SetupAttachment(CollisionComp);
+			BoxStaticMesh.Add(BulletMesh);
+		}
 	}
+
 	/////////////////////////////////////////////
 	
 	SelectBulletSlot = 1;
@@ -56,7 +64,7 @@ void AProjectile::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-
+	
 	if (GameInstance)
 	{
 		BoxTransform1 = GameInstance->InstanceBoxSlot1;
@@ -84,6 +92,8 @@ void AProjectile::PostInitializeComponents()
 		BulletImpactSolt1 = GameInstance->BulletImpactSolt1;
 		BulletImpactSolt2 = GameInstance->BulletImpactSolt2;
 		BulletImpactSolt3 = GameInstance->BulletImpactSolt3;
+
+		
 	}
 }
 
@@ -95,13 +105,16 @@ void AProjectile::BeginPlay()
 	Super::BeginPlay();
 
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-
+	
+	
 	
 	////////////////////////////////// 작업중인 곳
-	AddComponent(FName(TEXT("asd")), false, CollisionComp->GetComponentTransform(), BoxStaticMesh);
+	//AddComponent(FName(TEXT("asd")), false, CollisionComp->GetComponentTransform(), BoxStaticMesh);
 	//CreateComponent(BoxStaticMesh, CollisionComp->GetComponentLocation(), CollisionComp->GetComponentRotation());
+	//BoxStaticMesh.Add(NewObject<UStaticMeshComponent>(this, UStaticMeshComponent::StaticClass()));
+	
 	////////////////////////////////// 작업중인 곳
-
+	BoxStaticMesh[0]->SetRelativeRotation(FRotator(45.0f, 45.0f,45.0f));
 
 	
 	float rotateRatio = 0.05f;
