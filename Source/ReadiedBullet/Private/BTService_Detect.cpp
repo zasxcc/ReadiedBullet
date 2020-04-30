@@ -70,6 +70,8 @@ void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 				if (casted_animinstance != nullptr)
 				{
 					e_char->GetCharacterMovement()->MaxWalkSpeed = 600.f;
+					UE_LOG(LogTemp, Error, TEXT("MaxSpeed : %d"), e_char->GetCharacterMovement()->MaxWalkSpeed);
+
 					casted_animinstance->setState(CharacterAnimState::CHASE);
 				}
 
