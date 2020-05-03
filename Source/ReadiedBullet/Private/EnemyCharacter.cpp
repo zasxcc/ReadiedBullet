@@ -4,6 +4,7 @@
 #include "EnemyCharacter.h"
 #include "BarghestAIController.h"
 #include "EnemyAnimInstance.h"
+#include <string>
 
 // Sets default values
 AEnemyCharacter::AEnemyCharacter()
@@ -28,6 +29,27 @@ AEnemyCharacter::AEnemyCharacter()
 
 	AIControllerClass = ABarghestAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
+
+	FString fs(this->GetPathName());
+	std::string mst(TCHAR_TO_UTF8(*fs));
+	
+	if (mst.find("Wolf") != -1)
+	{
+		eName = enemyCharacterName::Barghest;
+	}
+	else if (mst.find("Dragon") != -1)
+	{
+		eName = enemyCharacterName::Dragon;
+	}
+	else if (mst.find("Centaur") != -1)
+	{
+		eName = enemyCharacterName::Centaur;
+	}
+	else if (mst.find("Griffon") != -1)
+	{
+		eName = enemyCharacterName::Griffon;
+	}
 }
 
 // Called when the game starts or when spawned
@@ -70,4 +92,9 @@ void AEnemyCharacter::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 float AEnemyCharacter::GetFinalAttackRange() const
 {
 	return 150.f;
+}
+
+float AEnemyCharacter::GetFinalAttackRange_Dragon() const
+{
+	return 350.f;
 }

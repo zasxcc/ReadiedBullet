@@ -12,6 +12,14 @@
 #include "GameFramework/Character.h"
 #include "EnemyCharacter.generated.h"
 
+UENUM(BlueprintType)
+enum class enemyCharacterName : uint8
+{
+	Barghest UMETA(DisplayName = "Barghest"),
+	Dragon UMETA(DisplayName = "Dragon"),
+	Centaur UMETA(DisplayName = "Centaur"),
+	Griffon UMETA(DisplayName = "Griffon"),
+};
 
 UCLASS()
 class READIEDBULLET_API AEnemyCharacter : public ACharacter
@@ -22,6 +30,7 @@ public:
 	// Sets default values for this character's properties
 	AEnemyCharacter();
 	float GetFinalAttackRange() const;
+	float GetFinalAttackRange_Dragon() const;
 
 protected:
 	// Called when the game starts or when spawned
@@ -46,6 +55,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Stat)
 	float CurrentHP;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Stat)
+	enemyCharacterName eName;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "UI")
 	UWidgetComponent* HPBarWidget;

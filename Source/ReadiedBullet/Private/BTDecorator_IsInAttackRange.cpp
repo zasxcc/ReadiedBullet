@@ -24,9 +24,20 @@ bool UBTDecorator_IsInAttackRange::CalculateRawConditionValue(UBehaviorTreeCompo
 	if (Target == nullptr)
 		return false;
 
-	bResult = (Target->GetDistanceTo(ControllingPawn) <= ControllingPawn->GetFinalAttackRange());
+	auto e_char = Cast<AEnemyCharacter>(ControllingPawn);
 
-	UE_LOG(LogTemp, Error, TEXT("bResult : %d"), bResult);
+	if (e_char->eName == enemyCharacterName::Dragon)
+	{
+		bResult = (Target->GetDistanceTo(ControllingPawn) <= ControllingPawn->GetFinalAttackRange_Dragon());
+	}
+	else
+	{
+		bResult = (Target->GetDistanceTo(ControllingPawn) <= ControllingPawn->GetFinalAttackRange());
+	}
+	
+
+
+	UE_LOG(LogTemp, Error, TEXT("in attack range : %d"), bResult);
 
 	return bResult;
 }

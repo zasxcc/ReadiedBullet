@@ -48,8 +48,6 @@ void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 		CollisionQueryParam
 	);
 
-	//UE_LOG(LogTemp, Error, TEXT("bResult : %d"), bResult);
-
 	if (bResult)
 	{
 		OwnerComp.GetBlackboardComponent()->SetValueAsObject(ABarghestAIController::TargetKey, nullptr);
@@ -63,16 +61,19 @@ void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 				DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Green, false, 0.2f);
 				DrawDebugPoint(World, RBCharacter->GetActorLocation(), 10.f, FColor::Blue, false, 0.2f);
 				DrawDebugLine(World, ControllingPawn->GetActorLocation(), RBCharacter->GetActorLocation(), FColor::Blue, false, 0.2f);
-
+				
 				auto e_char = Cast<AEnemyCharacter>(ControllingPawn);
 				auto casted_animinstance = Cast<UEnemyAnimInstance>(e_char->GetMesh()->GetAnimInstance());
+
 
 				if (casted_animinstance != nullptr)
 				{
 					e_char->GetCharacterMovement()->MaxWalkSpeed = 600.f;
-					UE_LOG(LogTemp, Error, TEXT("MaxSpeed : %d"), e_char->GetCharacterMovement()->MaxWalkSpeed);
+					//UE_LOG(LogTemp, Error, TEXT("MaxSpeed : %d"), e_char->GetCharacterMovement()->MaxWalkSpeed);
 
 					casted_animinstance->setState(CharacterAnimState::CHASE);
+
+					
 				}
 
 				return;
@@ -88,7 +89,7 @@ void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 		
 		if (casted_animinstance != nullptr)
 		{
-			e_char->GetCharacterMovement()->MaxWalkSpeed = 300.f;
+			//e_char->GetCharacterMovement()->MaxWalkSpeed = 300.f;
 			casted_animinstance->setState(CharacterAnimState::PEACE);
 		}
 	}

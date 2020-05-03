@@ -22,7 +22,7 @@ void UEnemyAnimInstance::setState(CharacterAnimState state)
 	switch (state)
 	{
 	case CharacterAnimState::PEACE:
-		UE_LOG(LogTemp, Error, TEXT("state changed : PEACE"));
+		//UE_LOG(LogTemp, Error, TEXT("state changed : PEACE"));
 		break;
 	case CharacterAnimState::CHASE:
 		UE_LOG(LogTemp, Error, TEXT("state changed : CHASE"));
