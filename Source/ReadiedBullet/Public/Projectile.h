@@ -15,9 +15,9 @@
 
 #define FIRE_IMPACT 10
 #define THUNDER_IMPACT 11
-#define BLACKHOLE_IMPACT 12
+#define ICE_IMPACT 12
 
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOverlapParam);
 
 
 UCLASS()
@@ -53,12 +53,12 @@ protected:
 
 
 	UFUNCTION()
-		void BeginOverlap(UPrimitiveComponent* OverlappedComponent,
-			AActor* OtherActor,
-			UPrimitiveComponent* OtherComp,
-			int32 OtherBodyIndex,
-			bool bFromSweep,
-			const FHitResult& SweepResult);
+	void BeginOverlap(UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult);
 
 	/** Sphere collision component */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Projectile")
@@ -195,4 +195,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Projectile")
     UStaticMeshComponent* StaticMesh;
 
+
+	UPROPERTY(VisibleAnywhere, BlueprintAssignable, BlueprintCallable)
+    FOverlapParam OverlapParam;
 };

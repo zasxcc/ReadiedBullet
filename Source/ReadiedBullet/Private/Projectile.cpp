@@ -111,7 +111,7 @@ void AProjectile::BeginPlay()
 
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	
-	
+	CollisionComp->OnComponentBeginOverlap.AddDynamic(this, &AProjectile::BeginOverlap);
 	
 	////////////////////////////////// 작업중인 곳
 	//AddComponent(FName(TEXT("asd")), false, CollisionComp->GetComponentTransform(), BoxStaticMesh);
@@ -193,6 +193,7 @@ void AProjectile::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 {
 	OverlappedComponent->DestroyComponent();
 	Destroy();
+	UE_LOG(LogTemp, Warning, TEXT("AAAAAAAAAAAAAAAAAAAAAAAAAAAA"));
 }
 
 
