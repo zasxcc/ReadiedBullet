@@ -191,7 +191,8 @@ void AProjectile::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	bool bFromSweep,
 	const FHitResult& SweepResult)
 {
-	//바인딩 아직 안해놔서 작동안함
+	OverlappedComponent->DestroyComponent();
+	Destroy();
 }
 
 
