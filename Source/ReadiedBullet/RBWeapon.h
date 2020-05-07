@@ -26,6 +26,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
 	TSubclassOf<AActor> ProjectileClass;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+    TSubclassOf<AActor> PathClass;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
