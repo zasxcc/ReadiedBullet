@@ -63,6 +63,16 @@ AProjectile::AProjectile()
 	RotateVector3.Z = 0.0f;
 
 	InitialLifeSpan = 80.0f;
+
+
+	
+	// static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeItem(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube'"));
+	// for(int i = 0; i<100; ++i)
+	// {
+	// 	BoxStaticMesh[i] = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("asd"));
+	// 	BoxStaticMesh[i]->SetStaticMesh(CubeItem.Object);
+	// }
+	
 }
 
 void AProjectile::PostInitializeComponents()
@@ -97,8 +107,6 @@ void AProjectile::PostInitializeComponents()
 		BulletImpactSolt1 = GameInstance->BulletImpactSolt1;
 		BulletImpactSolt2 = GameInstance->BulletImpactSolt2;
 		BulletImpactSolt3 = GameInstance->BulletImpactSolt3;
-
-		
 	}
 }
 
@@ -136,6 +144,19 @@ void AProjectile::BeginPlay()
 	RotateX3 = (GameInstance->SaveSlot3_InstanceX * rotateRatio);
 	RotateY3 = (GameInstance->SaveSlot3_InstanceY * rotateRatio);
 	RotateZ3 = (GameInstance->SaveSlot3_InstanceZ * rotateRatio);
+
+	// FVector Test[100];
+	// FVector temp = {0, 0, 0};
+	// for (int i = 0; i < 100; ++i)
+	// {
+	// 	temp.Z += RotateVector1.X * 10;
+	// 	temp.Y += RotateY1 * 10;
+	// 	temp.Z += RotateZ1 * 10;
+	//
+	// 	Test[i].X = temp.X;
+	// 	Test[i].Y = temp.Y;
+	// 	Test[i].Z = temp.Z;
+	// }
 }
 
 
