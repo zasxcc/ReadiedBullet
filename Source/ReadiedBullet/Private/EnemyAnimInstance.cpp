@@ -7,12 +7,6 @@ UEnemyAnimInstance::UEnemyAnimInstance()
 {
 	CurrentPawnSpeed = 0.f;
 	enemy_state = CharacterAnimState::PEACE;
-
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> ATTACK_MONGTAGE(TEXT("/Game/QuadrapedCreatures/Barghest/Animations/BARGHEST_biteAggressive_Montage.BARGHEST_biteAggressive_Montage"));
-	if (ATTACK_MONGTAGE.Succeeded())
-	{
-		AttackMontage = ATTACK_MONGTAGE.Object;
-	}
 }
 
 void UEnemyAnimInstance::setState(CharacterAnimState state)
