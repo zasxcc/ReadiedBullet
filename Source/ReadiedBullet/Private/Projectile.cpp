@@ -129,8 +129,6 @@ void AProjectile::BeginPlay()
 	//BoxStaticMesh[0]->SetRelativeRotation(FRotator(45.0f, 45.0f,45.0f));
 	////////////////////////////////// 작업중인 곳
 	
-
-	
 	float rotateRatio = 0.05f;
 
 	RotateX1 = (GameInstance->SaveSlot1_InstanceX * rotateRatio);
@@ -145,18 +143,23 @@ void AProjectile::BeginPlay()
 	RotateY3 = (GameInstance->SaveSlot3_InstanceY * rotateRatio);
 	RotateZ3 = (GameInstance->SaveSlot3_InstanceZ * rotateRatio);
 
-	// FVector Test[100];
-	// FVector temp = {0, 0, 0};
-	// for (int i = 0; i < 100; ++i)
-	// {
-	// 	temp.Z += RotateVector1.X * 10;
-	// 	temp.Y += RotateY1 * 10;
-	// 	temp.Z += RotateZ1 * 10;
-	//
-	// 	Test[i].X = temp.X;
-	// 	Test[i].Y = temp.Y;
-	// 	Test[i].Z = temp.Z;
-	// }
+
+	//////Path를 만들기 위한 미리 계산된 궤적 정보 저장
+	TArray<FVector> Test;
+	FVector temp = {0, 0, 0};
+	if(GameInstance->IsPathMade == false)
+	{
+		for (int i = 0; i < 100; ++i)
+		{
+			temp.X += RotateVector1.X * 10;
+			temp.Y += RotateY1 * 10;
+			temp.Z += RotateZ1 * 10;
+			Test.Add(temp);	
+		}
+		GameInstance->PathArray = Test;
+		GameInstance->IsPathMade = true;
+	}
+	/////////////////////////
 }
 
 

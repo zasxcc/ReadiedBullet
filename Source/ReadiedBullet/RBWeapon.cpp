@@ -78,23 +78,6 @@ void ARBWeapon::Tick(float DeltaTime)
 		}
 	}
 
-	AActor* MyOwner = GetOwner();
-	//무기 위치 받아서 저장
-	FVector MuzzleLocation = MeshComp->GetSocketLocation("MuzzleFlashSocket");
-	//FRotator MuzzleRotation = MeshComp->GetSocketRotation("MuzzleFlashSocket");;
-
-	FVector EyeLocation;
-	FRotator EyeRotation;
-
-	//엑터가 바라보는 위치, 방향 저장
-	MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
-
-	//Set Spawn Collision Handling Override
-	FActorSpawnParameters ActorSpawnParams;
-	ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-
-	// spawn the projectile at the muzzle
-	GetWorld()->SpawnActor<AProjectile>(PathClass, MuzzleLocation, EyeRotation, ActorSpawnParams);	
 
 }
 

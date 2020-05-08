@@ -102,4 +102,11 @@ public:
 	int32 Margazine = 90;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Armo")
 	bool IsReloading;
+
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Path")
+	TArray<FVector> PathArray;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Path")
+	bool IsPathMade = false;
 };

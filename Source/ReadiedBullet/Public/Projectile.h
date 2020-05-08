@@ -195,7 +195,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Projectile")
     UStaticMeshComponent* StaticMesh;
 
-
 	UPROPERTY(VisibleAnywhere, BlueprintAssignable, BlueprintCallable)
     FOverlapParam OverlapParam;
 };

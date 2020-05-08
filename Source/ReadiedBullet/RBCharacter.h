@@ -124,4 +124,10 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
 	class UAudioComponent* AudioComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Path")
+	TArray<UStaticMeshComponent*> PathMeshArray;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Path")
+	bool IsPathMade = false;
+
 };

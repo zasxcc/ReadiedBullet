@@ -45,6 +45,22 @@ ARBCharacter::ARBCharacter()
 	WeaponAttachSocketName = "WeaponSocket";
 
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("RBCharacter"));
+
+
+	//////////////////Path 작업///////////////////////////////
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> PATH(TEXT("/Game/StarterContent/Props/SM_Couch"));
+	for (int32 i = 0; i < 100; i++)
+	{
+		FName name = *FString::Printf(TEXT("Path %i"), i);
+		PathMeshArray.Add(CreateDefaultSubobject<UStaticMeshComponent>(name));
+		if (PATH.Succeeded())
+		{
+			PathMeshArray[i]->SetStaticMesh(PATH.Object);
+			PathMeshArray[i]->SetRelativeScale3D(FVector(0.5, 0.5, 0.5));
+			PathMeshArray[i]->AttachToComponent(CameraComp, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+		}
+	}
+	////////////////////////////////
 }
 
 // Called when the game starts or when spawned
@@ -191,6 +207,19 @@ void ARBCharacter::Tick(float DeltaTime)
 			ReloadCount = 0.0f;
 		}
 	}
+
+	////Path 작업
+	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if(GameInstance->IsPathMade == true)
+	{
+		for(int i = 0; i<100; ++i)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%f,  %f,  %f"), GameInstance->PathArray[i].X, GameInstance->PathArray[i].Y, GameInstance->PathArray[i].Z);
+			PathMeshArray[i]->SetRelativeLocation(FVector(GameInstance->PathArray[i].X, GameInstance->PathArray[i].Y, GameInstance->PathArray[i].Z));
+		}
+		GameInstance->IsPathMade = false;
+	}
+	//////////////////////
 }
 
 // Called to bind functionality to input
