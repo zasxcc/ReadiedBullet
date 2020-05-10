@@ -58,7 +58,7 @@ ARBCharacter::ARBCharacter()
 			PathMeshArray[i]->SetStaticMesh(PATH.Object);
 			PathMeshArray[i]->SetRelativeScale3D(FVector(1.2, 1.2, 1.2));
 			PathMeshArray[i]->AttachToComponent(CameraComp, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-
+			PathMeshArray[i]->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		}
 	}
 	////////////////////////////////
