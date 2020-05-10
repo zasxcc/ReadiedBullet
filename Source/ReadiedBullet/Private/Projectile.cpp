@@ -146,15 +146,19 @@ void AProjectile::BeginPlay()
 
 	//////Path를 만들기 위한 미리 계산된 궤적 정보 저장
 	TArray<FVector> Test;
+	FVector sumPath = { 0,0,0 };
 	FVector temp = {0, 0, 0};
 	if(GameInstance->IsPathMade == false)
 	{
 		for (int i = 0; i < 100; ++i)
 		{
-			temp.X += RotateVector1.X * 10;
-			temp.Y += RotateY1 * 10;
-			temp.Z += RotateZ1 * 10;
-			Test.Add(temp);	
+			temp.X += RotateVector1.X * 5;
+			temp.Y += RotateY1 * 5;
+			temp.Z += RotateZ1 * 5;
+
+			sumPath += temp;
+
+			Test.Add(sumPath);
 		}
 		GameInstance->PathArray = Test;
 		GameInstance->IsPathMade = true;

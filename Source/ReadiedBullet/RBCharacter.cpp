@@ -215,7 +215,8 @@ void ARBCharacter::Tick(float DeltaTime)
 		for(int i = 0; i<100; ++i)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%f,  %f,  %f"), GameInstance->PathArray[i].X, GameInstance->PathArray[i].Y, GameInstance->PathArray[i].Z);
-			PathMeshArray[i]->SetRelativeLocation(FVector(GameInstance->PathArray[i].X, GameInstance->PathArray[i].Y, GameInstance->PathArray[i].Z));
+			PathMeshArray[i]->SetRelativeLocation(GameInstance->PathArray[i]);
+			//PathMeshArray[i]->SetRelativeLocation(FVector(i*10, i*2, i*4));
 		}
 		GameInstance->IsPathMade = false;
 	}
