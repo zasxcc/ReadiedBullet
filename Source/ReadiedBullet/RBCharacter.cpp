@@ -56,7 +56,7 @@ ARBCharacter::ARBCharacter()
 		if (PATH.Succeeded())
 		{
 			PathMeshArray[i]->SetStaticMesh(PATH.Object);
-			PathMeshArray[i]->SetRelativeScale3D(FVector(0.2, 0.2, 0.2));
+			PathMeshArray[i]->SetRelativeScale3D(FVector(1.2, 1.2, 1.2));
 			PathMeshArray[i]->AttachToComponent(CameraComp, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 
 		}

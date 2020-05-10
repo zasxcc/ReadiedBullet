@@ -6,7 +6,7 @@
 #include "ReadiedBullet/RBCharacter.h"
 #include "EnemyCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "DrawDebugHelpers.h"
+//#include "DrawDebugHelpers.h"
 #include "EnemyAnimInstance.h"
 
 UBTService_Detect::UBTService_Detect()
@@ -58,9 +58,9 @@ void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 			if (RBCharacter && RBCharacter->GetController()->IsPlayerController())
 			{
 				OwnerComp.GetBlackboardComponent()->SetValueAsObject(ABarghestAIController::TargetKey, RBCharacter);
-				DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Green, false, 0.2f);
-				DrawDebugPoint(World, RBCharacter->GetActorLocation(), 10.f, FColor::Blue, false, 0.2f);
-				DrawDebugLine(World, ControllingPawn->GetActorLocation(), RBCharacter->GetActorLocation(), FColor::Blue, false, 0.2f);
+				//DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Green, false, 0.2f);
+				//DrawDebugPoint(World, RBCharacter->GetActorLocation(), 10.f, FColor::Blue, false, 0.2f);
+				//DrawDebugLine(World, ControllingPawn->GetActorLocation(), RBCharacter->GetActorLocation(), FColor::Blue, false, 0.2f);
 				
 				auto e_char = Cast<AEnemyCharacter>(ControllingPawn);
 				auto casted_animinstance = Cast<UEnemyAnimInstance>(e_char->GetMesh()->GetAnimInstance());
@@ -94,7 +94,7 @@ void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 		}
 	}
 
-	DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Red, false, 0.2f);
+	//DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Red, false, 0.2f);
 
 
 }
