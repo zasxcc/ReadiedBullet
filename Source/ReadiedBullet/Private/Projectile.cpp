@@ -102,7 +102,6 @@ void AProjectile::PostInitializeComponents()
 		RotateVector2.X = RotateVector2.X - (float)BoxTransform2.Num() - ((float)CylinderTransform2.Num() * 0.7f) - ((float)SphereTransform2.Num() * 0.5f);
 		RotateVector3.X = RotateVector3.X - (float)BoxTransform3.Num() - ((float)CylinderTransform3.Num() * 0.7f) - ((float)SphereTransform3.Num() * 0.5f);
 
-
 		//Bullet 효과 적용
 		BulletImpactSolt1 = GameInstance->BulletImpactSolt1;
 		BulletImpactSolt2 = GameInstance->BulletImpactSolt2;
@@ -146,19 +145,16 @@ void AProjectile::BeginPlay()
 
 	//////Path를 만들기 위한 미리 계산된 궤적 정보 저장
 	TArray<FVector> Test;
-	FVector sumPath = { 0,0,0 };
 	FVector temp = {0, 0, 0};
 	if(GameInstance->IsPathMade == false)
 	{
 		for (int i = 0; i < 100; ++i)
 		{
-			temp.X += RotateVector1.X * 5;
-			temp.Y += RotateY1 * 5;
-			temp.Z += RotateZ1 * 5;
+			temp.X = RotateVector1.X * i;
+			temp.Y += RotateY1 * i;
+			temp.Z += RotateZ1 * i;
 
-			sumPath += temp;
-
-			Test.Add(sumPath);
+			Test.Add(temp);
 		}
 		GameInstance->PathArray = Test;
 		GameInstance->IsPathMade = true;

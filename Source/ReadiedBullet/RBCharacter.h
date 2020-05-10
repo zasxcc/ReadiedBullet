@@ -130,4 +130,5 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Path")
 	bool IsPathMade = false;
 
+
 };

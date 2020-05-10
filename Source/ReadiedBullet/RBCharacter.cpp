@@ -48,7 +48,7 @@ ARBCharacter::ARBCharacter()
 
 
 	//////////////////Path 작업///////////////////////////////
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> PATH(TEXT("/Game/StarterContent/Props/SM_Couch"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> PATH(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Sphere.Shape_Sphere'"));
 	for (int32 i = 0; i < 100; i++)
 	{
 		FName name = *FString::Printf(TEXT("Path %i"), i);
@@ -56,8 +56,9 @@ ARBCharacter::ARBCharacter()
 		if (PATH.Succeeded())
 		{
 			PathMeshArray[i]->SetStaticMesh(PATH.Object);
-			PathMeshArray[i]->SetRelativeScale3D(FVector(0.5, 0.5, 0.5));
+			PathMeshArray[i]->SetRelativeScale3D(FVector(0.2, 0.2, 0.2));
 			PathMeshArray[i]->AttachToComponent(CameraComp, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+
 		}
 	}
 	////////////////////////////////
@@ -85,6 +86,41 @@ void ARBCharacter::BeginPlay()
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
 	MaxHP = GameInstance->PlayerMaxHP;
+}
+// Called every frame
+void ARBCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	float TargetFOV = bWantsToZoom ? ZoomedFOV : DefaultFOV;
+	float NewFOV = FMath::FInterpTo(CameraComp->FieldOfView, TargetFOV, DeltaTime, ZoomInterpSpeed);
+
+	CameraComp->SetFieldOfView(NewFOV);
+
+	if (IsReloading == true)
+	{
+		ReloadCount += DeltaTime;
+		//UE_LOG(LogTemp, Warning, TEXT("%f"), ReloadCount);
+		if (ReloadCount >= 3.0f)
+		{
+			IsReloading = false;
+			ReloadCount = 0.0f;
+		}
+	}
+
+	////Path 작업
+	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if(GameInstance->IsPathMade == true)
+	{
+		for(int i = 0; i<100; ++i)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%f,  %f,  %f"), GameInstance->PathArray[i].X, GameInstance->PathArray[i].Y, GameInstance->PathArray[i].Z);
+			//상수는 총의 위치를 맞추기 위한 값
+			PathMeshArray[i]->SetRelativeLocation(FVector(GameInstance->PathArray[i].X + 230, GameInstance->PathArray[i].Y-13.0f, GameInstance->PathArray[i].Z - 46.0f));
+		}
+		GameInstance->IsPathMade = false;
+	}
+	//////////////////////
 }
 
 void ARBCharacter::MoveForward(float Value)
@@ -187,41 +223,7 @@ void ARBCharacter::Reload()
 	}
 }
 
-// Called every frame
-void ARBCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 
-	float TargetFOV = bWantsToZoom ? ZoomedFOV : DefaultFOV;
-	float NewFOV = FMath::FInterpTo(CameraComp->FieldOfView, TargetFOV, DeltaTime, ZoomInterpSpeed);
-
-	CameraComp->SetFieldOfView(NewFOV);
-
-	if (IsReloading == true)
-	{
-		ReloadCount += DeltaTime;
-		//UE_LOG(LogTemp, Warning, TEXT("%f"), ReloadCount);
-		if (ReloadCount >= 3.0f)
-		{
-			IsReloading = false;
-			ReloadCount = 0.0f;
-		}
-	}
-
-	////Path 작업
-	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	if(GameInstance->IsPathMade == true)
-	{
-		for(int i = 0; i<100; ++i)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%f,  %f,  %f"), GameInstance->PathArray[i].X, GameInstance->PathArray[i].Y, GameInstance->PathArray[i].Z);
-			PathMeshArray[i]->SetRelativeLocation(GameInstance->PathArray[i]);
-			//PathMeshArray[i]->SetRelativeLocation(FVector(i*10, i*2, i*4));
-		}
-		GameInstance->IsPathMade = false;
-	}
-	//////////////////////
-}
 
 // Called to bind functionality to input
 void ARBCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
