@@ -144,9 +144,9 @@ void AProjectile::BeginPlay()
 
 
 	//////Path를 만들기 위한 미리 계산된 궤적 정보 저장
-	TArray<FVector> Test;
+	TArray<FVector> PathVectorArray1;
 	FVector temp = {0, 0, 0};
-	if(GameInstance->IsPathMade == false)
+	if(GameInstance->IsPathMade1 == false)
 	{
 		for (int i = 0; i < 100; ++i)
 		{
@@ -154,11 +154,44 @@ void AProjectile::BeginPlay()
 			temp.Y += RotateY1 * i;
 			temp.Z += RotateZ1 * i;
 
-			Test.Add(temp);
+			PathVectorArray1.Add(temp);
 		}
-		GameInstance->PathArray = Test;
-		GameInstance->IsPathMade = true;
+		GameInstance->PathArray1 = PathVectorArray1;
+		GameInstance->IsPathMade1 = true;
 	}
+
+	temp = { 0, 0, 0 };
+	TArray<FVector> PathVectorArray2;
+	if (GameInstance->IsPathMade2 == false)
+	{
+		for (int i = 0; i < 100; ++i)
+		{
+			temp.X = RotateVector2.X * i;
+			temp.Y += RotateY2 * i;
+			temp.Z += RotateZ2 * i;
+
+			PathVectorArray2.Add(temp);
+		}
+		GameInstance->PathArray2 = PathVectorArray2;
+		GameInstance->IsPathMade2 = true;
+	}
+
+	temp = { 0, 0, 0 };
+	TArray<FVector> PathVectorArray3;
+	if (GameInstance->IsPathMade3 == false)
+	{
+		for (int i = 0; i < 100; ++i)
+		{
+			temp.X = RotateVector3.X * i;
+			temp.Y += RotateY3 * i;
+			temp.Z += RotateZ3 * i;
+
+			PathVectorArray3.Add(temp);
+		}
+		GameInstance->PathArray3 = PathVectorArray3;
+		GameInstance->IsPathMade3 = true;
+	}
+	
 	/////////////////////////
 }
 

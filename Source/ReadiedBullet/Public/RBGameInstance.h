@@ -105,8 +105,20 @@ public:
 
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Path")
-	TArray<FVector> PathArray;
+	TArray<FVector> PathArray1;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Path")
-	bool IsPathMade = false;
+	TArray<FVector> PathArray2;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Path")
+	TArray<FVector> PathArray3;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Path")
+	bool IsPathMade1 = false;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Path")
+	bool IsPathMade2 = false;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Path")
+	bool IsPathMade3 = false;
 };

@@ -109,17 +109,7 @@ void ARBCharacter::Tick(float DeltaTime)
 	}
 
 	////Path 작업
-	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	if(GameInstance->IsPathMade == true)
-	{
-		for(int i = 0; i<100; ++i)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%f,  %f,  %f"), GameInstance->PathArray[i].X, GameInstance->PathArray[i].Y, GameInstance->PathArray[i].Z);
-			//상수는 총의 위치를 맞추기 위한 값
-			PathMeshArray[i]->SetRelativeLocation(FVector(GameInstance->PathArray[i].X + 230, GameInstance->PathArray[i].Y-13.0f, GameInstance->PathArray[i].Z - 46.0f));
-		}
-		GameInstance->IsPathMade = false;
-	}
+	
 	//////////////////////
 }
 
@@ -160,6 +150,17 @@ void ARBCharacter::SelectSlot1()
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	GameInstance->SelectSlot = 1;
 
+	if (GameInstance->IsPathMade1 == true)
+	{
+		for (int i = 0; i < 100; ++i)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%f,  %f,  %f"), GameInstance->PathArray1[i].X, GameInstance->PathArray1[i].Y, GameInstance->PathArray1[i].Z);
+			//상수는 총의 위치를 맞추기 위한 값
+			PathMeshArray[i]->SetRelativeLocation(FVector(GameInstance->PathArray1[i].X + 230, GameInstance->PathArray1[i].Y - 13.0f, GameInstance->PathArray1[i].Z - 46.0f));
+		}
+		GameInstance->IsPathMade1 = false;
+	}
+
 	if (CurrentProjectile)
 	{
 		CurrentProjectile->SelectBulletSlot = 1;
@@ -171,6 +172,17 @@ void ARBCharacter::SelectSlot2()
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	GameInstance->SelectSlot = 2;
 
+	if (GameInstance->IsPathMade2 == true)
+	{
+		for (int i = 0; i < 100; ++i)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%f,  %f,  %f"), GameInstance->PathArray2[i].X, GameInstance->PathArray2[i].Y, GameInstance->PathArray2[i].Z);
+			//상수는 총의 위치를 맞추기 위한 값
+			PathMeshArray[i]->SetRelativeLocation(FVector(GameInstance->PathArray2[i].X + 230, GameInstance->PathArray2[i].Y - 13.0f, GameInstance->PathArray2[i].Z - 46.0f));
+		}
+		GameInstance->IsPathMade2 = false;
+	}
+
 	if (CurrentProjectile)
 	{
 		CurrentProjectile->SelectBulletSlot = 2;
@@ -181,6 +193,17 @@ void ARBCharacter::SelectSlot3()
 {
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	GameInstance->SelectSlot = 3;
+
+	if (GameInstance->IsPathMade3 == true)
+	{
+		for (int i = 0; i < 100; ++i)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%f,  %f,  %f"), GameInstance->PathArray3[i].X, GameInstance->PathArray3[i].Y, GameInstance->PathArray3[i].Z);
+			//상수는 총의 위치를 맞추기 위한 값
+			PathMeshArray[i]->SetRelativeLocation(FVector(GameInstance->PathArray3[i].X + 230, GameInstance->PathArray3[i].Y - 13.0f, GameInstance->PathArray3[i].Z - 46.0f));
+		}
+		GameInstance->IsPathMade3 = false;
+	}
 
 	if (CurrentProjectile)
 	{
