@@ -5,6 +5,7 @@
 #include "RBPlayerController.h"
 #include "Components/WidgetComponent.h"
 #include "Animation/AnimMontage.h"
+#include "Components/SceneCaptureComponent2D.h"
 #include "Components/AudioComponent.h"
 #include "Sound/SoundBase.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -50,6 +51,11 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USpringArmComponent* SpringArmComp;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	USpringArmComponent* MinimapSpringArmComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	USceneCaptureComponent2D* MinimapCaptureComp;
 	
 
 

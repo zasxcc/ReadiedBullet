@@ -13,6 +13,8 @@ ARBCharacter::ARBCharacter()
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 	SpringArmComp->bUsePawnControlRotation = true;
 
+	MinimapSpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("MinimapSpringArmComp"));
+	MinimapCaptureComp = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("Minimap"));
 
 	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("PlayerAudio"));
 	AudioComponent->bAutoActivate = false;
@@ -37,6 +39,8 @@ ARBCharacter::ARBCharacter()
 
 	SpringArmComp->SetupAttachment(RootComponent);
 	CameraComp->SetupAttachment(SpringArmComp);
+	MinimapSpringArmComp->SetupAttachment(RootComponent);
+	MinimapCaptureComp->SetupAttachment(MinimapSpringArmComp);
 	
 	ZoomedFOV = 40.0f;
 	ZoomInterpSpeed = 20;
