@@ -12,12 +12,12 @@ ACusPawn::ACusPawn()
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComp"));
-	ArrowMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ArrowStaticMeshComp"));
+
 
 	RootComponent = StaticMeshComp;
 	SpringArmComp->SetupAttachment(StaticMeshComp);
 	CameraComp->SetupAttachment(SpringArmComp);
-	ArrowMeshComp->SetupAttachment(CameraComp);
+
 	SpringArmComp->bEnableCameraLag = false;
 	SpringArmComp->bEnableCameraRotationLag = true;
 
