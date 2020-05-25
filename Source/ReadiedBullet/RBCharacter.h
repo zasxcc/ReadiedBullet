@@ -84,6 +84,10 @@ protected:
 
 	void StopFire();
 
+	void RemoteBulletPressed();
+	void RemoteBulletRealsed();
+
+
 	UFUNCTION()
 	void BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 			AActor* OtherActor,

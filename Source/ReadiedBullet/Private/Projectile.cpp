@@ -191,7 +191,14 @@ void AProjectile::BeginPlay()
 		GameInstance->PathArray3 = PathVectorArray3;
 		GameInstance->IsPathMade3 = true;
 	}
-	
+
+	//총알 방향 역전을 위한 값 대입
+	BulletTempY1 = -RotateY1;
+	BulletTempZ1 = -RotateZ1;
+	BulletTempY2 = -RotateY2;
+    BulletTempZ2 = -RotateZ2;
+	BulletTempY3 = -RotateY3;
+	BulletTempZ3 = -RotateZ3;
 	/////////////////////////
 }
 
@@ -199,7 +206,18 @@ void AProjectile::BeginPlay()
 void AProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
+	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+
+	//총알 역전을 위해 플레이어가 q를 누른다면 계산 값 역전
+	if(GameInstance->bRemoteBullet == true)
+	{
+		RotateY1 = BulletTempY1;
+		RotateZ1 = BulletTempZ1;
+		RotateY2 = BulletTempY2;
+		RotateZ2 = BulletTempZ2;
+		RotateY3 = BulletTempY3;
+		RotateZ3 = BulletTempZ3;
+	}
 	
 	if (SelectBulletSlot == 1) {
 		RotateVector1.Y += RotateY1;

@@ -121,4 +121,6 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Path")
 	bool IsPathMade3 = false;
+
+	bool bRemoteBullet = false;
 };

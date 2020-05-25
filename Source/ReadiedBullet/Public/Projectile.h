@@ -197,4 +197,12 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintAssignable, BlueprintCallable)
     FOverlapParam OverlapParam;
+
+	//Q키를 누르면 총알 방향 역전을 위한 변수
+	float BulletTempY1;
+	float BulletTempZ1;
+	float BulletTempY2;
+	float BulletTempZ2;
+	float BulletTempY3;
+	float BulletTempZ3;
 };

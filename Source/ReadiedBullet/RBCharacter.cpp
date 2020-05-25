@@ -278,7 +278,25 @@ void ARBCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction("Slot1", IE_Pressed, this, &ARBCharacter::SelectSlot1);
 	PlayerInputComponent->BindAction("Slot2", IE_Pressed, this, &ARBCharacter::SelectSlot2);
 	PlayerInputComponent->BindAction("Slot3", IE_Pressed, this, &ARBCharacter::SelectSlot3);
+
+	PlayerInputComponent->BindAction("RemoteBullet", IE_Pressed, this, &ARBCharacter::RemoteBulletPressed);
+	PlayerInputComponent->BindAction("RemoteBullet", IE_Released, this, &ARBCharacter::RemoteBulletRealsed);
 }
+
+void ARBCharacter::RemoteBulletPressed()
+{
+	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	GameInstance->bRemoteBullet = true;
+	
+}
+
+void ARBCharacter::RemoteBulletRealsed()
+{
+	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	GameInstance->bRemoteBullet = false;
+}
+
+
 
 FVector ARBCharacter::GetPawnViewLocation() const
 {
