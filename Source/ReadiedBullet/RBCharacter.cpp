@@ -286,14 +286,30 @@ void ARBCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 void ARBCharacter::RemoteBulletPressed()
 {
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	GameInstance->bRemoteBullet = true;
+	if(GameInstance->bAccessReverse1 == true)
+		GameInstance->bReverseBullet1 = true;
+
+	if (GameInstance->bAccessReverse2 == true)
+		GameInstance->bReverseBullet2 = true;
+
+	if (GameInstance->bAccessReverse3 == true)
+		GameInstance->bReverseBullet3 = true;
 	
 }
 
 void ARBCharacter::RemoteBulletRealsed()
 {
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	GameInstance->bRemoteBullet = false;
+
+	if (GameInstance->bAccessReverse1 == true)
+		GameInstance->bReverseBullet1 = false;
+
+	if (GameInstance->bAccessReverse2 == true)
+		GameInstance->bReverseBullet2 = false;
+
+	if (GameInstance->bAccessReverse3 == true)
+		GameInstance->bReverseBullet3 = false;
+
 }
 
 

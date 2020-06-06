@@ -209,12 +209,19 @@ void AProjectile::Tick(float DeltaTime)
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
 	//총알 역전을 위해 플레이어가 q를 누른다면 계산 값 역전
-	if(GameInstance->bRemoteBullet == true)
+	if(GameInstance->bReverseBullet1 == true)
 	{
 		RotateY1 = BulletTempY1;
 		RotateZ1 = BulletTempZ1;
+
+	}
+	if (GameInstance->bReverseBullet2 == true)
+	{
 		RotateY2 = BulletTempY2;
 		RotateZ2 = BulletTempZ2;
+	}
+	if (GameInstance->bReverseBullet3 == true)
+	{
 		RotateY3 = BulletTempY3;
 		RotateZ3 = BulletTempZ3;
 	}

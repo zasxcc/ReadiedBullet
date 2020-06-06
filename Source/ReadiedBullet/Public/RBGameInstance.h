@@ -122,5 +122,14 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Path")
 	bool IsPathMade3 = false;
 
-	bool bRemoteBullet = false;
+	bool bReverseBullet1 = false;
+	bool bReverseBullet2 = false;
+	bool bReverseBullet3 = false;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Reverse")
+	bool bAccessReverse1 = false;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Reverse")
+	bool bAccessReverse2 = false;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Reverse")
+	bool bAccessReverse3 = false;
 };

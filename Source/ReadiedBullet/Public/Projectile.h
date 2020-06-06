@@ -16,6 +16,8 @@
 #define FIRE_IMPACT 10
 #define THUNDER_IMPACT 11
 #define ICE_IMPACT 12
+#define LASER_IMPACT 13
+#define DIR_REVERSE 14
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOverlapParam);
 
@@ -198,7 +200,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintAssignable, BlueprintCallable)
     FOverlapParam OverlapParam;
 
-	//Q키를 누르면 총알 방향 역전을 위한 변수
+	//Q?��? ?�르�?총알 방향 ??��???�한 변??
 	float BulletTempY1;
 	float BulletTempZ1;
 	float BulletTempY2;
