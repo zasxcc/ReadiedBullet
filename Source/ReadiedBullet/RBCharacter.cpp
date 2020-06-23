@@ -280,7 +280,8 @@ void ARBCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction("Slot3", IE_Pressed, this, &ARBCharacter::SelectSlot3);
 
 	PlayerInputComponent->BindAction("RemoteBullet", IE_Pressed, this, &ARBCharacter::RemoteBulletPressed);
-	PlayerInputComponent->BindAction("RemoteBullet", IE_Released, this, &ARBCharacter::RemoteBulletRealsed);
+	PlayerInputComponent->BindAction("RemoteBullet", IE_Released, this, &ARBCharacter::RemoteBulletReleased);
+
 }
 
 void ARBCharacter::RemoteBulletPressed()
@@ -297,7 +298,7 @@ void ARBCharacter::RemoteBulletPressed()
 	
 }
 
-void ARBCharacter::RemoteBulletRealsed()
+void ARBCharacter::RemoteBulletReleased()
 {
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
@@ -311,6 +312,7 @@ void ARBCharacter::RemoteBulletRealsed()
 		GameInstance->bReverseBullet3 = false;
 
 }
+
 
 
 

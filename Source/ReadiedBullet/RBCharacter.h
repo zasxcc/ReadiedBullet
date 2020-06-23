@@ -85,7 +85,8 @@ protected:
 	void StopFire();
 
 	void RemoteBulletPressed();
-	void RemoteBulletRealsed();
+	void RemoteBulletReleased();
+
 
 
 	UFUNCTION()
