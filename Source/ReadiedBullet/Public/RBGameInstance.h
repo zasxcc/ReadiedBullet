@@ -132,4 +132,8 @@ public:
 	bool bAccessReverse2 = false;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Reverse")
 	bool bAccessReverse3 = false;
+	
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cinema")
+	bool isCompleteCinema = false;;
 };
