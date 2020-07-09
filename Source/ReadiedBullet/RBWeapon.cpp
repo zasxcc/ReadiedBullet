@@ -2,7 +2,7 @@
 
 
 #include "RBWeapon.h"
-
+#include "RBCharacter.h"
 static int32 DebugWeaponDrawing = 0;
 FAutoConsoleVariableRef CVARDebugWeaponDrawing(
 	TEXT("COOP.DebugWeapon"),
@@ -87,6 +87,21 @@ void ARBWeapon::Fire()
 {
 	AActor* MyOwner = GetOwner();
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	//FHitResult hr;
+	//ARBCharacter* player = Cast<ARBCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 1));
+	//FVector start = player->CameraComp->GetComponentLocation();
+	//FVector end = player->CameraComp->GetForwardVector();
+	//end = end * 10000;
+
+	//if (GetWorld()->LineTraceSingleByChannel(hr, start, end, ECollisionChannel::ECC_Visibility))
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("aaaaa"));
+	//	//hr
+	//}
+	//else {
+
+	//}
+	
 
 	
 	if(CurrentArmo > 0 && IsReloading == false)
