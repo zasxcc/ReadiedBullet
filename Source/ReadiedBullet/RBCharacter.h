@@ -86,6 +86,8 @@ protected:
 	void RemoteBulletPressed();
 	void RemoteBulletReleased();
 
+	void LightOnOff();
+
 
 
 	UFUNCTION()
@@ -107,6 +109,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UCameraComponent* CameraComp;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Light")
+	USpotLightComponent* SpotLightComp;
+
 	FRotator GetCamRotator();
 
 
@@ -117,7 +122,7 @@ public:
 	float MaxHP;
 
 	bool IsReloading = false;
-
+	bool LightTurn = false;
 	float ReloadCount = 0;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")

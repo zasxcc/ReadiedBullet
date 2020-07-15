@@ -19,6 +19,9 @@ ARBCharacter::ARBCharacter()
 	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("PlayerAudio"));
 	AudioComponent->bAutoActivate = false;
 
+	SpotLightComp = CreateDefaultSubobject<USpotLightComponent>(TEXT("SpotLight"));
+	
+
 
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> RELOAD(TEXT("AnimMontage'/Game/Animation/Reload_Montage.Reload_Montage'"));
 	if (RELOAD.Succeeded())
@@ -41,7 +44,8 @@ ARBCharacter::ARBCharacter()
 	CameraComp->SetupAttachment(SpringArmComp);
 	MinimapSpringArmComp->SetupAttachment(RootComponent);
 	MinimapCaptureComp->SetupAttachment(MinimapSpringArmComp);
-	
+	SpotLightComp->SetupAttachment(CameraComp);
+
 	ZoomedFOV = 40.0f;
 	ZoomInterpSpeed = 20;
 
@@ -50,6 +54,10 @@ ARBCharacter::ARBCharacter()
 
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("RBCharacter"));
 
+	SpotLightComp->SetAttenuationRadius(4820);
+	SpotLightComp->SetInnerConeAngle(11.2f);
+	SpotLightComp->SetOuterConeAngle(20.0f);
+	SpotLightComp->SetLightColor(FLinearColor::Yellow);
 
 	//////////////////Path ÀÛ¾÷///////////////////////////////
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> PATH(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Sphere.Shape_Sphere'"));
@@ -282,6 +290,21 @@ void ARBCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction("RemoteBullet", IE_Pressed, this, &ARBCharacter::RemoteBulletPressed);
 	PlayerInputComponent->BindAction("RemoteBullet", IE_Released, this, &ARBCharacter::RemoteBulletReleased);
 
+	PlayerInputComponent->BindAction("LightOnOff", IE_Pressed, this, &ARBCharacter::LightOnOff);
+
+}
+
+void ARBCharacter::LightOnOff()
+{
+	if (LightTurn == false) {
+		SpotLightComp->SetVisibility(false);
+		LightTurn = true;
+	}
+	else if (LightTurn == true)
+	{
+		SpotLightComp->SetVisibility(true);
+		LightTurn = false;
+	}
 }
 
 void ARBCharacter::RemoteBulletPressed()
