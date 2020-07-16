@@ -78,9 +78,10 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Player")
 	FName WeaponAttachSocketName;
 
-
+	UFUNCTION(BlueprintCallable, Category = "Player")
 	void StartFire();
 
+	UFUNCTION(BlueprintCallable, Category = "Player")
 	void StopFire();
 
 	void RemoteBulletPressed();
