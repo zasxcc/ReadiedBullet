@@ -12,11 +12,11 @@
 #include "Net/UnrealNetwork.h"
 
 static int32 DebugWeaponDrawing = 0;
-FAutoConsoleVariableRef CVARDebugWeaponDrawing(
-	TEXT("COOP.DebugWeapons"),
-	DebugWeaponDrawing,
-	TEXT("Draw Debug Lines for Weapons"),
-	ECVF_Cheat);
+//FAutoConsoleVariableRef CVARDebugWeaponDrawing(
+//	TEXT("COOP.DebugWeapons"),
+//	DebugWeaponDrawing,
+//	TEXT("Draw Debug Lines for Weapons"),
+//	ECVF_Cheat);
 
 
 // Sets default values
@@ -51,10 +51,10 @@ void ASWeapon::Fire()
 {
 	// Trace the world, from pawn eyes to crosshair location
 
-	if (Role < ROLE_Authority)
+	/*if (Role < ROLE_Authority)
 	{
 		ServerFire();
-	}
+	}*/
 
 	AActor* MyOwner = GetOwner();
 	if (MyOwner)
@@ -83,26 +83,26 @@ void ASWeapon::Fire()
 		EPhysicalSurface SurfaceType = SurfaceType_Default;
 
 		FHitResult Hit;
-		if (GetWorld()->LineTraceSingleByChannel(Hit, EyeLocation, TraceEnd, COLLISION_WEAPON, QueryParams))
-		{
-			// Blocking hit! Process damage
-			AActor* HitActor = Hit.GetActor();
+		//if (GetWorld()->LineTraceSingleByChannel(Hit, EyeLocation, TraceEnd, COLLISION_WEAPON, QueryParams))
+		//{
+		//	// Blocking hit! Process damage
+		//	AActor* HitActor = Hit.GetActor();
 
-			SurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
+		//	SurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
 
-			float ActualDamage = BaseDamage;
-			if (SurfaceType == SURFACE_FLESHVULNERABLE)
-			{
-				ActualDamage *= 4.0f;
-			}
+		//	float ActualDamage = BaseDamage;
+		//	if (SurfaceType == SURFACE_FLESHVULNERABLE)
+		//	{
+		//		ActualDamage *= 4.0f;
+		//	}
 
-			UGameplayStatics::ApplyPointDamage(HitActor, ActualDamage, ShotDirection, Hit, MyOwner->GetInstigatorController(), MyOwner, DamageType);
+		//	UGameplayStatics::ApplyPointDamage(HitActor, ActualDamage, ShotDirection, Hit, MyOwner->GetInstigatorController(), MyOwner, DamageType);
 
-			PlayImpactEffects(SurfaceType, Hit.ImpactPoint);
+		//	PlayImpactEffects(SurfaceType, Hit.ImpactPoint);
 
-			TracerEndPoint = Hit.ImpactPoint;
+		//	TracerEndPoint = Hit.ImpactPoint;
 
-		}
+		//}
 
 		if (DebugWeaponDrawing > 0)
 		{
@@ -189,7 +189,7 @@ void ASWeapon::PlayFireEffects(FVector TraceEnd)
 
 void ASWeapon::PlayImpactEffects(EPhysicalSurface SurfaceType, FVector ImpactPoint)
 {
-	UParticleSystem* SelectedEffect = nullptr;
+	/*UParticleSystem* SelectedEffect = nullptr;
 	switch (SurfaceType)
 	{
 	case SURFACE_FLESHDEFAULT:
@@ -209,7 +209,7 @@ void ASWeapon::PlayImpactEffects(EPhysicalSurface SurfaceType, FVector ImpactPoi
 		ShotDirection.Normalize();
 
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SelectedEffect, ImpactPoint, ShotDirection.Rotation());
-	}
+	}*/
 }
 
 
