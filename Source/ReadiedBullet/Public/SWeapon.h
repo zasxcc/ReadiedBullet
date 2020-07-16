@@ -74,8 +74,8 @@ protected:
 
 	void Fire();
 
-	/*UFUNCTION(Server, Reliable, WithValidation)
-		void ServerFire();*/
+	UFUNCTION(Server, Reliable, WithValidation)
+		void ServerFire();
 
 	FTimerHandle TimerHandle_TimeBetweenShots;
 

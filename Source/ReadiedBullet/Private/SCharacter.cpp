@@ -6,9 +6,9 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "Components/CapsuleComponent.h"
-//#include "CoopGame.h"
+#include "ReadiedBullet/ReadiedBullet.h"
 //#include "SHealthComponent.h"
-//#include "SWeapon.h"
+#include "SWeapon.h"
 #include "Net/UnrealNetwork.h"
 #include "Engine/Classes/Components/InputComponent.h"
 
@@ -24,9 +24,9 @@ ASCharacter::ASCharacter()
 
 	GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true;
 
-	/*GetCapsuleComponent()->SetCollisionResponseToChannel(COLLISION_WEAPON, ECR_Ignore);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(COLLISION_WEAPON, ECR_Ignore);
 
-	HealthComp = CreateDefaultSubobject<USHealthComponent>(TEXT("HealthComp"));*/
+	//HealthComp = CreateDefaultSubobject<USHealthComponent>(TEXT("HealthComp"));
 
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComp->SetupAttachment(SpringArmComp);
@@ -51,12 +51,12 @@ void ASCharacter::BeginPlay()
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-		/*CurrentWeapon = GetWorld()->SpawnActor<ASWeapon>(StarterWeaponClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
+		CurrentWeapon = GetWorld()->SpawnActor<ASWeapon>(StarterWeaponClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
 		if (CurrentWeapon)
 		{
 			CurrentWeapon->SetOwner(this);
 			CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponAttachSocketName);
-		}*/
+		}
 	}
 }
 
@@ -98,19 +98,19 @@ void ASCharacter::EndZoom()
 
 void ASCharacter::StartFire()
 {
-	/*if (CurrentWeapon)
+	if (CurrentWeapon)
 	{
 		CurrentWeapon->StartFire();
-	}*/
+	}
 }
 
 
 void ASCharacter::StopFire()
 {
-	/*if (CurrentWeapon)
+	if (CurrentWeapon)
 	{
 		CurrentWeapon->StopFire();
-	}*/
+	}
 }
 
 //void ASCharacter::OnHealthChanged(USHealthComponent* OwningHealthComp, float Health, float HealthDelta, const class UDamageType* DamageType,

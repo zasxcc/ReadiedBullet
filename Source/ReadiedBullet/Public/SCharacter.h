@@ -9,7 +9,7 @@
 class UCameraComponent;
 class USpringArmComponent;
 
-//class ASWeapon;
+class ASWeapon;
 //class USHealthComponent;
 
 UCLASS()
@@ -57,7 +57,7 @@ protected:
 
 	void EndZoom();
 
-	/*
+	
 	UPROPERTY(Replicated)
 	ASWeapon* CurrentWeapon;
 
@@ -67,9 +67,9 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Player")
 	FName WeaponAttachSocketName;
 
-	UFUNCTION()
-	void OnHealthChanged(USHealthComponent* OwningHealthComp, float Health, float HealthDelta, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
-	*/
+	//UFUNCTION()
+	//void OnHealthChanged(USHealthComponent* OwningHealthComp, float Health, float HealthDelta, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+	
 
 	/* Pawn died previously */
 	UPROPERTY(Replicated, BlueprintReadOnly, Category = "Player")
