@@ -25,27 +25,6 @@ AProjectile::AProjectile()
 	CollisionComp->SetupAttachment(SceneComp);
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("sad"));
 
-	////////////////////////////////// 작업중인 곳
-	
-	// static FName Bullets[] = {TEXT("test1"), TEXT("test2"), TEXT("test3")};
-	// static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeItem(TEXT("/Game/StarterContent/Shapes/Shape_Pipe_180"));
-	// static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeItem2(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Wedge_A.Shape_Wedge_A'"));
-	// if(CubeItem2.Succeeded())
-	// {
-	// 	StaticMesh->SetStaticMesh(CubeItem2.Object);
-	// }
-	// if(CubeItem.Succeeded())
-	// {
-	// 	for(auto Bullet : Bullets)
-	// 	{
-	// 		UStaticMeshComponent* BulletMesh = CreateDefaultSubobject<UStaticMeshComponent>(*Bullet.ToString());
-	// 		BulletMesh->SetStaticMesh(CubeItem.Object);
-	// 		BulletMesh->SetupAttachment(CollisionComp);
-	// 		BoxStaticMesh.Add(BulletMesh);
-	// 	}
-	// }
-
-	/////////////////////////////////////////////
 	
 	SelectBulletSlot = 1;
 
