@@ -8,7 +8,6 @@
 #include "Components/CapsuleComponent.h"
 #include "ReadiedBullet/ReadiedBullet.h"
 //#include "SHealthComponent.h"
-#include "SWeapon.h"
 #include "Net/UnrealNetwork.h"
 #include "Engine/Classes/Components/InputComponent.h"
 
@@ -27,7 +26,7 @@ ASCharacter::ASCharacter()
 	GetCapsuleComponent()->SetCollisionResponseToChannel(COLLISION_WEAPON, ECR_Ignore);
 
 	//HealthComp = CreateDefaultSubobject<USHealthComponent>(TEXT("HealthComp"));
-
+	WeaponAttachSocketName = "WeaponSocket";
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComp->SetupAttachment(SpringArmComp);
 
@@ -45,8 +44,8 @@ void ASCharacter::BeginPlay()
 	DefaultFOV = CameraComp->FieldOfView;
 	//HealthComp->OnHealthChanged.AddDynamic(this, &ASCharacter::OnHealthChanged);
 
-	if (Role == ROLE_Authority)
-	{
+	/*if (Role == ROLE_Authority)
+	{*/
 		// Spawn a default weapon
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -57,7 +56,7 @@ void ASCharacter::BeginPlay()
 			CurrentWeapon->SetOwner(this);
 			CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponAttachSocketName);
 		}
-	}
+	//}
 }
 
 void ASCharacter::MoveForward(float Value)

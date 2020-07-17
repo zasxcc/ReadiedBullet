@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "SWeapon.h"
 #include "GameFramework/Character.h"
 #include "SCharacter.generated.h"
 
@@ -52,6 +53,8 @@ protected:
 
 	/* Default FOV set during begin play */
 	float DefaultFOV;
+
+
 
 	void BeginZoom();
 
