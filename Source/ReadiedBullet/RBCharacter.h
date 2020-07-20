@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "ReadiedBullet.h"
+#include "KeyItem.h"
 #include "RBWeapon.h"
 #include "RBPlayerController.h"
 #include "Components/WidgetComponent.h"

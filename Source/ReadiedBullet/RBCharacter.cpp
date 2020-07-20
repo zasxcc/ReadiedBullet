@@ -364,9 +364,17 @@ void ARBCharacter::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	bool bFromSweep,
 	const FHitResult& SweepResult)
 {
-	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	GameInstance->PlayerMaxHP -= 10;
-	MaxHP = GameInstance->PlayerMaxHP;
+	if (OtherActor->ActorHasTag(TEXT("KEY"))) 
+	{
+		UE_LOG(LogTemp, Warning, TEXT("asd"));
+	}
 
-	UE_LOG(LogTemp, Warning, TEXT("MaxHP : %f,  InstanceHP : %f"), MaxHP, GameInstance->PlayerMaxHP);
+	else 
+	{
+		URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+		GameInstance->PlayerMaxHP -= 10;
+		MaxHP = GameInstance->PlayerMaxHP;
+
+		UE_LOG(LogTemp, Warning, TEXT("MaxHP : %f,  InstanceHP : %f"), MaxHP, GameInstance->PlayerMaxHP);
+	}
 }
