@@ -117,10 +117,10 @@ public:
 	FRotator GetCamRotator();
 
 
-	UPROPERTY(VisibleAnywhere, Category = "HP")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "HP")
 	float CurrentHP;
 
-	UPROPERTY(VisibleAnywhere, Category = "HP")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "HP")
 	float MaxHP;
 
 	bool IsReloading = false;
@@ -148,5 +148,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Path")
 	bool IsPathMade = false;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Key")
+	bool isKey = false;;
 
 };

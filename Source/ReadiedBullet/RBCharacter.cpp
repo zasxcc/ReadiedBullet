@@ -9,7 +9,8 @@ ARBCharacter::ARBCharacter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	Tags.Add(TEXT("Alive"));
+	Tags.Add(FName("Alive"));
+	Tags.Add(FName("Player"));
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 	SpringArmComp->bUsePawnControlRotation = true;
 
@@ -74,6 +75,9 @@ ARBCharacter::ARBCharacter()
 		}
 	}
 	////////////////////////////////
+
+	GetMesh()->ComponentTags.Add(FName("Player"));
+	GetCapsuleComponent()->ComponentTags.Add(FName("Player"));
 }
 
 // Called when the game starts or when spawned
@@ -364,13 +368,21 @@ void ARBCharacter::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	bool bFromSweep,
 	const FHitResult& SweepResult)
 {
-	if (OtherActor->ActorHasTag(TEXT("KEY"))) 
-	{
-		UE_LOG(LogTemp, Warning, TEXT("asd"));
+	if (OtherComp->ComponentHasTag(FName("Door"))) {
+		UE_LOG(LogTemp, Warning, TEXT("door"));
+		if (isKey)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("HasKey"));
+			URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+			GameInstance->openDoor = true;
+		}
 	}
-
-	else 
+	else if (OtherComp->ComponentHasTag(FName("Key")))
 	{
+		UE_LOG(LogTemp, Warning, TEXT("key"));
+		isKey = true;
+	}
+	else {
 		URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 		GameInstance->PlayerMaxHP -= 10;
 		MaxHP = GameInstance->PlayerMaxHP;

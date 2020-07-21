@@ -135,5 +135,9 @@ public:
 	
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cinema")
-	bool isCompleteCinema = false;;
+	bool isCompleteCinema = false;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Door")
+	bool openDoor = false;
+
 };

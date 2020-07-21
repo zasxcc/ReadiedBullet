@@ -5,8 +5,8 @@
 
 #include "ReadiedBullet/ReadiedBullet.h"
 #include "GameFramework/Actor.h"
+#include "ReadiedBullet/RBCharacter.h"
 #include "Components/CapsuleComponent.h"
-#include "GameplayTagContainer.h"
 #include "Components/StaticMeshComponent.h"
 #include "KeyItem.generated.h"
 
