@@ -53,6 +53,18 @@ ABulletComp_BOX::ABulletComp_BOX()
 	{
 		OverlapParticle = PARTICLE_OVERLAP.Object;
 	}
+
+	static ConstructorHelpers::FObjectFinder<USoundBase>FIREMISSSOUND(TEXT("SoundWave'/Game/Sound/Cus.Cus'"));
+	if (FIREMISSSOUND.Succeeded())
+	{
+		LinkCue = FIREMISSSOUND.Object;
+	}
+
+
+	// 오디오 컴포넌트 추가
+	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("PlayerAudio"));
+	AudioComponent->bAutoActivate = false;
+	AudioComponent->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -93,6 +105,7 @@ void ABulletComp_BOX::BoxCompOnReleased(class UPrimitiveComponent* TouchedCompon
 
 	if (bOverlap == true)
 	{
+		LinkSoundPlay();
 		if (bOverlapLeftBox == true)
 		{
 
@@ -260,3 +273,9 @@ void ABulletComp_BOX::Tick(float DeltaTime)
 	}
 }
 
+
+void ABulletComp_BOX::LinkSoundPlay()
+{
+	AudioComponent->SetSound(LinkCue);
+	AudioComponent->Play();
+}

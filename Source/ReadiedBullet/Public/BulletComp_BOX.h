@@ -8,6 +8,8 @@
 #include "CusPawn.h"
 #include "GameFramework/PlayerController.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/AudioComponent.h"
+#include "Sound/SoundBase.h"
 #include "BulletComp_BOX.generated.h"
 
 UCLASS()
@@ -65,6 +67,8 @@ protected:
 	UFUNCTION()
 	void OnOverlapEnd_BackBox(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	UFUNCTION()
+	void LinkSoundPlay();
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Component")
 	UStaticMeshComponent* BoxComp;
@@ -87,6 +91,12 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Component")
 	UStaticMeshComponent* BackBox;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
+	class UAudioComponent* AudioComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
+	USoundBase* LinkCue;
 
 
 	bool bOnCursor;
