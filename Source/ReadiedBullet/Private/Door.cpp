@@ -13,6 +13,18 @@ ADoor::ADoor()
 	RootComponent = Root;
 	PrimaryActorTick.bCanEverTick = true;
 	BoxCom->ComponentTags.Add(FName("Door"));
+
+
+	// 오디오 컴포넌트 추가
+	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("PlayerAudio"));
+	AudioComponent->bAutoActivate = false;
+	AudioComponent->SetupAttachment(RootComponent);
+
+	static ConstructorHelpers::FObjectFinder<USoundBase>FIREMISSSOUND(TEXT("SoundWave'/Game/Sound/DoorOpen.DoorOpen'"));
+	if (FIREMISSSOUND.Succeeded())
+	{
+		DoorOpenCue = FIREMISSSOUND.Object;
+	}
 }
 
 // Called when the game starts or when spawned
@@ -30,6 +42,13 @@ void ADoor::Tick(float DeltaTime)
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	if (GameInstance->openDoor)
 	{
+		if (openDoor == false)
+		{
+			AudioComponent->SetSound(DoorOpenCue);
+			AudioComponent->Play();
+			openDoor = true;
+		}
+
 		if (leftDoorAngle > -270.0f) {
 			leftDoorAngle -= 2.0f;
 			leftDoor->SetRelativeRotation(FRotator(0.0f, leftDoorAngle, 0.0f));

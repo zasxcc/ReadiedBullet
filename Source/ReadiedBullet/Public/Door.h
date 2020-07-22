@@ -5,7 +5,9 @@
 #include "ReadiedBullet/ReadiedBullet.h"
 #include "GameFramework/Actor.h"
 #include "RBGameInstance.h"
+#include "Components/AudioComponent.h"
 #include "Components/BoxComponent.h"
+#include "Sound/SoundBase.h"
 #include "Components/StaticMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Door.generated.h"
@@ -32,12 +34,19 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "CapsuleColl")
 	UBoxComponent* BoxCom;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
+	class UAudioComponent* AudioComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
+	USoundBase* DoorOpenCue;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	float leftDoorAngle = -180.0f;
 	float rightDoorAngel = 0.0f;
 
+	bool openDoor = false;
 
 public:	
 	// Called every frame
