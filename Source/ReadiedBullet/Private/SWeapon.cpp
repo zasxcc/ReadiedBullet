@@ -25,7 +25,7 @@ ASWeapon::ASWeapon()
 	MeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshComp"));
 	RootComponent = MeshComp;
 		
-	MuzzleSocketName = "MuzzleSocket";
+	MuzzleSocketName = "MuzzleFlashSocket";
 	TracerTargetName = "Target";
 
 	BaseDamage = 20.0f;
