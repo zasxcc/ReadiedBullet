@@ -72,6 +72,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 		float BaseDamage;
 
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void Fire();
 
 	UFUNCTION(Server, Reliable, WithValidation)
