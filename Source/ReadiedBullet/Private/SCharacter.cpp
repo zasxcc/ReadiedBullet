@@ -26,14 +26,14 @@ ASCharacter::ASCharacter()
 	GetCapsuleComponent()->SetCollisionResponseToChannel(COLLISION_WEAPON, ECR_Ignore);
 
 	//HealthComp = CreateDefaultSubobject<USHealthComponent>(TEXT("HealthComp"));
-	WeaponAttachSocketName = "WeaponSocket";
+	
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComp->SetupAttachment(SpringArmComp);
 
 	ZoomedFOV = 65.0f;
 	ZoomInterpSpeed = 20;
 
-	//WeaponAttachSocketName = "WeaponSocket";
+	WeaponAttachSocketName = "WeaponSocket";
 }
 
 // Called when the game starts or when spawned
@@ -44,19 +44,22 @@ void ASCharacter::BeginPlay()
 	DefaultFOV = CameraComp->FieldOfView;
 	//HealthComp->OnHealthChanged.AddDynamic(this, &ASCharacter::OnHealthChanged);
 
-	/*if (Role == ROLE_Authority)
-	{*/
+	if (Role == ROLE_Authority)
+	{
 		// Spawn a default weapon
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		UE_LOG(LogTemp, Log, TEXT("1 : spawn Prams"));
 
 		CurrentWeapon = GetWorld()->SpawnActor<ASWeapon>(StarterWeaponClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
+		UE_LOG(LogTemp, Log, TEXT("2 : load Current Weapon"));
 		if (CurrentWeapon)
 		{
 			CurrentWeapon->SetOwner(this);
 			CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponAttachSocketName);
+			UE_LOG(LogTemp, Log, TEXT("3 : if there is Current Weapon, attach it"));
 		}
-	//}
+	}
 }
 
 void ASCharacter::MoveForward(float Value)
@@ -179,6 +182,6 @@ void ASCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifet
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	//DOREPLIFETIME(ASCharacter, CurrentWeapon);
+	DOREPLIFETIME(ASCharacter, CurrentWeapon);
 	DOREPLIFETIME(ASCharacter, bDied);
 }
