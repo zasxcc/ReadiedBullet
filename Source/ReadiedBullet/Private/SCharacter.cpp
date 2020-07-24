@@ -17,9 +17,9 @@ ASCharacter::ASCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
+	/*SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 	SpringArmComp->bUsePawnControlRotation = true;
-	SpringArmComp->SetupAttachment(RootComponent);
+	SpringArmComp->SetupAttachment(RootComponent);*/
 
 	GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true;
 
@@ -27,11 +27,11 @@ ASCharacter::ASCharacter()
 
 	//HealthComp = CreateDefaultSubobject<USHealthComponent>(TEXT("HealthComp"));
 	
-	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
-	CameraComp->SetupAttachment(SpringArmComp);
+	/*CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
+	CameraComp->SetupAttachment(SpringArmComp);*/
 
-	ZoomedFOV = 65.0f;
-	ZoomInterpSpeed = 20;
+	/*ZoomedFOV = 65.0f;
+	ZoomInterpSpeed = 20;*/
 
 	WeaponAttachSocketName = "WeaponSocket";
 }
@@ -41,7 +41,7 @@ void ASCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	DefaultFOV = CameraComp->FieldOfView;
+	//DefaultFOV = CameraComp->FieldOfView;
 	//HealthComp->OnHealthChanged.AddDynamic(this, &ASCharacter::OnHealthChanged);
 
 	if (Role == ROLE_Authority)
@@ -137,10 +137,10 @@ void ASCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	float TargetFOV = bWantsToZoom ? ZoomedFOV : DefaultFOV;
-	float NewFOV = FMath::FInterpTo(CameraComp->FieldOfView, TargetFOV, DeltaTime, ZoomInterpSpeed);
+	//float TargetFOV = bWantsToZoom ? ZoomedFOV : DefaultFOV;
+	//float NewFOV = FMath::FInterpTo(CameraComp->FieldOfView, TargetFOV, DeltaTime, ZoomInterpSpeed);
 
-	CameraComp->SetFieldOfView(NewFOV);
+	//CameraComp->SetFieldOfView(NewFOV);
 }
 
 // Called to bind functionality to input
@@ -169,10 +169,10 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 FVector ASCharacter::GetPawnViewLocation() const
 {
-	if (CameraComp)
+	/*if (CameraComp)
 	{
 		return CameraComp->GetComponentLocation();
-	}
+	}*/
 
 	return Super::GetPawnViewLocation();
 }

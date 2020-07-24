@@ -70,52 +70,65 @@ void ASWeapon::Fire()
 		ShotDirection = FMath::VRandCone(ShotDirection, HalfRad, HalfRad);
 
 		FVector TraceEnd = EyeLocation + (ShotDirection * 10000);
+		if (ProjectileClass)
+		{
+			//무기 위치 받아서 저장
+			FVector MuzzleLocation = MeshComp->GetSocketLocation("MuzzleFlashSocket");
+			//FRotator MuzzleRotation = MeshComp->GetSocketRotation("MuzzleFlashSocket");;
 
-		FCollisionQueryParams QueryParams;
+			//Set Spawn Collision Handling Override
+			FActorSpawnParameters ActorSpawnParams;
+			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+
+			// spawn the projectile at the muzzle
+			GetWorld()->SpawnActor<AActor>(ProjectileClass, MuzzleLocation, EyeRotation, ActorSpawnParams);
+		}
+
+		/*FCollisionQueryParams QueryParams;
 		QueryParams.AddIgnoredActor(MyOwner);
 		QueryParams.AddIgnoredActor(this);
 		QueryParams.bTraceComplex = true;
-		QueryParams.bReturnPhysicalMaterial = true;
+		QueryParams.bReturnPhysicalMaterial = true;*/
 
 		// Particle "Target" parameter
-		FVector TracerEndPoint = TraceEnd;
+		//FVector TracerEndPoint = TraceEnd;
 
-		EPhysicalSurface SurfaceType = SurfaceType_Default;
+		//EPhysicalSurface SurfaceType = SurfaceType_Default;
 
-		FHitResult Hit;
-		if (GetWorld()->LineTraceSingleByChannel(Hit, EyeLocation, TraceEnd, COLLISION_WEAPON, QueryParams))
-		{
-			// Blocking hit! Process damage
-			AActor* HitActor = Hit.GetActor();
+		//FHitResult Hit;
+		//if (GetWorld()->LineTraceSingleByChannel(Hit, EyeLocation, TraceEnd, COLLISION_WEAPON, QueryParams))
+		//{
+		//	// Blocking hit! Process damage
+		//	AActor* HitActor = Hit.GetActor();
 
-			SurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
+		//	SurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
 
-			float ActualDamage = BaseDamage;
-			if (SurfaceType == SURFACE_FLESHVULNERABLE)
-			{
-				ActualDamage *= 4.0f;
-			}
+		//	float ActualDamage = BaseDamage;
+		//	if (SurfaceType == SURFACE_FLESHVULNERABLE)
+		//	{
+		//		ActualDamage *= 4.0f;
+		//	}
 
-			UGameplayStatics::ApplyPointDamage(HitActor, ActualDamage, ShotDirection, Hit, MyOwner->GetInstigatorController(), MyOwner, DamageType);
+		//	UGameplayStatics::ApplyPointDamage(HitActor, ActualDamage, ShotDirection, Hit, MyOwner->GetInstigatorController(), MyOwner, DamageType);
+		//	
+		//	PlayImpactEffects(SurfaceType, Hit.ImpactPoint);
 
-			PlayImpactEffects(SurfaceType, Hit.ImpactPoint);
+		//	TracerEndPoint = Hit.ImpactPoint;
 
-			TracerEndPoint = Hit.ImpactPoint;
-
-		}
+		//}
 
 		if (DebugWeaponDrawing > 0)
 		{
 			DrawDebugLine(GetWorld(), EyeLocation, TraceEnd, FColor::White, false, 1.0f, 0, 1.0f);
 		}
 
-		PlayFireEffects(TracerEndPoint);
+		//PlayFireEffects(TracerEndPoint);
 
-		if (Role == ROLE_Authority)
+		/*if (Role == ROLE_Authority)
 		{
 			HitScanTrace.TraceTo = TracerEndPoint;
 			HitScanTrace.SurfaceType = SurfaceType;
-		}
+		}*/
 
 		LastFireTime = GetWorld()->TimeSeconds;
 	}

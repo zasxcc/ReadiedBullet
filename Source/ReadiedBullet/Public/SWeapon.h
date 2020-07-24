@@ -96,6 +96,10 @@ protected:
 	UPROPERTY(ReplicatedUsing = OnRep_HitScanTrace)
 		FHitScanTrace HitScanTrace;
 
+	/** Projectile class to spawn */
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+		TSubclassOf<AActor> ProjectileClass;
+
 	UFUNCTION()
 		void OnRep_HitScanTrace();
 
