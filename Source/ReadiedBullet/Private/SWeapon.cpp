@@ -36,6 +36,16 @@ ASWeapon::ASWeapon()
 
 	NetUpdateFrequency = 66.0f;
 	MinNetUpdateFrequency = 33.0f;
+
+	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
+	AudioComponent->bAutoActivate = false;
+	AudioComponent->SetupAttachment(RootComponent);
+
+	static ConstructorHelpers::FObjectFinder<USoundBase>FIRESOUND(TEXT("/Game/Sound/GunFire.GunFire"));
+	if (FIRESOUND.Succeeded())
+	{
+		FireCue = FIRESOUND.Object;
+	}
 }
 
 
@@ -59,6 +69,8 @@ void ASWeapon::Fire()
 	AActor* MyOwner = GetOwner();
 	if (MyOwner)
 	{
+		AudioComponent->SetSound(FireCue);
+		AudioComponent->Play();
 		FVector EyeLocation;
 		FRotator EyeRotation;
 		MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);

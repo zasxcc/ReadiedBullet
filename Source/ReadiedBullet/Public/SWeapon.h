@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Components/AudioComponent.h"
+#include "Sound/SoundBase.h"
 #include "SWeapon.generated.h"
+
 
 class USkeletalMeshComponent;
 class UDamageType;
@@ -89,6 +92,12 @@ protected:
 	/* Bullet Spread in Degrees */
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon", meta = (ClampMin = 0.0f))
 		float BulletSpread;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
+	USoundBase* FireCue;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
+	class UAudioComponent* AudioComponent;
 
 	// Derived from RateOfFire
 	float TimeBetweenShots;

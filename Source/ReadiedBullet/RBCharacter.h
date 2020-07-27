@@ -140,6 +140,9 @@ public:
 	USoundBase* ReloadCue;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
+	USoundBase* HitCue;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
 	class UAudioComponent* AudioComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Path")

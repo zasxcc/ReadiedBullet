@@ -19,6 +19,7 @@ ARBCharacter::ARBCharacter()
 
 	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("PlayerAudio"));
 	AudioComponent->bAutoActivate = false;
+	AudioComponent->SetupAttachment(RootComponent);
 
 	SpotLightComp = CreateDefaultSubobject<USpotLightComponent>(TEXT("SpotLight"));
 	
@@ -30,11 +31,11 @@ ARBCharacter::ARBCharacter()
 		ReloadMontage = RELOAD.Object;
 	}
 
-	// static ConstructorHelpers::FObjectFinder<USoundBase>RELOADSOUND(TEXT("SoundWave'/Game/Sound/Reload.Reload'"));
-	// if (RELOADSOUND.Succeeded())
-	// {
-	// 	ReloadCue = RELOADSOUND.Object;
-	// }
+	static ConstructorHelpers::FObjectFinder<USoundBase>FIRESOUND(TEXT("SoundWave'/Game/Sound/Hit.Hit'"));
+	if (FIRESOUND.Succeeded())
+	{
+		HitCue = FIRESOUND.Object;
+	}
 
 	//¾É±â È°¼ºÈ­
 	GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true;
@@ -383,6 +384,8 @@ void ARBCharacter::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 		isKey = true;
 	}
 	else {
+		AudioComponent->SetSound(HitCue);
+		AudioComponent->Play();
 		URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 		GameInstance->PlayerMaxHP -= 10;
 		MaxHP = GameInstance->PlayerMaxHP;
