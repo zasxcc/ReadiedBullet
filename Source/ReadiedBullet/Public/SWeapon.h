@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Components/AudioComponent.h"
 #include "Sound/SoundBase.h"
+#include "Sound/SoundAttenuation.h"
 #include "SWeapon.generated.h"
 
 
@@ -98,6 +99,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
 	class UAudioComponent* AudioComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
+	USoundAttenuation* SoundAttenuation;
 
 	// Derived from RateOfFire
 	float TimeBetweenShots;

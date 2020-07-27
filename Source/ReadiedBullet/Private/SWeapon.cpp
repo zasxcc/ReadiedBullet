@@ -24,7 +24,6 @@ ASWeapon::ASWeapon()
 {
 	MeshComp = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshComp"));
 	RootComponent = MeshComp;
-		
 	MuzzleSocketName = "MuzzleFlashSocket";
 	TracerTargetName = "Target";
 
@@ -41,11 +40,12 @@ ASWeapon::ASWeapon()
 	AudioComponent->bAutoActivate = false;
 	AudioComponent->SetupAttachment(RootComponent);
 
-	static ConstructorHelpers::FObjectFinder<USoundBase>FIRESOUND(TEXT("/Game/Sound/GunFire.GunFire"));
+	static ConstructorHelpers::FObjectFinder<USoundBase>FIRESOUND(TEXT("SoundWave'/Game/Sound/EnemyGunFire.EnemyGunFire'"));
 	if (FIRESOUND.Succeeded())
 	{
 		FireCue = FIRESOUND.Object;
 	}
+
 }
 
 
@@ -69,8 +69,13 @@ void ASWeapon::Fire()
 	AActor* MyOwner = GetOwner();
 	if (MyOwner)
 	{
+		AudioComponent->AttenuationSettings;
 		AudioComponent->SetSound(FireCue);
 		AudioComponent->Play();
+
+		//UGameplayStatics::PlaySoundAtLocation(this, FireCue, MeshComp->GetComponentLocation(), 1.0f, 1.0f, 0.0f, SoundAttenuation);
+
+
 		FVector EyeLocation;
 		FRotator EyeRotation;
 		MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);

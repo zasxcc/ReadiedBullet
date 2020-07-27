@@ -20,7 +20,7 @@ ARBCharacter::ARBCharacter()
 	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("PlayerAudio"));
 	AudioComponent->bAutoActivate = false;
 	AudioComponent->SetupAttachment(RootComponent);
-
+	
 	SpotLightComp = CreateDefaultSubobject<USpotLightComponent>(TEXT("SpotLight"));
 	
 
