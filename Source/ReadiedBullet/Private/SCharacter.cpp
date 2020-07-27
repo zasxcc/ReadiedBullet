@@ -16,11 +16,11 @@ ASCharacter::ASCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	HPBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBarWidget"));
 	/*SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 	SpringArmComp->bUsePawnControlRotation = true;
 	SpringArmComp->SetupAttachment(RootComponent);*/
-
+	HPBarWidget->SetupAttachment(GetMesh());
 	GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true;
 
 	GetCapsuleComponent()->SetCollisionResponseToChannel(COLLISION_WEAPON, ECR_Ignore);
@@ -33,6 +33,16 @@ ASCharacter::ASCharacter()
 	/*ZoomedFOV = 65.0f;
 	ZoomInterpSpeed = 20;*/
 
+	static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(TEXT("/Game/UI/WBP_HPBar"));
+	if (UI_HUD.Succeeded())
+	{
+		HPBarWidget->SetWidgetClass(UI_HUD.Class);
+		HPBarWidget->SetDrawSize(FVector2D(200.0f, 80.0));
+	}
+
+	HPBarWidget->SetRelativeLocation(FVector(0.0f, 0.0f, 100.0f));
+	HPBarWidget->SetWidgetSpace(EWidgetSpace::Screen);
+	MaxHP = 1.0f;
 	WeaponAttachSocketName = "WeaponSocket";
 }
 
@@ -40,10 +50,9 @@ ASCharacter::ASCharacter()
 void ASCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ASCharacter::BeginOverlap);
 	//DefaultFOV = CameraComp->FieldOfView;
 	//HealthComp->OnHealthChanged.AddDynamic(this, &ASCharacter::OnHealthChanged);
-
 	if (Role == ROLE_Authority)
 	{
 		// Spawn a default weapon
@@ -184,4 +193,17 @@ void ASCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifet
 
 	DOREPLIFETIME(ASCharacter, CurrentWeapon);
 	DOREPLIFETIME(ASCharacter, bDied);
+}
+
+void ASCharacter::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult& SweepResult)
+{
+	//HPBarWidget->SetVisibility(true);
+	UMonsterWidget* MW = Cast<UMonsterWidget>(HPBarWidget->GetUserWidgetObject());
+	MaxHP -= 0.2f;
+	MW->HPProgressBar->SetPercent(MaxHP);
 }

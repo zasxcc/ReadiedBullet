@@ -51,7 +51,7 @@ ARBCharacter::ARBCharacter()
 	ZoomedFOV = 40.0f;
 	ZoomInterpSpeed = 20;
 
-	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ARBCharacter::BeginOverlap);
+	
 	WeaponAttachSocketName = "WeaponSocket";
 
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("RBCharacter"));
@@ -86,9 +86,8 @@ void ARBCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-
 	DefaultFOV = CameraComp->FieldOfView;
-
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ARBCharacter::BeginOverlap);
 	//Spawn a Default Weapon
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
