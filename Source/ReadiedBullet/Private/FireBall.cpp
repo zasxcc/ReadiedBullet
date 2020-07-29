@@ -9,9 +9,10 @@ AFireBall::AFireBall()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComp"));
+	SphereCom = CreateDefaultSubobject<USphereComponent>(TEXT("SphereCollision"));
 
-	pFireBall = CreateDefaultSubobject<UParticleSystem>(TEXT("Particle_Fire"));
-
+	RootComponent = Mesh;
 }
 
 // Called when the game starts or when spawned
@@ -28,3 +29,12 @@ void AFireBall::Tick(float DeltaTime)
 
 }
 
+void AFireBall::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult& SweepResult)
+{
+	
+}

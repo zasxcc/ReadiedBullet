@@ -48,6 +48,8 @@ AEnemyActor_Dragon::AEnemyActor_Dragon()
 
 	MaxHP = 1.0f;
 	IsDead = false;
+	BulletSpread = 2.0f;
+	fireTime = 0.0f;
 }
 
 // Called when the game starts or when spawned
@@ -66,7 +68,13 @@ void AEnemyActor_Dragon::BeginPlay()
 void AEnemyActor_Dragon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
+	fireTime += DeltaTime;
+	Fire();
+	if (fireTime > 10.0f)
+	{
+		Fire();
+		fireTime = 0.0f;
+	}
 }
 
 
@@ -85,5 +93,45 @@ void AEnemyActor_Dragon::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	{
 		//여기다가 뒤지는 애니메이션 해주셈
 		SetDeadAnim();
+	}
+}
+
+void AEnemyActor_Dragon::Fire()
+{
+	AActor* MyOwner = GetOwner();
+	UE_LOG(LogTemp, Warning, TEXT("asdavcbcvb"));
+	if (MyOwner)
+	{
+		/*AudioComponent->AttenuationSettings;
+		AudioComponent->SetSound(FireCue);
+		AudioComponent->Play();*/
+		UE_LOG(LogTemp, Warning, TEXT("asdavcbcvb"));
+
+		FVector EyeLocation;
+		FRotator EyeRotation;
+		MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
+
+		FVector ShotDirection = EyeRotation.Vector();
+
+		// Bullet Spread
+		float HalfRad = FMath::DegreesToRadians(BulletSpread);
+		ShotDirection = FMath::VRandCone(ShotDirection, HalfRad, HalfRad);
+
+		FVector TraceEnd = EyeLocation + (ShotDirection * 10000);
+		if (ProjectileClass)
+		{
+			//무기 위치 받아서 저장
+			FVector MuzzleLocation = Mesh->GetSocketLocation("FireSocket");
+			//FRotator MuzzleRotation = MeshComp->GetSocketRotation("MuzzleFlashSocket");;
+
+			//Set Spawn Collision Handling Override
+			FActorSpawnParameters ActorSpawnParams;
+			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+
+			// spawn the projectile at the muzzle
+			GetWorld()->SpawnActor<AActor>(ProjectileClass, MuzzleLocation, EyeRotation, ActorSpawnParams);
+		}
+
+		//LastFireTime = GetWorld()->TimeSeconds;
 	}
 }

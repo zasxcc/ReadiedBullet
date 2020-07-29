@@ -6,6 +6,9 @@
 #include "Engine.h"
 #include "Animation/AnimSequence.h"
 #include "MonsterWidget.h"
+#include "Components/AudioComponent.h"
+#include "Sound/SoundBase.h"
+#include "Sound/SoundAttenuation.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -24,7 +27,7 @@ public:
 	AEnemyActor_Dragon();
 	void SetDeadAnim() { IsDead = true; };
 
-	
+	void Fire();
 
 protected:
 	// Called when the game starts or when spawned
@@ -37,9 +40,6 @@ protected:
 		int32 OtherBodyIndex,
 		bool bFromSweep,
 		const FHitResult& SweepResult);
-
-
-
 
 public:	
 	// Called every frame
@@ -62,5 +62,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = DRAGON, Meta = (AllowPrivateAccess = true))
 	bool IsDead;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	TSubclassOf<AActor> ProjectileClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon", meta = (ClampMin = 0.0f))
+	float BulletSpread;
+
 	UAnimSequence* Anim;
+
+	float fireTime;
 };
