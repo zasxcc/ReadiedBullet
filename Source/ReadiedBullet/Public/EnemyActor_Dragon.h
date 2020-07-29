@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine.h"
+#include "Animation/AnimSequence.h"
 #include "MonsterWidget.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/WidgetComponent.h"
@@ -60,4 +61,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = DRAGON, Meta = (AllowPrivateAccess = true))
 	bool IsDead;
+
+	UAnimSequence* Anim;
 };

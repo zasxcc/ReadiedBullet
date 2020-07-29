@@ -32,13 +32,16 @@ AEnemyActor_Dragon::AEnemyActor_Dragon()
 		Mesh->SetAnimInstanceClass(DRAGON_ANIM.Class);
 	}
 
-
 	static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(TEXT("/Game/UI/WBP_HPBar"));
 	if (UI_HUD.Succeeded())
 	{
 		HPBarWidget->SetWidgetClass(UI_HUD.Class);
 		HPBarWidget->SetDrawSize(FVector2D(200.0f, 80.0));
 	}
+
+	//애니메이션 재생을 위한 애니메이션 바인딩
+	static ConstructorHelpers::FObjectFinder<UAnimSequence> FireAnim(TEXT("AnimSequence'/Game/QuadrapedCreatures/MountainDragon/Animations/ANIM_MOUNTAIN_DRAGON_FlyStationary.ANIM_MOUNTAIN_DRAGON_FlyStationary'"));
+	Anim = FireAnim.Object;
 
 	HPBarWidget->SetRelativeLocation(FVector(0.0f, 0.0f, 500.0f));
 	HPBarWidget->SetWidgetSpace(EWidgetSpace::Screen);
@@ -54,6 +57,8 @@ void AEnemyActor_Dragon::BeginPlay()
 
 	Mesh->OnComponentBeginOverlap.AddDynamic(this, &AEnemyActor_Dragon::BeginOverlap);
 	Capsule->OnComponentBeginOverlap.AddDynamic(this, &AEnemyActor_Dragon::BeginOverlap);
+
+	Mesh->PlayAnimation(Anim, true);
 }
 
 
