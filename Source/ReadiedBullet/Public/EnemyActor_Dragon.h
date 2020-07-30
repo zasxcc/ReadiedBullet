@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Engine.h"
 #include "Animation/AnimSequence.h"
+#include "Animation/AnimInstance.h"
 #include "MonsterWidget.h"
 #include "Components/AudioComponent.h"
 #include "Sound/SoundBase.h"
@@ -68,7 +69,13 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon", meta = (ClampMin = 0.0f))
 	float BulletSpread;
 
-	UAnimSequence* Anim;
+	UAnimSequence* S_FireAnim;
+	UAnimSequence* S_IdleAnim;
 
 	float fireTime;
+
+private:
+
+	UFUNCTION()
+	void AnimNotify_FireEnd();
 };

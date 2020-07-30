@@ -40,8 +40,10 @@ AEnemyActor_Dragon::AEnemyActor_Dragon()
 	}
 
 	//애니메이션 재생을 위한 애니메이션 바인딩
-	static ConstructorHelpers::FObjectFinder<UAnimSequence> FireAnim(TEXT("AnimSequence'/Game/QuadrapedCreatures/MountainDragon/Animations/ANIM_MOUNTAIN_DRAGON_FlyStationary.ANIM_MOUNTAIN_DRAGON_FlyStationary'"));
-	Anim = FireAnim.Object;
+	static ConstructorHelpers::FObjectFinder<UAnimSequence> IdleAnim(TEXT("AnimSequence'/Game/QuadrapedCreatures/MountainDragon/Animations/ANIM_MOUNTAIN_DRAGON_FlyStationary.ANIM_MOUNTAIN_DRAGON_FlyStationary'"));
+	static ConstructorHelpers::FObjectFinder<UAnimSequence> FireAnim(TEXT("AnimSequence'/Game/QuadrapedCreatures/MountainDragon/Animations/ANIM_MOUNTAIN_DRAGON_FlyStationarySpitFireBall.ANIM_MOUNTAIN_DRAGON_FlyStationarySpitFireBall'"));
+	S_IdleAnim = IdleAnim.Object;
+	S_FireAnim = FireAnim.Object;
 
 	HPBarWidget->SetRelativeLocation(FVector(0.0f, 0.0f, 500.0f));
 	HPBarWidget->SetWidgetSpace(EWidgetSpace::Screen);
@@ -60,7 +62,7 @@ void AEnemyActor_Dragon::BeginPlay()
 	Mesh->OnComponentBeginOverlap.AddDynamic(this, &AEnemyActor_Dragon::BeginOverlap);
 	Capsule->OnComponentBeginOverlap.AddDynamic(this, &AEnemyActor_Dragon::BeginOverlap);
 
-	Mesh->PlayAnimation(Anim, true);
+	Mesh->PlayAnimation(S_IdleAnim, true);
 }
 
 
@@ -70,7 +72,7 @@ void AEnemyActor_Dragon::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	fireTime += DeltaTime;
 
-	if (fireTime > 1.0f)
+	if (fireTime > 5.0f)
 	{
 		Fire();
 		fireTime = 0.0f;
@@ -102,13 +104,13 @@ void AEnemyActor_Dragon::Fire()
 	/*AudioComponent->AttenuationSettings;
 	AudioComponent->SetSound(FireCue);
 	AudioComponent->Play();*/
-	
+
 	FVector EyeLocation;
 	FRotator EyeRotation;
 
 	this->GetActorEyesViewPoint(EyeLocation, EyeRotation);
 	
-
+	Mesh->PlayAnimation(S_FireAnim, false);
 	FVector ShotDirection = EyeRotation.Vector();
 
 	// Bullet Spread
@@ -118,7 +120,7 @@ void AEnemyActor_Dragon::Fire()
 	FVector TraceEnd = EyeLocation + (ShotDirection * 10000);
 	if (ProjectileClass)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ax"));
+		
 		//무기 위치 받아서 저장
 		FVector MuzzleLocation = Mesh->GetSocketLocation("FireSocket");
 		//FRotator MuzzleRotation = MeshComp->GetSocketRotation("MuzzleFlashSocket");;
@@ -127,10 +129,18 @@ void AEnemyActor_Dragon::Fire()
 		FActorSpawnParameters ActorSpawnParams;
 		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
+		FVector meshLoc = Mesh->GetComponentLocation();
+		meshLoc.Z = meshLoc.Z + 500;
+
 		// spawn the projectile at the muzzle
-		GetWorld()->SpawnActor<AActor>(ProjectileClass, Mesh->GetComponentLocation(), Mesh->GetComponentRotation(), ActorSpawnParams);
+		GetWorld()->SpawnActor<AActor>(ProjectileClass, meshLoc, Mesh->GetComponentRotation(), ActorSpawnParams);
 	}
 
 	//LastFireTime = GetWorld()->TimeSeconds;
 
+}
+
+void AEnemyActor_Dragon::AnimNotify_FireEnd()
+{
+	UE_LOG(LogTemp, Warning, TEXT("ax"));
 }
