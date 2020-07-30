@@ -69,8 +69,8 @@ void AEnemyActor_Dragon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	fireTime += DeltaTime;
-	Fire();
-	if (fireTime > 10.0f)
+
+	if (fireTime > 1.0f)
 	{
 		Fire();
 		fireTime = 0.0f;
@@ -98,40 +98,39 @@ void AEnemyActor_Dragon::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 
 void AEnemyActor_Dragon::Fire()
 {
-	AActor* MyOwner = GetOwner();
-	UE_LOG(LogTemp, Warning, TEXT("asdavcbcvb"));
-	if (MyOwner)
+
+	/*AudioComponent->AttenuationSettings;
+	AudioComponent->SetSound(FireCue);
+	AudioComponent->Play();*/
+	
+	FVector EyeLocation;
+	FRotator EyeRotation;
+
+	this->GetActorEyesViewPoint(EyeLocation, EyeRotation);
+	
+
+	FVector ShotDirection = EyeRotation.Vector();
+
+	// Bullet Spread
+	float HalfRad = FMath::DegreesToRadians(BulletSpread);
+	ShotDirection = FMath::VRandCone(ShotDirection, HalfRad, HalfRad);
+
+	FVector TraceEnd = EyeLocation + (ShotDirection * 10000);
+	if (ProjectileClass)
 	{
-		/*AudioComponent->AttenuationSettings;
-		AudioComponent->SetSound(FireCue);
-		AudioComponent->Play();*/
-		UE_LOG(LogTemp, Warning, TEXT("asdavcbcvb"));
+		UE_LOG(LogTemp, Warning, TEXT("ax"));
+		//무기 위치 받아서 저장
+		FVector MuzzleLocation = Mesh->GetSocketLocation("FireSocket");
+		//FRotator MuzzleRotation = MeshComp->GetSocketRotation("MuzzleFlashSocket");;
 
-		FVector EyeLocation;
-		FRotator EyeRotation;
-		MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
+		//Set Spawn Collision Handling Override
+		FActorSpawnParameters ActorSpawnParams;
+		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
-		FVector ShotDirection = EyeRotation.Vector();
-
-		// Bullet Spread
-		float HalfRad = FMath::DegreesToRadians(BulletSpread);
-		ShotDirection = FMath::VRandCone(ShotDirection, HalfRad, HalfRad);
-
-		FVector TraceEnd = EyeLocation + (ShotDirection * 10000);
-		if (ProjectileClass)
-		{
-			//무기 위치 받아서 저장
-			FVector MuzzleLocation = Mesh->GetSocketLocation("FireSocket");
-			//FRotator MuzzleRotation = MeshComp->GetSocketRotation("MuzzleFlashSocket");;
-
-			//Set Spawn Collision Handling Override
-			FActorSpawnParameters ActorSpawnParams;
-			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-
-			// spawn the projectile at the muzzle
-			GetWorld()->SpawnActor<AActor>(ProjectileClass, MuzzleLocation, EyeRotation, ActorSpawnParams);
-		}
-
-		//LastFireTime = GetWorld()->TimeSeconds;
+		// spawn the projectile at the muzzle
+		GetWorld()->SpawnActor<AActor>(ProjectileClass, Mesh->GetComponentLocation(), Mesh->GetComponentRotation(), ActorSpawnParams);
 	}
+
+	//LastFireTime = GetWorld()->TimeSeconds;
+
 }
