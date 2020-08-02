@@ -1,5 +1,6 @@
 
 #include "EnemyActor_Dragon.h"
+#include "RBGameInstance.h"
 
 // Sets default values
 AEnemyActor_Dragon::AEnemyActor_Dragon()
@@ -70,12 +71,16 @@ void AEnemyActor_Dragon::BeginPlay()
 void AEnemyActor_Dragon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	fireTime += DeltaTime;
+	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
-	if (fireTime > 5.0f)
-	{
-		Fire();
-		fireTime = 0.0f;
+	if (GameInstance->openDoor == true) {
+		fireTime += DeltaTime;
+
+		if (fireTime > 2.0f)
+		{
+			Fire();
+			fireTime = 0.0f;
+		}
 	}
 }
 
@@ -110,7 +115,7 @@ void AEnemyActor_Dragon::Fire()
 
 	this->GetActorEyesViewPoint(EyeLocation, EyeRotation);
 	
-	Mesh->PlayAnimation(S_FireAnim, false);
+	Mesh->PlayAnimation(S_FireAnim, true);
 	FVector ShotDirection = EyeRotation.Vector();
 
 	// Bullet Spread

@@ -74,6 +74,7 @@ public:
 
 	float fireTime;
 
+
 private:
 
 	UFUNCTION()
