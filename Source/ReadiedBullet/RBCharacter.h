@@ -154,4 +154,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Key")
 	bool isKey = false;;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
+	bool bMenu = true;;
+
 };

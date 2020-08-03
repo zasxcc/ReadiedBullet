@@ -231,7 +231,7 @@ void ARBCharacter::StartFire()
 {
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	
-	if (IsReloading == false) {
+	if (IsReloading == false && bMenu == true) {
 		if (CurrentWeapon)
 		{
 			CurrentWeapon->StartFire();
