@@ -26,7 +26,7 @@ class READIEDBULLET_API AEnemyActor_Dragon : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AEnemyActor_Dragon();
-	void SetDeadAnim() { IsDead = true; };
+	void SetDeadAnim();
 
 	void Fire();
 

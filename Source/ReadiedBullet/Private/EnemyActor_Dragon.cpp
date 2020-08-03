@@ -100,7 +100,7 @@ void AEnemyActor_Dragon::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	MaxHP -= 0.02f;
 	MW->HPProgressBar->SetPercent(MaxHP);
 
-	if (MaxHP <= 0.01f)
+	if (MaxHP <= 0.001f)
 	{
 		//여기다가 뒤지는 애니메이션 해주셈
 		SetDeadAnim();
@@ -152,4 +152,12 @@ void AEnemyActor_Dragon::Fire()
 void AEnemyActor_Dragon::AnimNotify_FireEnd()
 {
 	UE_LOG(LogTemp, Warning, TEXT("ax"));
+}
+
+void AEnemyActor_Dragon::SetDeadAnim()
+{
+	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	IsDead = true;
+	UE_LOG(LogTemp, Warning, TEXT("ax"));
+	GameInstance->Boss1Die = true;
 }

@@ -140,4 +140,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Door")
 	bool openDoor = false;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Door")
+	bool Boss1Die = false;
+
 };
