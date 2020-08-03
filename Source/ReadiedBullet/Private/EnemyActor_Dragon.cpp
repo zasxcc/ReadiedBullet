@@ -73,10 +73,14 @@ void AEnemyActor_Dragon::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
-	if (GameInstance->openDoor == true) {
+	if (bIsAttack) {
 		fireTime += DeltaTime;
+		if (!fireAnimActive) {
+			Mesh->PlayAnimation(S_FireAnim, true);
+			fireAnimActive = true;
+		}
 
-		if (fireTime > 2.0f)
+		if (fireTime > 1.6f)
 		{
 			Fire();
 			fireTime = 0.0f;
@@ -115,7 +119,7 @@ void AEnemyActor_Dragon::Fire()
 
 	this->GetActorEyesViewPoint(EyeLocation, EyeRotation);
 	
-	Mesh->PlayAnimation(S_FireAnim, true);
+	
 	FVector ShotDirection = EyeRotation.Vector();
 
 	// Bullet Spread

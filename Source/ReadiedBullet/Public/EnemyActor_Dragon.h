@@ -74,6 +74,10 @@ public:
 
 	float fireTime;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Attack)
+	bool bIsAttack = false;
+	bool fireAnimActive = false;
+
 
 private:
 
