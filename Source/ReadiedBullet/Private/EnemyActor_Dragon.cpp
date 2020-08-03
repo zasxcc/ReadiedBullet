@@ -93,7 +93,7 @@ void AEnemyActor_Dragon::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	const FHitResult& SweepResult)
 {
 	UMonsterWidget* MW = Cast<UMonsterWidget>(HPBarWidget->GetUserWidgetObject());
-	MaxHP -= 0.2f;
+	MaxHP -= 0.02f;
 	MW->HPProgressBar->SetPercent(MaxHP);
 
 	if (MaxHP <= 0.01f)
