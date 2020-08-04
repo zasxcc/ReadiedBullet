@@ -143,4 +143,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Door")
 	bool Boss1Die = false;
 
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stage")
+	int CurrentStage = 1;
+
 };

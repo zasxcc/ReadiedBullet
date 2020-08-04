@@ -104,6 +104,7 @@ void AEnemyActor_Dragon::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	{
 		//여기다가 뒤지는 애니메이션 해주셈
 		SetDeadAnim();
+		this->Destroy();
 	}
 }
 
@@ -160,4 +161,5 @@ void AEnemyActor_Dragon::SetDeadAnim()
 	IsDead = true;
 	UE_LOG(LogTemp, Warning, TEXT("ax"));
 	GameInstance->Boss1Die = true;
+	
 }
