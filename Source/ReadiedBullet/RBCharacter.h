@@ -5,6 +5,7 @@
 #include "RBWeapon.h"
 #include "RBPlayerController.h"
 #include "Components/WidgetComponent.h"
+
 #include "Animation/AnimMontage.h"
 #include "Components/SceneCaptureComponent2D.h"
 #include "Components/AudioComponent.h"
@@ -156,5 +157,6 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
 	bool bMenu = true;;
+
 
 };

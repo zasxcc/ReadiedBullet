@@ -6,6 +6,8 @@
 #include "SWeapon.h"
 #include "GameFramework/Character.h"
 #include "MonsterWidget.h"
+#include "Animation/AnimSequence.h"
+#include "Animation/AnimInstance.h"
 #include "Components/WidgetComponent.h"
 #include "SCharacter.generated.h"
 
@@ -96,6 +98,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Player")
 	void StopFire();
+
+	UAnimSequence* S_DeathAnim;
+	UAnimSequence* S_IdleAnim;
 
 	UFUNCTION()
 	void BeginOverlap(UPrimitiveComponent* OverlappedComponent,

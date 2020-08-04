@@ -33,6 +33,9 @@ ASCharacter::ASCharacter()
 	/*ZoomedFOV = 65.0f;
 	ZoomInterpSpeed = 20;*/
 
+	static ConstructorHelpers::FObjectFinder<UAnimSequence> DeathAnim(TEXT("AnimSequence'/Game/Animation/Animation_Honet/Death_1.Death_1'"));
+	S_DeathAnim = DeathAnim.Object;
+
 	static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(TEXT("/Game/UI/WBP_HPBar"));
 	if (UI_HUD.Succeeded())
 	{
@@ -206,4 +209,11 @@ void ASCharacter::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	UMonsterWidget* MW = Cast<UMonsterWidget>(HPBarWidget->GetUserWidgetObject());
 	MaxHP -= 0.2f;
 	MW->HPProgressBar->SetPercent(MaxHP);
+
+	if (MaxHP < 0.01)
+	{
+		//여기다가 죽는거 플레이
+		CurrentWeapon->Destroy();
+		this->Destroy();
+	}
 }
