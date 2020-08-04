@@ -8,6 +8,7 @@
 #include "MonsterWidget.h"
 #include "Animation/AnimSequence.h"
 #include "Animation/AnimInstance.h"
+#include "Particles/ParticleSystem.h"
 #include "Components/WidgetComponent.h"
 #include "SCharacter.generated.h"
 
@@ -101,6 +102,7 @@ public:
 
 	UAnimSequence* S_DeathAnim;
 	UAnimSequence* S_IdleAnim;
+	UParticleSystem* P_Die;
 
 	UFUNCTION()
 	void BeginOverlap(UPrimitiveComponent* OverlappedComponent,

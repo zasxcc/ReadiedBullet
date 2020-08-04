@@ -20,9 +20,9 @@ ASCharacter::ASCharacter()
 	/*SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 	SpringArmComp->bUsePawnControlRotation = true;
 	SpringArmComp->SetupAttachment(RootComponent);*/
+	P_Die = CreateDefaultSubobject<UParticleSystem>(TEXT("DieParticle"));
 	HPBarWidget->SetupAttachment(GetMesh());
 	GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true;
-
 	GetCapsuleComponent()->SetCollisionResponseToChannel(COLLISION_WEAPON, ECR_Ignore);
 
 	//HealthComp = CreateDefaultSubobject<USHealthComponent>(TEXT("HealthComp"));
@@ -35,6 +35,9 @@ ASCharacter::ASCharacter()
 
 	static ConstructorHelpers::FObjectFinder<UAnimSequence> DeathAnim(TEXT("AnimSequence'/Game/Animation/Animation_Honet/Death_1.Death_1'"));
 	S_DeathAnim = DeathAnim.Object;
+
+	static ConstructorHelpers::FObjectFinder<UParticleSystem> Particle(TEXT("ParticleSystem'/Game/Effects/AdvancedMagicFX13/Particles/P_ky_gaither.P_ky_gaither'"));
+	P_Die = Particle.Object;
 
 	static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(TEXT("/Game/UI/WBP_HPBar"));
 	if (UI_HUD.Succeeded())
@@ -213,6 +216,7 @@ void ASCharacter::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	if (MaxHP < 0.01)
 	{
 		//여기다가 죽는거 플레이
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), P_Die, GetMesh()->GetComponentTransform(), true, EPSCPoolMethod::None, true);
 		CurrentWeapon->Destroy();
 		this->Destroy();
 	}
