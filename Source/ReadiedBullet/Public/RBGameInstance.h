@@ -141,6 +141,9 @@ public:
 	bool openDoor = false;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Door")
+	bool openDoorComplete = false;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Door")
 	bool Boss1Die = false;
 
 

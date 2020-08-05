@@ -49,10 +49,15 @@ void ADoor::Tick(float DeltaTime)
 			openDoor = true;
 		}
 
-		if (leftDoorAngle > -270.0f) {
+		if (leftDoorAngle >= -270.0f) {
 			leftDoorAngle -= 2.0f;
 			leftDoor->SetRelativeRotation(FRotator(0.0f, leftDoorAngle, 0.0f));
 			UE_LOG(LogTemp, Warning, TEXT("%f"), leftDoorAngle);
+			if (leftDoorAngle == -270.0f)
+			{
+				GameInstance->openDoorComplete = true;
+				leftDoorAngle -= 1.0f;
+			}
 		}
 
 		if (rightDoor->GetRelativeRotation().Yaw < 90.0f)
