@@ -147,4 +147,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stage")
 	int CurrentStage = 1;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stage")
+		bool clearStage1 = false;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stage")
+		bool clearStage2 = false;
+
 };

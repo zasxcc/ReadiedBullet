@@ -133,6 +133,22 @@ FRotator ACusPawn::GetSpringArmRotator()
 void ACusPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	//URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+
+	//if (GameInstance->clearStage1)
+	//{
+	//	GameInstance->clearStage1 = false;
+	//	FLatentActionInfo LatentInfo;
+	//	UGameplayStatics::LoadStreamLevel(this, Level1ToLoad, true, true, LatentInfo);
+	//	UGameplayStatics::OpenLevel(this, Level1ToLoad, true, "");
+	//}
+
+	//if (GameInstance->clearStage2)
+	//{
+	//	GameInstance->clearStage2 = false;
+	//	FLatentActionInfo LatentInfo;
+	//	UGameplayStatics::LoadStreamLevel(this, Level2ToLoad, true, true, LatentInfo);
+	//}
 
 }
 

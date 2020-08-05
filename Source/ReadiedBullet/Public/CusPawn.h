@@ -76,6 +76,12 @@ protected:
 	FRotator SpringArmRotator;
 	FVector CamVector;
 
+	UPROPERTY(EditAnywhere)
+	FName Level1ToLoad;
+
+	UPROPERTY(EditAnywhere)
+	FName Level2ToLoad;
+
 
 public:	
 	// Called every frame
