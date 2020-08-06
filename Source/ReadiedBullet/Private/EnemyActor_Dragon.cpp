@@ -71,7 +71,9 @@ void AEnemyActor_Dragon::BeginPlay()
 void AEnemyActor_Dragon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+
 
 	if (bIsAttack) {
 		fireTime += DeltaTime;

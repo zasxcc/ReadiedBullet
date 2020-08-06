@@ -8,6 +8,7 @@
 #include "Animation/AnimInstance.h"
 #include "MonsterWidget.h"
 #include "Components/AudioComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Sound/SoundBase.h"
 #include "Sound/SoundAttenuation.h"
 #include "Components/SkeletalMeshComponent.h"
@@ -76,6 +77,7 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Attack)
 	bool bIsAttack = false;
+
 	bool fireAnimActive = false;
 
 
