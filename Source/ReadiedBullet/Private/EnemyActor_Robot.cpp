@@ -39,6 +39,7 @@ AEnemyActor_Robot::AEnemyActor_Robot()
 	SideBody->SetupAttachment(Body);
 	HPBarWidget->SetupAttachment(Body);
 	fireTime = 0.0f;
+	missileTime = 0.0f;
 	bMove = true;
 	MaxHP = 1.0f;
 	dir = 0;
@@ -60,13 +61,20 @@ void AEnemyActor_Robot::Tick(float DeltaTime)
 	FRotator rot = UKismetMathLibrary::FindLookAtRotation(Head->GetComponentLocation(), playerLoc);
 	Head->SetWorldRotation(rot);
 
-	fireTime += DeltaTime;
+	fireTime += DeltaTime; 
+	missileTime += DeltaTime;
 
 	if (fireTime > 1.6f)
 	{
-		Fire2();
+		Fire();
 		fireTime = 0.0f;
 	}
+	if (missileTime > 2.0f)
+	{
+		Fire2();
+		missileTime = 0.0f;
+	}
+
 
 	if (bMove)
 	{

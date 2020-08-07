@@ -77,6 +77,7 @@ public:
 	UWidgetComponent* HPBarWidget;
 
 	float fireTime;
+	float missileTime;
 	float MaxHP;
 	bool bMove;
 	int dir;
