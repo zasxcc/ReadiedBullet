@@ -12,9 +12,21 @@ AEnemyActor_Robot::AEnemyActor_Robot()
 	Head = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshHead"));
 	Body = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshBody"));
 
+	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
+	AudioComponent->bAutoActivate = false;
+	AudioComponent->SetupAttachment(RootComponent);
+
+	static ConstructorHelpers::FObjectFinder<USoundBase>FIRESOUND(TEXT("SoundWave'/Game/Sound/Tank_Fire.Tank_Fire'"));
+	if (FIRESOUND.Succeeded())
+	{
+		FireCue = FIRESOUND.Object;
+	}
+
 	RootComponent = RC;
 	Head->SetupAttachment(Body);
 	fireTime = 0.0f;
+	bMove = true;
+	dir = 0;
 }
 
 // Called when the game starts or when spawned
@@ -40,14 +52,82 @@ void AEnemyActor_Robot::Tick(float DeltaTime)
 		Fire();
 		fireTime = 0.0f;
 	}
+
+	if (bMove)
+	{
+		if (dir == 0)
+		{
+			AddActorWorldOffset(FVector(-10.0f, 0.0f, 0.0f));
+			if (this->GetActorLocation().X < 6000)
+			{
+				bMove = false;
+				dir = 1;
+			}
+		}
+		else if (dir == 1)
+		{
+			AddActorWorldOffset(FVector(0.0f, -10.0f, 0.0f));
+			if (this->GetActorLocation().Y < -10000)
+			{
+				bMove = false;
+				dir = 2;
+			}
+		}
+		else if (dir == 2)
+		{
+			AddActorWorldOffset(FVector(10.0f, 0.0f, 0.0f));
+			if (this->GetActorLocation().X > 12000)
+			{
+				bMove = false;
+				dir = 3;
+			}
+		}
+		else if (dir == 3)
+		{
+			AddActorWorldOffset(FVector(0.0f, 10.0f, 0.0f));
+			if (this->GetActorLocation().Y > 10000)
+			{
+				bMove = false;
+				dir = 0;
+			}
+		}
+	}
+
+
+	if (!bMove)
+	{
+		AddActorLocalRotation(FRotator(0, 1.0f, 0));
+
+		if (GetActorRotation().Yaw > 89.0f && GetActorRotation().Yaw < 91.0f)
+		{
+			SetActorRotation(FRotator(0.0f, 91.1f, 0.0f));
+			bMove = true;
+		}
+		else if (GetActorRotation().Yaw > 179.0f && GetActorRotation().Yaw < 181.0f)
+		{
+			SetActorRotation(FRotator(0.0f, 181.1f, 0.0f));
+			bMove = true;
+		}
+		else if (GetActorRotation().Yaw < -89.0f && GetActorRotation().Yaw > -91.0f)
+		{
+			SetActorRotation(FRotator(0.0f, -88.9f, 0.0f));
+			bMove = true;
+		}
+		else if (GetActorRotation().Yaw > -0.5f && GetActorRotation().Yaw < 0.5f)
+		{
+			SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
+			bMove = true;
+		}
+	}
+	UE_LOG(LogTemp, Warning, TEXT("%f "), GetActorRotation().Yaw);
 	
 }
 
 void AEnemyActor_Robot::Fire()
 {
-	/*AudioComponent->AttenuationSettings;
+	AudioComponent->AttenuationSettings;
 	AudioComponent->SetSound(FireCue);
-	AudioComponent->Play();*/
+	AudioComponent->Play();
 
 	FVector EyeLocation;
 	FRotator EyeRotation;
@@ -73,7 +153,7 @@ void AEnemyActor_Robot::Fire()
 		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
 		FVector meshLoc = Head->GetComponentLocation();
-		meshLoc.Z = meshLoc.Z + 250;
+		meshLoc.Z = meshLoc.Z + 150;
 		// spawn the projectile at the muzzle
 		GetWorld()->SpawnActor<AActor>(ProjectileClass, meshLoc, Head->GetComponentRotation(), ActorSpawnParams);
 	}

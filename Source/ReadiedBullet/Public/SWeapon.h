@@ -80,7 +80,7 @@ protected:
 	void Fire();
 
 	UFUNCTION(Server, Reliable, WithValidation)
-		void ServerFire();
+	void ServerFire();
 
 	FTimerHandle TimerHandle_TimeBetweenShots;
 

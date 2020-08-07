@@ -7,6 +7,9 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/Actor.h"
+#include "Components/AudioComponent.h"
+#include "Sound/SoundBase.h"
+#include "Sound/SoundAttenuation.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/SceneComponent.h"
 #include "EnemyActor_Robot.generated.h"
@@ -24,6 +27,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintCallable)
 	void Fire();
 
 	UFUNCTION()
@@ -52,6 +56,15 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon", meta = (ClampMin = 0.0f))
 	float BulletSpread;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
+	USoundBase* FireCue;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
+	class UAudioComponent* AudioComponent;
+
 	float fireTime;
+
+	bool bMove;
+	int dir;
 
 };

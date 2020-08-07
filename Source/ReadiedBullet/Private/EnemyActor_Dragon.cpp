@@ -142,7 +142,7 @@ void AEnemyActor_Dragon::Fire()
 		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
 		FVector meshLoc = Mesh->GetComponentLocation();
-		meshLoc.Z = meshLoc.Z + 750;
+		meshLoc.Z = meshLoc.Z + 1200;
 
 		// spawn the projectile at the muzzle
 		GetWorld()->SpawnActor<AActor>(ProjectileClass, meshLoc, Mesh->GetComponentRotation(), ActorSpawnParams);
