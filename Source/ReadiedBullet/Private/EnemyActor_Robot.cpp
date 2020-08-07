@@ -11,10 +11,12 @@ AEnemyActor_Robot::AEnemyActor_Robot()
 	RC = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComp"));
 	Head = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshHead"));
 	Body = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshBody"));
+	SideBody = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshSideBody"));
+	HPBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBarWidget"));
 
 	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
 	AudioComponent->bAutoActivate = false;
-	AudioComponent->SetupAttachment(RootComponent);
+	AudioComponent->SetupAttachment(Body);
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>FIRESOUND(TEXT("SoundWave'/Game/Sound/Tank_Fire.Tank_Fire'"));
 	if (FIRESOUND.Succeeded())
@@ -22,10 +24,23 @@ AEnemyActor_Robot::AEnemyActor_Robot()
 		FireCue = FIRESOUND.Object;
 	}
 
+	static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(TEXT("/Game/UI/WBP_HPBar"));
+	if (UI_HUD.Succeeded())
+	{
+		HPBarWidget->SetWidgetClass(UI_HUD.Class);
+		HPBarWidget->SetDrawSize(FVector2D(200.0f, 80.0));
+	}
+	HPBarWidget->SetRelativeLocation(FVector(0.0f, 0.0f, 200.0f));
+	HPBarWidget->SetWidgetSpace(EWidgetSpace::Screen);
+
+
 	RootComponent = RC;
 	Head->SetupAttachment(Body);
+	SideBody->SetupAttachment(Body);
+	HPBarWidget->SetupAttachment(Body);
 	fireTime = 0.0f;
 	bMove = true;
+	MaxHP = 1.0f;
 	dir = 0;
 }
 
@@ -49,7 +64,7 @@ void AEnemyActor_Robot::Tick(float DeltaTime)
 
 	if (fireTime > 1.6f)
 	{
-		Fire();
+		Fire2();
 		fireTime = 0.0f;
 	}
 
@@ -118,9 +133,7 @@ void AEnemyActor_Robot::Tick(float DeltaTime)
 			SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
 			bMove = true;
 		}
-	}
-	UE_LOG(LogTemp, Warning, TEXT("%f "), GetActorRotation().Yaw);
-	
+	}	
 }
 
 void AEnemyActor_Robot::Fire()
@@ -162,6 +175,44 @@ void AEnemyActor_Robot::Fire()
 
 }
 
+void AEnemyActor_Robot::Fire2()
+{
+	AudioComponent->AttenuationSettings;
+	AudioComponent->SetSound(FireCue);
+	AudioComponent->Play();
+
+	FVector EyeLocation;
+	FRotator EyeRotation;
+
+	this->GetActorEyesViewPoint(EyeLocation, EyeRotation);
+
+
+	FVector ShotDirection = EyeRotation.Vector();
+
+	// Bullet Spread
+	float HalfRad = FMath::DegreesToRadians(BulletSpread);
+	ShotDirection = FMath::VRandCone(ShotDirection, HalfRad, HalfRad);
+
+	FVector TraceEnd = EyeLocation + (ShotDirection * 10000);
+	if (MissileClass)
+	{
+		//무기 위치 받아서 저장
+		FVector MuzzleLocation = SideBody->GetSocketLocation("Gun_EndSocket");
+		//FRotator MuzzleRotation = MeshComp->GetSocketRotation("MuzzleFlashSocket");;
+
+		//Set Spawn Collision Handling Override
+		FActorSpawnParameters ActorSpawnParams;
+		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+
+		FVector meshLoc = SideBody->GetComponentLocation();
+		// spawn the projectile at the muzzle
+		GetWorld()->SpawnActor<AActor>(MissileClass, meshLoc, SideBody->GetComponentRotation(), ActorSpawnParams);
+	}
+
+	//LastFireTime = GetWorld()->TimeSeconds;
+
+}
+
 
 void AEnemyActor_Robot::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	AActor* OtherActor,
@@ -170,5 +221,13 @@ void AEnemyActor_Robot::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	bool bFromSweep,
 	const FHitResult& SweepResult)
 {
-	
+	UMonsterWidget* MW = Cast<UMonsterWidget>(HPBarWidget->GetUserWidgetObject());
+	MaxHP -= 0.02f;
+	MW->HPProgressBar->SetPercent(MaxHP);
+
+	if (MaxHP <= 0.001f)
+	{
+		//여기다가 뒤지는 애니메이션 해주셈
+		this->Destroy();
+	}
 }

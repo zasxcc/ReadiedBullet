@@ -6,6 +6,8 @@
 #include "Engine.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "MonsterWidget.h"
+#include "Components/WidgetComponent.h"
 #include "GameFramework/Actor.h"
 #include "Components/AudioComponent.h"
 #include "Sound/SoundBase.h"
@@ -30,6 +32,9 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void Fire();
 
+	UFUNCTION(BlueprintCallable)
+	void Fire2();
+
 	UFUNCTION()
 	void BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 		AActor* OtherActor,
@@ -50,8 +55,14 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SkeletalMesh")
 	USkeletalMeshComponent* Body;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SkeletalMesh")
+	USkeletalMeshComponent* SideBody;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
 	TSubclassOf<AActor> ProjectileClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	TSubclassOf<AActor> MissileClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon", meta = (ClampMin = 0.0f))
 	float BulletSpread;
@@ -62,8 +73,11 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
 	class UAudioComponent* AudioComponent;
 
-	float fireTime;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "UI")
+	UWidgetComponent* HPBarWidget;
 
+	float fireTime;
+	float MaxHP;
 	bool bMove;
 	int dir;
 
