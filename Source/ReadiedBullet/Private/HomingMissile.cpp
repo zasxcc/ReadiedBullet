@@ -14,6 +14,14 @@ AHomingMissile::AHomingMissile()
 	
 	RootComponent = Head;
 	homingTimer = 0.0f;
+	static ConstructorHelpers::FObjectFinder<USoundBase>MISSILESOUND(TEXT("SoundWave'/Game/Sound/Missle_Launch.Missle_Launch'"));
+	if (MISSILESOUND.Succeeded())
+	{
+		MissileCue = MISSILESOUND.Object;
+	}
+	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio_Fire"));
+	AudioComponent->bAutoActivate = false;
+	AudioComponent->SetupAttachment(Body);
 
 }
 
@@ -21,7 +29,7 @@ AHomingMissile::AHomingMissile()
 void AHomingMissile::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 
 	ProjectileMove->bIsHomingProjectile = false;
 }

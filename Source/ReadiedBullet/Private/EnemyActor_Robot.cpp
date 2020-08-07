@@ -14,15 +14,17 @@ AEnemyActor_Robot::AEnemyActor_Robot()
 	SideBody = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshSideBody"));
 	HPBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBarWidget"));
 
-	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
+	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio_Fire"));
 	AudioComponent->bAutoActivate = false;
 	AudioComponent->SetupAttachment(Body);
+
 
 	static ConstructorHelpers::FObjectFinder<USoundBase>FIRESOUND(TEXT("SoundWave'/Game/Sound/Tank_Fire.Tank_Fire'"));
 	if (FIRESOUND.Succeeded())
 	{
 		FireCue = FIRESOUND.Object;
 	}
+
 
 	static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(TEXT("/Game/UI/WBP_HPBar"));
 	if (UI_HUD.Succeeded())
@@ -185,9 +187,7 @@ void AEnemyActor_Robot::Fire()
 
 void AEnemyActor_Robot::Fire2()
 {
-	AudioComponent->AttenuationSettings;
-	AudioComponent->SetSound(FireCue);
-	AudioComponent->Play();
+	//미사일 사운드는 HomingMissile.cpp에서 재생
 
 	FVector EyeLocation;
 	FRotator EyeRotation;
