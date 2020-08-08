@@ -51,7 +51,9 @@ AEnemyActor_Robot::AEnemyActor_Robot()
 void AEnemyActor_Robot::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	Body->OnComponentBeginOverlap.AddDynamic(this, &AEnemyActor_Robot::BeginOverlap);
+	Head->OnComponentBeginOverlap.AddDynamic(this, &AEnemyActor_Robot::BeginOverlap);
 }
 
 // Called every frame
@@ -215,10 +217,9 @@ void AEnemyActor_Robot::Fire2()
 		FVector meshLoc = SideBody->GetComponentLocation();
 		// spawn the projectile at the muzzle
 		GetWorld()->SpawnActor<AActor>(MissileClass, meshLoc, SideBody->GetComponentRotation(), ActorSpawnParams);
+		//GetWorld()->SpawnActor<AActor>(MissileClass, meshLoc, FRotator(60.0f, 0.0f, 0.0f), ActorSpawnParams);
 	}
-
 	//LastFireTime = GetWorld()->TimeSeconds;
-
 }
 
 

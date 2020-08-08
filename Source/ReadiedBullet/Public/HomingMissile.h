@@ -6,8 +6,10 @@
 #include "GameFramework/Actor.h"
 #include "ReadiedBullet/RBCharacter.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/SceneComponent.h"
+#include "Particles/ParticleSystem.h"
 #include "Components/AudioComponent.h"
 #include "Sound/SoundBase.h"
 #include "Sound/SoundAttenuation.h"
@@ -22,6 +24,9 @@ class READIEDBULLET_API AHomingMissile : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AHomingMissile();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Collision")
+	UBoxComponent* BoxColl;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "StaticMesh")
 	UStaticMeshComponent* Head;
@@ -38,14 +43,27 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
 	class UAudioComponent* AudioComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Timer")
+	float homingTimer;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Particle")
+	UParticleSystem* Particle;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	float homingTimer;
+	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION()
+	void BeginOverlap(UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult);
 
 };

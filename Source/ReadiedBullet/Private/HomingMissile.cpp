@@ -11,7 +11,9 @@ AHomingMissile::AHomingMissile()
 	Head = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshHead"));
 	//Body = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshBody"));
 	ProjectileMove = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileComp"));
-	
+	Particle = CreateDefaultSubobject<UParticleSystem>(TEXT("ParticleSys"));
+	BoxColl = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollision"));
+
 	RootComponent = Head;
 	homingTimer = 0.0f;
 	static ConstructorHelpers::FObjectFinder<USoundBase>MISSILESOUND(TEXT("SoundWave'/Game/Sound/Missle_Launch.Missle_Launch'"));
@@ -19,6 +21,13 @@ AHomingMissile::AHomingMissile()
 	{
 		MissileCue = MISSILESOUND.Object;
 	}
+
+	static ConstructorHelpers::FObjectFinder<UParticleSystem>PARTICLE(TEXT("ParticleSystem'/Game/Effects/AdvancedMagicFX13/Particles/P_ky_explosion3.P_ky_explosion3'"));
+	if (PARTICLE.Succeeded())
+	{
+		Particle = PARTICLE.Object;
+	}
+
 	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio_Fire"));
 	AudioComponent->bAutoActivate = false;
 	AudioComponent->SetupAttachment(Body);
@@ -30,7 +39,7 @@ void AHomingMissile::BeginPlay()
 {
 	Super::BeginPlay();
 
-
+	BoxColl->OnComponentBeginOverlap.AddDynamic(this, &AHomingMissile::BeginOverlap);
 	ProjectileMove->bIsHomingProjectile = false;
 }
 
@@ -50,3 +59,13 @@ void AHomingMissile::Tick(float DeltaTime)
 	}
 }
 
+void AHomingMissile::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult& SweepResult)
+{
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Particle, OverlappedComponent->GetComponentTransform());
+	this->Destroy();
+}
