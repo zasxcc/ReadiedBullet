@@ -40,6 +40,16 @@ AEnemyActor_Dragon::AEnemyActor_Dragon()
 		HPBarWidget->SetDrawSize(FVector2D(200.0f, 80.0));
 	}
 
+	static ConstructorHelpers::FObjectFinder<USoundBase>FIRESOUND(TEXT("SoundWave'/Game/Sound/dragonBreath.dragonBreath'"));
+	if (FIRESOUND.Succeeded())
+	{
+		FireCue = FIRESOUND.Object;
+	}
+
+	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio_Fire"));
+	AudioComponent->bAutoActivate = false;
+	AudioComponent->SetupAttachment(Mesh);
+
 	//애니메이션 재생을 위한 애니메이션 바인딩
 	static ConstructorHelpers::FObjectFinder<UAnimSequence> IdleAnim(TEXT("AnimSequence'/Game/QuadrapedCreatures/MountainDragon/Animations/ANIM_MOUNTAIN_DRAGON_FlyStationary.ANIM_MOUNTAIN_DRAGON_FlyStationary'"));
 	static ConstructorHelpers::FObjectFinder<UAnimSequence> FireAnim(TEXT("AnimSequence'/Game/QuadrapedCreatures/MountainDragon/Animations/ANIM_MOUNTAIN_DRAGON_FlyStationarySpitFireBall.ANIM_MOUNTAIN_DRAGON_FlyStationarySpitFireBall'"));
@@ -113,9 +123,9 @@ void AEnemyActor_Dragon::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 void AEnemyActor_Dragon::Fire()
 {
 
-	/*AudioComponent->AttenuationSettings;
+	AudioComponent->AttenuationSettings;
 	AudioComponent->SetSound(FireCue);
-	AudioComponent->Play();*/
+	AudioComponent->Play(1.0f);
 
 	FVector EyeLocation;
 	FRotator EyeRotation;

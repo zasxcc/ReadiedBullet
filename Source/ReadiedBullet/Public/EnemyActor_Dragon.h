@@ -80,6 +80,11 @@ public:
 
 	bool fireAnimActive = false;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
+		USoundBase* FireCue;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
+		class UAudioComponent* AudioComponent;
 
 private:
 
