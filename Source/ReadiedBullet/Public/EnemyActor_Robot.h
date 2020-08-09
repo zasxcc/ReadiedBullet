@@ -76,6 +76,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "UI")
 	UWidgetComponent* HPBarWidget;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "UI")
+	bool isAttack;
+
 	float fireTime;
 	float missileTime;
 	float MaxHP;

@@ -45,6 +45,7 @@ AEnemyActor_Robot::AEnemyActor_Robot()
 	bMove = true;
 	MaxHP = 1.0f;
 	dir = 0;
+	isAttack = false;
 }
 
 // Called when the game starts or when spawned
@@ -61,91 +62,94 @@ void AEnemyActor_Robot::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	FVector playerLoc = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
-	FRotator rot = UKismetMathLibrary::FindLookAtRotation(Head->GetComponentLocation(), playerLoc);
-	Head->SetWorldRotation(rot);
+	if (isAttack) {
 
-	fireTime += DeltaTime; 
-	missileTime += DeltaTime;
+		FVector playerLoc = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
+		FRotator rot = UKismetMathLibrary::FindLookAtRotation(Head->GetComponentLocation(), playerLoc);
+		Head->SetWorldRotation(rot);
 
-	if (fireTime > 1.6f)
-	{
-		Fire();
-		fireTime = 0.0f;
+		fireTime += DeltaTime;
+		missileTime += DeltaTime;
+
+		if (fireTime > 1.6f)
+		{
+			Fire();
+			fireTime = 0.0f;
+		}
+		if (missileTime > 2.0f)
+		{
+			Fire2();
+			missileTime = 0.0f;
+		}
+
+
+		if (bMove)
+		{
+			if (dir == 0)
+			{
+				AddActorWorldOffset(FVector(-10.0f, 0.0f, 0.0f));
+				if (this->GetActorLocation().X < 6000)
+				{
+					bMove = false;
+					dir = 1;
+				}
+			}
+			else if (dir == 1)
+			{
+				AddActorWorldOffset(FVector(0.0f, -10.0f, 0.0f));
+				if (this->GetActorLocation().Y < -10000)
+				{
+					bMove = false;
+					dir = 2;
+				}
+			}
+			else if (dir == 2)
+			{
+				AddActorWorldOffset(FVector(10.0f, 0.0f, 0.0f));
+				if (this->GetActorLocation().X > 12000)
+				{
+					bMove = false;
+					dir = 3;
+				}
+			}
+			else if (dir == 3)
+			{
+				AddActorWorldOffset(FVector(0.0f, 10.0f, 0.0f));
+				if (this->GetActorLocation().Y > 10000)
+				{
+					bMove = false;
+					dir = 0;
+				}
+			}
+		}
+
+
+		if (!bMove)
+		{
+			AddActorLocalRotation(FRotator(0, 1.0f, 0));
+
+			if (GetActorRotation().Yaw > 89.0f && GetActorRotation().Yaw < 91.0f)
+			{
+				SetActorRotation(FRotator(0.0f, 91.1f, 0.0f));
+				bMove = true;
+			}
+			else if (GetActorRotation().Yaw > 179.0f && GetActorRotation().Yaw < 181.0f)
+			{
+				SetActorRotation(FRotator(0.0f, 181.1f, 0.0f));
+				bMove = true;
+			}
+			else if (GetActorRotation().Yaw < -89.0f && GetActorRotation().Yaw > -91.0f)
+			{
+				SetActorRotation(FRotator(0.0f, -88.9f, 0.0f));
+				bMove = true;
+			}
+			else if (GetActorRotation().Yaw > -0.5f && GetActorRotation().Yaw < 0.5f)
+			{
+				SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
+				bMove = true;
+			}
+		}
 	}
-	if (missileTime > 2.0f)
-	{
-		Fire2();
-		missileTime = 0.0f;
-	}
-
-
-	if (bMove)
-	{
-		if (dir == 0)
-		{
-			AddActorWorldOffset(FVector(-10.0f, 0.0f, 0.0f));
-			if (this->GetActorLocation().X < 6000)
-			{
-				bMove = false;
-				dir = 1;
-			}
-		}
-		else if (dir == 1)
-		{
-			AddActorWorldOffset(FVector(0.0f, -10.0f, 0.0f));
-			if (this->GetActorLocation().Y < -10000)
-			{
-				bMove = false;
-				dir = 2;
-			}
-		}
-		else if (dir == 2)
-		{
-			AddActorWorldOffset(FVector(10.0f, 0.0f, 0.0f));
-			if (this->GetActorLocation().X > 12000)
-			{
-				bMove = false;
-				dir = 3;
-			}
-		}
-		else if (dir == 3)
-		{
-			AddActorWorldOffset(FVector(0.0f, 10.0f, 0.0f));
-			if (this->GetActorLocation().Y > 10000)
-			{
-				bMove = false;
-				dir = 0;
-			}
-		}
-	}
-
-
-	if (!bMove)
-	{
-		AddActorLocalRotation(FRotator(0, 1.0f, 0));
-
-		if (GetActorRotation().Yaw > 89.0f && GetActorRotation().Yaw < 91.0f)
-		{
-			SetActorRotation(FRotator(0.0f, 91.1f, 0.0f));
-			bMove = true;
-		}
-		else if (GetActorRotation().Yaw > 179.0f && GetActorRotation().Yaw < 181.0f)
-		{
-			SetActorRotation(FRotator(0.0f, 181.1f, 0.0f));
-			bMove = true;
-		}
-		else if (GetActorRotation().Yaw < -89.0f && GetActorRotation().Yaw > -91.0f)
-		{
-			SetActorRotation(FRotator(0.0f, -88.9f, 0.0f));
-			bMove = true;
-		}
-		else if (GetActorRotation().Yaw > -0.5f && GetActorRotation().Yaw < 0.5f)
-		{
-			SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
-			bMove = true;
-		}
-	}	
 }
 
 void AEnemyActor_Robot::Fire()
