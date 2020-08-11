@@ -3,13 +3,7 @@
 
 #include "RBWeapon.h"
 #include "RBCharacter.h"
-static int32 DebugWeaponDrawing = 0;
-FAutoConsoleVariableRef CVARDebugWeaponDrawing(
-	TEXT("COOP.DebugWeapon"),
-	DebugWeaponDrawing,
-	TEXT("Draw Debug Lines for Weapon"),
-	ECVF_Cheat
-);
+
 
 // Sets default values
 ARBWeapon::ARBWeapon()
