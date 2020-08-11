@@ -132,6 +132,19 @@ public:
 	bool bAccessReverse2 = false;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Reverse")
 	bool bAccessReverse3 = false;
+
+
+
+	bool bBlackHoleBullet1 = false;
+	bool bBlackHoleBullet2 = false;
+	bool bBlackHoleBullet3 = false;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Blackhole")
+	bool bAccessBlackhole1 = false;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Blackhole")
+	bool bAccessBlackhole2 = false;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Blackhole")
+	bool bAccessBlackhole3 = false;
 	
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cinema")
