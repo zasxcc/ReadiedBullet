@@ -253,8 +253,8 @@ void AProjectile::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	const FHitResult& SweepResult)
 {
 	/*OverlappedComponent->DestroyComponent();
-	Destroy();
-	UE_LOG(LogTemp, Warning, TEXT("AAAAAAAAAAAAAAAAAAAAAAAAAAAA"));*/
+	Destroy();*/
+	UE_LOG(LogTemp, Warning, TEXT("AAAAAAAAAAAAAAAAAAAAAAAAAAAA"));
 }
 
 
