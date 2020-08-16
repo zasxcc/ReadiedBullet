@@ -71,7 +71,7 @@ ARBCharacter::ARBCharacter()
 		{
 			PathMeshArray[i]->SetStaticMesh(PATH.Object);
 			PathMeshArray[i]->SetRelativeScale3D(FVector(1.2, 1.2, 1.2));
-			PathMeshArray[i]->AttachToComponent(CameraComp, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+			//PathMeshArray[i]->AttachToComponent(CameraComp, FAttachmentTransformRules::SnapToTargetNotIncludingScale); //0816
 			PathMeshArray[i]->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		}
 	}
@@ -85,7 +85,12 @@ ARBCharacter::ARBCharacter()
 void ARBCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
+	///0816
+	for (int i = 0; i < 100; ++i)
+	{
+		PathMeshArray[i]->AttachToComponent(CameraComp, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	}
+	///
 	DefaultFOV = CameraComp->FieldOfView;
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ARBCharacter::BeginOverlap);
 	//Spawn a Default Weapon
