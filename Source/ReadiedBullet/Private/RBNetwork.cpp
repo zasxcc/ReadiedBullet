@@ -117,9 +117,9 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 				FVector pos = FVector(packet->pos.x, packet->pos.y, packet->pos.z);
 				FRotator rot = FRotator(packet->rot.Pitch, packet->rot.Yaw, packet->rot.Roll);
 				m_myCharacter = GetWorld()->SpawnActor<ARBCharacter>(BPCharacter, pos, rot, FActorSpawnParameters{});
-				m_myCharacter->m_ID = m_ID;
-				
-				GetWorldTimerManager().SetTimer(m_SendTimer, this, &ARBNetwork::SendMyTransform, 0.016f, true, 0.0f);
+				m_myCharacter->m_ID = packet->m_id;
+
+				//GetWorldTimerManager().SetTimer(m_SendTimer, this, &ARBNetwork::SendMyTransform, 0.016f, true, 1.0f);
 			}
 			break;
 			case e_PacketType::e_EnterPacket:
@@ -133,12 +133,22 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 				m_OtherPlayers.Emplace(packet->m_id, GetWorld()->SpawnActor<ARBCharacter>(BPCharacter, pos, rot, FActorSpawnParameters{}) );
 				//m_OtherPlayers[packet->m_id]->m_ID= m_ID;
 				m_OtherPlayers.FindRef(packet->m_id)->m_ID = packet->m_id;
+
+				GetWorldTimerManager().SetTimer(m_SendTimer, this, &ARBNetwork::SendMyTransform, 0.016f, true, 1.0f);
 			}
 			break;
 			case e_PacketType::e_PlayerInfoPacket:
 			{
 				sc_packet_playerInfo* packet = reinterpret_cast<sc_packet_playerInfo*>(m_PacketBuf);
 				auto character = m_OtherPlayers.FindRef(packet->m_id);
+				// 타 클라의 정보를 받아 내 클라에 set해주는 부분.
+
+				//int test = packet->m_id;
+				//UE_LOG(LogTemp, Error, TEXT("id test : %d"), test);
+
+				// 2개 연결돼 있을 때, 한 클라 연결이 끊기면 다른 클라는 잘 움직이지만
+				// 서버에서 찍히는 좌표는 시작 좌표 그대로임. 왜?
+
 				auto pos = packet->info.m_Position;
 				auto rot = packet->info.m_Rotation;
 				auto vel = packet->info.m_Velocity;
@@ -147,7 +157,7 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 				{
 					character->SetActorLocation(FVector(pos.x, pos.y, pos.z));
 					character->SetActorRotation(FRotator(rot.Pitch, rot.Yaw, rot.Roll));
-					//character->AddMovementInput(FVector(vel.vx, vel.vy, vel.vz));
+					character->AddMovementInput(FVector(vel.vx, vel.vy, vel.vz));
 				}
 			}
 			break;
@@ -186,7 +196,7 @@ void ARBNetwork::SendMyTransform()
 	pos.x = apos.X;
 	pos.y = apos.Y;
 	pos.z = apos.Z;
-	UE_LOG(LogTemp, Error, TEXT("id: %d pos: %f %f %f"), m_ID ,pos.x, pos.y, pos.z);
+	//UE_LOG(LogTemp, Error, TEXT("id: %d pos: %f %f %f"), m_ID ,pos.x, pos.y, pos.z);
 
 	auto arot = m_myCharacter->GetActorRotation();
 	rot.Pitch = arot.Pitch;
@@ -201,11 +211,11 @@ void ARBNetwork::SendMyTransform()
 	PlayerInfo info{ pos,rot,vel };
 
 	cs_packet_playerInfo p{};
-	p.m_id = m_ID;
+	p.m_id = m_myCharacter->m_ID;
 	p.size = sizeof(p);
 	p.type = e_PacketType::e_PlayerInfoPacket;
 	p.info = info;
-
+	
 
 	DWORD SentBytes = 0;
 	DWORD flags = 0;
