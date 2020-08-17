@@ -1,6 +1,6 @@
 #pragma once
 #define SERVERPORT 9000
-#define MAXBUFFER 4096
+#define MAXBUFFER 8192
 #define MAXPLAYER 2
 #define MAXPACKETSIZE 255
 #define MAX_ID_LEN 30
