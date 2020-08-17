@@ -10,7 +10,7 @@
 
 #define SERVER_IP "127.0.0.1"
 #define SERVER_PORT 9000
-#define MAX_BUFFER 4096
+#define MAX_BUFFER 8192
 
 
 UCLASS()
@@ -23,29 +23,55 @@ public:
 	ARBNetwork();
 
 	bool m_IsRun;
+	int m_ID;
+	
+	UPROPERTY(EditAnywhere)
+	bool m_IsReady;
 
 	UFUNCTION(BlueprintCallable)
 	void InitClientSocket();
 
 	UFUNCTION(BlueprintCallable)
-		void Connect();//const char*);
+	void Connect();//const char*);
 
-	//void DisConnect();
-	void ProcessPacket(int user_id, char* buf);
+	void Disconnect();
+	void ProcessPacket(int iobytes, char* buf);
 	void RecvPacketProcess(char* Packet);
 	void RecvPacket();
 	
 	UFUNCTION(BlueprintCallable)
 	void Send_Select_GameMode(uint8 modeType);
 
+	UFUNCTION(BlueprintCallable)
+	void Send_Ready();
 
+	UFUNCTION(BlueprintCallable)
+	bool Get_Ready();
+	
+	UFUNCTION(BlueprintCallable)
+	void Set_Ready(bool setValue);
+
+	UFUNCTION(BlueprintCallable)
+	uint8 Get_Mode();
+
+	void SetMyCharacter(class ARBCharacter*);
+
+	class ARBCharacter* m_myCharacter;
+
+	struct FTimerHandle m_SendTimer;
+
+	UFUNCTION()
+	void SendMyTransform();
+	
+	TMap<int, class ARBCharacter*> m_OtherPlayers;
+	UClass* BPCharacter;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 private:
 	SOCKET m_ClientSocket;
-	int m_ID;
+	char m_gamemode;
 
 	char m_RecvBuf[MAX_BUFFER]; //사용자정의 수신버퍼
 	char m_SendBuf[MAX_BUFFER]; //사용자정의 송신버퍼

@@ -10,14 +10,11 @@ enum class e_PacketType : uint8_t
 {
 	e_LoginOK,
 	e_Select_GameMode,
-
-};
-
-enum class e_GameStateInfo : uint8_t//unsigned char
-{
-	e_None,
-	e_Ready,
-	e_UnReady
+	e_LeavePacket,
+	e_ReadyPacket,
+	e_StartPacket,
+	e_PlayerInfoPacket,
+	e_EnterPacket,
 };
 
 //클라:처음에 게임에 로그인을 한다.(start scene, 로그인 버튼을 누르면)
@@ -42,13 +39,13 @@ enum class e_GameStateInfo : uint8_t//unsigned char
 
 
 #pragma pack(push, 1)
-struct PlayerPositon
+struct PlayerPosition
 {
 	float x;
 	float y;
 	float z;
 };
-struct PlayerPosition
+struct PlayerRotation
 {
 	float Pitch;
 	float Yaw;
@@ -62,8 +59,8 @@ struct PlayerVelocity
 };
 struct PlayerInfo
 {
-	PlayerPositon m_Position;
-	PlayerPosition m_Rotation;
+	PlayerPosition m_Position;
+	PlayerRotation m_Rotation;
 	PlayerVelocity m_Velocity;
 };
 
@@ -78,9 +75,63 @@ struct cs_packet_selectGameMode
 {
 	char size;
 	e_PacketType type;
-	unsigned char mode;// 0 = solo , 1 = multi
+	unsigned char mode;		// 0 = solo , 1 = multi
 };
 
+struct cs_packet_leavePacket
+{
+	char size;
+	e_PacketType type;
+	int m_id;
+};
 
+struct sc_packet_leavePacket
+{
+	char size;
+	e_PacketType type;
+	int m_id;
+};
+
+struct cs_packet_readyPacket
+{
+	char size;
+	e_PacketType type;
+	int m_id;
+	bool isReady;
+};
+
+struct cs_packet_playerInfo
+{
+	char size;
+	e_PacketType type;
+	int m_id;
+	PlayerInfo info;
+};
+
+struct sc_packet_playerInfo
+{
+	char size;
+	e_PacketType type;
+	int m_id;
+	PlayerInfo info;
+};
+
+struct sc_packet_startPacket
+{
+	char size;
+	e_PacketType type;
+	int m_id;
+	PlayerPosition pos;
+	PlayerRotation rot;
+};
+
+struct sc_packet_enterPacket
+{
+	char size;
+	e_PacketType type;
+	int m_id;
+	PlayerPosition pos;
+	PlayerRotation rot;
+};
 #pragma pack(pop)
 ////////////////

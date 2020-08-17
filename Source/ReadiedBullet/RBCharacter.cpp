@@ -2,7 +2,7 @@
 
 
 #include "RBCharacter.h"
-
+#include "RBNetwork.h"
 
 // Sets default values
 ARBCharacter::ARBCharacter()
@@ -107,6 +107,15 @@ void ARBCharacter::BeginPlay()
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
 	MaxHP = GameInstance->PlayerMaxHP;
+	/*TArray<AActor*> arr;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARBNetwork::StaticClass(), arr);
+	m_NetWorkActor = Cast<ARBNetwork>(arr[0]);
+	if (m_NetWorkActor->Get_Mode() == 1)
+	{
+		this->m_ID = m_NetWorkActor->m_ID;
+		m_NetWorkActor->SetMyCharacter(this);
+		
+	}*/
 }
 // Called every frame
 void ARBCharacter::Tick(float DeltaTime)

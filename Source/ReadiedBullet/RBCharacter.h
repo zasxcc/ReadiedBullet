@@ -131,8 +131,10 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")
 	int32 Magazine = 90;
 
-	
+	int m_ID;
 
+	UPROPERTY()
+	class ARBNetwork* m_NetWorkActor;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Anim", Meta = (AllowPrivateAccess = true))
 	UAnimMontage* ReloadMontage;
