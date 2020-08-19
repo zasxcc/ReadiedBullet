@@ -36,6 +36,7 @@ AGunTower::AGunTower()
 	MaxHP = 1.0f;
 	isFire = false;
 	fireTime = 0.0f;
+	towerAngleY = 0.0f;
 }
 
 // Called when the game starts or when spawned
@@ -55,15 +56,26 @@ void AGunTower::Tick(float DeltaTime)
 	float dis = UKismetMathLibrary::Vector_Distance(PlayerLoc, Loc);
 	if (dis < 3500)
 	{
-		isFire = true;
 		fireTime += DeltaTime;
+		if (Mesh->GetComponentRotation().Roll > 5.0f) {
+			Mesh->AddWorldRotation(FRotator(-5.0f, 0.0f, 0.0f));
+			
+		}
+		else
+		{
+			isFire = true;
+		}
+
 	}
 	else
 	{
-		isFire = false;
 		fireTime = 0.0f;
+		if (Mesh->GetComponentRotation().Roll < 176.0f) {
+			Mesh->AddWorldRotation(FRotator(5.0f, 0.0f, 0.0f));
+			isFire = false;
+		}
 	}
-	UE_LOG(LogTemp, Warning, TEXT("%d"), dis);
+	UE_LOG(LogTemp, Warning, TEXT("%f"), Mesh->GetComponentRotation().Roll);
 	if (isFire)
 	{
 		FVector playerLoc = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();

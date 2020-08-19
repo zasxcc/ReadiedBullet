@@ -45,8 +45,12 @@ public:
 	UWidgetComponent* HPBarWidget;
 
 	float MaxHP;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "UI")
 	bool isFire;
+
 	float fireTime;
+	float towerAngleY;
 	UAnimSequence* S_FireAnim;
 
 protected:
