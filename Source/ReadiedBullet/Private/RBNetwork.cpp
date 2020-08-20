@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
+#include "Engine.h"
 #include "RBNetwork.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
 #include "ReadiedBullet/RBCharacter.h"
@@ -217,7 +217,7 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 				auto pos = packet->info.m_Position;
 				auto rot = packet->info.m_Rotation;
 				auto vel = packet->info.m_Velocity;
-
+				UE_LOG(LogTemp, Error, TEXT("%f %f %f"), pos.x, pos.y, pos.z);
 				/// 안 들어온다 여기
 				/// 얘가 왜 널포인터?
 				if (m_OtherPlayers[packet->m_id] != nullptr)
