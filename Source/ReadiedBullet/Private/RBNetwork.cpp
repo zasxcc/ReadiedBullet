@@ -44,38 +44,38 @@ void ARBNetwork::RecvPacket()
 	DWORD RecvBytes = 0;
 	DWORD flags = 0;
 
-	if ((pc != nullptr) && (pc->GetPawn() == nullptr))
-	{
-		pc->OnPossess(m_myCharacter);
-	}
-	if ((m_myCharacter != nullptr) && (m_myCharacter->GetController() ) )
-	{
-		if (Cast<ARBPlayerController>(m_myCharacter->GetController()))
-		{
-			UE_LOG(LogTemp, Error, TEXT("mycharacter %s"), *m_myCharacter->GetController()->GetName());
-		}
-		else
-		{
-			//UE_LOG(LogTemp, Error, TEXT("mycharacter possess ARBcontroller  "));
-		}
-		
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("mycharacter unpossess  "));
-	}
-	if (pc)
-	{
-		auto ch = Cast<ARBCharacter>(pc->GetPawn());
-		if (ch != nullptr)
-		{
-			//UE_LOG(LogTemp, Error, TEXT("pc possess character id is %d "), ch->m_ID);
-		}
-		else
-		{
-			//UE_LOG(LogTemp, Error, TEXT("pc unpossess character "));
-		}
-	}
+	//if ((pc != nullptr) && (pc->GetPawn() == nullptr))
+	//{
+	//	pc->OnPossess(m_myCharacter);
+	//}
+	//if ((m_myCharacter != nullptr) && (m_myCharacter->GetController() ) )
+	//{
+	//	if (Cast<ARBPlayerController>(m_myCharacter->GetController()))
+	//	{
+	//		UE_LOG(LogTemp, Error, TEXT("mycharacter %s"), *m_myCharacter->GetController()->GetName());
+	//	}
+	//	else
+	//	{
+	//		//UE_LOG(LogTemp, Error, TEXT("mycharacter possess ARBcontroller  "));
+	//	}
+	//	
+	//}
+	//else
+	//{
+	//	UE_LOG(LogTemp, Error, TEXT("mycharacter unpossess  "));
+	//}
+	//if (pc)
+	//{
+	//	auto ch = Cast<ARBCharacter>(pc->GetPawn());
+	//	if (ch != nullptr)
+	//	{
+	//		//UE_LOG(LogTemp, Error, TEXT("pc possess character id is %d "), ch->m_ID);
+	//	}
+	//	else
+	//	{
+	//		//UE_LOG(LogTemp, Error, TEXT("pc unpossess character "));
+	//	}
+	//}
 	WSARecv(m_ClientSocket, &m_WSARecvBuf, 1, &RecvBytes, &flags, NULL, NULL);
 	
 	//if (RecvBytes == -1) return;
@@ -155,7 +155,7 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 			
 				//pc = GetWorld()->SpawnActor<ARBPlayerController>();
 				m_myCharacter = GetWorld()->SpawnActor<ARBCharacter>(BPCharacter, pos, rot, FActorSpawnParameters{});
-				pc = Cast<ARBPlayerController>(UGameplayStatics::GetGameMode(GetWorld())->SpawnPlayerController(ENetRole::ROLE_None, FVector::ZeroVector, FRotator::ZeroRotator) );
+				//pc = Cast<ARBPlayerController>(UGameplayStatics::GetGameMode(GetWorld())->SpawnPlayerController(ENetRole::ROLE_None, FVector::ZeroVector, FRotator::ZeroRotator) );
 				
 				/*if (m_myCharacter->GetController() != nullptr)
 				{
@@ -163,7 +163,7 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 					m_myCharacter->GetController()->Destroy();
 				}*/
 				
-				pc->OnPossess(m_myCharacter);
+				//pc->OnPossess(m_myCharacter);
 				//m_OtherPlayers.Add(m_ID, m_myCharacter);
 				m_myCharacter->m_ID = packet->m_id;
 				//UE_LOG(LogTemp, Error, TEXT("e_StartPacket : %d , %d"), m_myCharacter->m_ID, m_ID);
@@ -259,12 +259,11 @@ void ARBNetwork::SendMyTransform()
 	PlayerRotation rot{};
 	PlayerVelocity vel{};
 
-	static int d;
-	d++;
+	
 	if (m_myCharacter != nullptr)
 	{
 		auto apos = m_myCharacter->GetActorLocation();
-		pos.x = apos.X + 20 * d;
+		pos.x = apos.X;
 		pos.y = apos.Y;
 		pos.z = apos.Z;
 		UE_LOG(LogTemp, Error, TEXT("id: %d pos: %f %f %f"), m_ID, pos.x, pos.y, pos.z);

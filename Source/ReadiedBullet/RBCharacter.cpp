@@ -147,12 +147,18 @@ void ARBCharacter::Tick(float DeltaTime)
 
 void ARBCharacter::MoveForward(float Value)
 {
-	AddMovementInput(GetActorForwardVector() * Value);
+	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
+	AddMovementInput(Direction, Value);
+	
+	UE_LOG(LogTemp, Error, TEXT("MoveF : %f, %f, %f"), this->GetActorLocation().X, this->GetActorLocation().Y, this->GetActorLocation().Z);
+	//AddMovementInput(GetActorForwardVector() * Value);
 }
 
 void ARBCharacter::MoveRight(float Value)
 {
-	AddMovementInput(GetActorRightVector() * Value);
+	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
+	AddMovementInput(Direction, Value);
+	//AddMovementInput(GetActorRightVector() * Value);
 }
 
 void ARBCharacter::BeginCrouch()

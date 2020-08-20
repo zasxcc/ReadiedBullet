@@ -62,7 +62,7 @@ public:
 
 	struct FTimerHandle m_SendTimer;
 
-	UFUNCTION()
+	//UFUNCTION()
 	void SendMyTransform();
 	
 	std::map<int, class ARBCharacter*> m_OtherPlayers;
