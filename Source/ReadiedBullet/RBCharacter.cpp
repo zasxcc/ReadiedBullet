@@ -79,6 +79,8 @@ ARBCharacter::ARBCharacter()
 
 	GetMesh()->ComponentTags.Add(FName("Player"));
 	GetCapsuleComponent()->ComponentTags.Add(FName("Player"));
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 }
 
 // Called when the game starts or when spawned
@@ -282,9 +284,9 @@ void ARBCharacter::Reload()
 void ARBCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	PlayerInputComponent->BindAxis("MoveForward", this, &ARBCharacter::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &ARBCharacter::MoveRight);
+	check(PlayerInputComponent);
+	PlayerInputComponent->BindAxis("MF", this, &ARBCharacter::MoveForward);
+	PlayerInputComponent->BindAxis("MR", this, &ARBCharacter::MoveRight);
 
 	PlayerInputComponent->BindAxis("LookUp", this, &ARBCharacter::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("Turn", this, &ARBCharacter::AddControllerYawInput);
