@@ -26,6 +26,7 @@ void ARBNetwork::BeginPlay()
 	Super::BeginPlay();
 	InitClientSocket();
 	Connect();
+	GetWorldTimerManager().SetTimer(m_SendTimer, this, &ARBNetwork::SendMyTransform, 1.0f, true);
 }
 
 // Called every frame
@@ -43,6 +44,38 @@ void ARBNetwork::RecvPacket()
 	DWORD RecvBytes = 0;
 	DWORD flags = 0;
 
+	if ((pc != nullptr) && (pc->GetPawn() == nullptr))
+	{
+		pc->OnPossess(m_myCharacter);
+	}
+	if ((m_myCharacter != nullptr) && (m_myCharacter->GetController() ) )
+	{
+		if (Cast<ARBPlayerController>(m_myCharacter->GetController()))
+		{
+			UE_LOG(LogTemp, Error, TEXT("mycharacter %s"), *m_myCharacter->GetController()->GetName());
+		}
+		else
+		{
+			//UE_LOG(LogTemp, Error, TEXT("mycharacter possess ARBcontroller  "));
+		}
+		
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("mycharacter unpossess  "));
+	}
+	if (pc)
+	{
+		auto ch = Cast<ARBCharacter>(pc->GetPawn());
+		if (ch != nullptr)
+		{
+			//UE_LOG(LogTemp, Error, TEXT("pc possess character id is %d "), ch->m_ID);
+		}
+		else
+		{
+			//UE_LOG(LogTemp, Error, TEXT("pc unpossess character "));
+		}
+	}
 	WSARecv(m_ClientSocket, &m_WSARecvBuf, 1, &RecvBytes, &flags, NULL, NULL);
 	
 	//if (RecvBytes == -1) return;
@@ -52,6 +85,7 @@ void ARBNetwork::RecvPacket()
 
 void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 {
+	
 	/*char* ptr = buf;
 	static size_t in_packet_size = 0;
 	while (iobytes > 0)
@@ -116,35 +150,66 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 				
 				FVector pos = FVector(packet->pos.x, packet->pos.y, packet->pos.z);
 				FRotator rot = FRotator(packet->rot.Pitch, packet->rot.Yaw, packet->rot.Roll);
-				m_myCharacter = GetWorld()->SpawnActor<ARBCharacter>(BPCharacter, pos, rot, FActorSpawnParameters{});
-				m_myCharacter->m_ID = packet->m_id;
 
-				//GetWorldTimerManager().SetTimer(m_SendTimer, this, &ARBNetwork::SendMyTransform, 0.016f, true, 1.0f);
+				UE_LOG(LogTemp, Error, TEXT("e_StartPacket'id : %d"), packet->m_id);
+			
+				//pc = GetWorld()->SpawnActor<ARBPlayerController>();
+				m_myCharacter = GetWorld()->SpawnActor<ARBCharacter>(BPCharacter, pos, rot, FActorSpawnParameters{});
+				pc = Cast<ARBPlayerController>(UGameplayStatics::GetGameMode(GetWorld())->SpawnPlayerController(ENetRole::ROLE_None, FVector::ZeroVector, FRotator::ZeroRotator) );
+				
+				/*if (m_myCharacter->GetController() != nullptr)
+				{
+					m_myCharacter->GetController()->OnUnPossess();
+					m_myCharacter->GetController()->Destroy();
+				}*/
+				
+				pc->OnPossess(m_myCharacter);
+				//m_OtherPlayers.Add(m_ID, m_myCharacter);
+				m_myCharacter->m_ID = packet->m_id;
+				//UE_LOG(LogTemp, Error, TEXT("e_StartPacket : %d , %d"), m_myCharacter->m_ID, m_ID);
+				if (m_myCharacter == nullptr)
+					UE_LOG(LogTemp, Error, TEXT("e_StartPacket : m_myCharacter is nullptr!"));
+
+				
 			}
 			break;
 			case e_PacketType::e_EnterPacket:
 			{
 				sc_packet_enterPacket* packet = reinterpret_cast<sc_packet_enterPacket*>(m_PacketBuf);
 				if (m_ID == packet->m_id) return;
-
 				
 				FVector pos = FVector(packet->pos.x, packet->pos.y, packet->pos.z);
 				FRotator rot = FRotator(packet->rot.Pitch, packet->rot.Yaw, packet->rot.Roll);
-				m_OtherPlayers.Emplace(packet->m_id, GetWorld()->SpawnActor<ARBCharacter>(BPCharacter, pos, rot, FActorSpawnParameters{}) );
-				//m_OtherPlayers[packet->m_id]->m_ID= m_ID;
-				m_OtherPlayers.FindRef(packet->m_id)->m_ID = packet->m_id;
+				auto character = GetWorld()->SpawnActor<ARBCharacter>(BPCharacter, pos, rot, FActorSpawnParameters{} );
+				//m_OtherPlayers.Add(packet->m_id, m_otherplayer);
+				m_OtherPlayers[packet->m_id] = character;
+				m_OtherPlayers[packet->m_id]->m_ID = packet->m_id;
 
-				GetWorldTimerManager().SetTimer(m_SendTimer, this, &ARBNetwork::SendMyTransform, 0.016f, true, 1.0f);
+				//m_OtherPlayers.FindRef(packet->m_id)->m_ID = packet->m_id;
+				UE_LOG(LogTemp, Error, TEXT("other player's id : %d"), m_OtherPlayers[packet->m_id]->m_ID);
+
+				/*if (m_OtherPlayers.FindRef(packet->m_id) == nullptr)
+					UE_LOG(LogTemp, Error, TEXT("e_EnterPacket : m_OtherPlayers is nullptr!"));*/
+
+				//GetWorldTimerManager().SetTimer(m_SendTimer, this, &ARBNetwork::SendMyTransform, 0.016f, true, 1.0f);
 			}
 			break;
 			case e_PacketType::e_PlayerInfoPacket:
 			{
 				sc_packet_playerInfo* packet = reinterpret_cast<sc_packet_playerInfo*>(m_PacketBuf);
-				auto character = m_OtherPlayers.FindRef(packet->m_id);
+				//auto character = m_OtherPlayers.FindRef(packet->m_id);
 				// 타 클라의 정보를 받아 내 클라에 set해주는 부분.
+				/*UE_LOG(LogTemp, Error, TEXT("%f %f %f"), m_myCharacter->GetActorLocation().X,
+					m_myCharacter->GetActorLocation().Y, m_myCharacter->GetActorLocation().Z);*/
+				int test = packet->m_id;
+				
 
-				//int test = packet->m_id;
-				//UE_LOG(LogTemp, Error, TEXT("id test : %d"), test);
+				//UE_LOG(LogTemp, Error, TEXT("e_PlayerInfoPacket's id : %d"), test);
+				//UE_LOG(LogTemp, Error, TEXT("%f %f %f"), packet->info.m_Position.x, packet->info.m_Position.y, packet->info.m_Position.z);
+				//UE_LOG(LogTemp, Error, TEXT("e_PlayerInfoPacket : packet id is %d"), packet->m_id);
+				//if (m_OtherPlayers.FindRef(packet->m_id) == nullptr)
+				//	UE_LOG(LogTemp, Error, TEXT("e_PlayerInfoPacket : Ref is nullptr"));
+
 
 				// 2개 연결돼 있을 때, 한 클라 연결이 끊기면 다른 클라는 잘 움직이지만
 				// 서버에서 찍히는 좌표는 시작 좌표 그대로임. 왜?
@@ -153,11 +218,14 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 				auto rot = packet->info.m_Rotation;
 				auto vel = packet->info.m_Velocity;
 
-				if (character != nullptr)
+				/// 안 들어온다 여기
+				/// 얘가 왜 널포인터?
+				if (m_OtherPlayers[packet->m_id] != nullptr)
 				{
-					character->SetActorLocation(FVector(pos.x, pos.y, pos.z));
-					character->SetActorRotation(FRotator(rot.Pitch, rot.Yaw, rot.Roll));
-					character->AddMovementInput(FVector(vel.vx, vel.vy, vel.vz));
+					//UE_LOG(LogTemp, Error, TEXT("here come?"));
+					m_OtherPlayers[packet->m_id]->SetActorLocation(FVector(pos.x, pos.y, pos.z));
+					//m_OtherPlayers[packet->m_id]->SetActorRotation(FRotator(rot.Pitch, rot.Yaw, rot.Roll));
+					//m_OtherPlayers[packet->m_id]->AddMovementInput(FVector(vel.vx, vel.vy, vel.vz));
 				}
 			}
 			break;
@@ -191,39 +259,43 @@ void ARBNetwork::SendMyTransform()
 	PlayerRotation rot{};
 	PlayerVelocity vel{};
 
-	if (m_myCharacter == nullptr) return;
-	auto apos = m_myCharacter->GetActorLocation();
-	pos.x = apos.X;
-	pos.y = apos.Y;
-	pos.z = apos.Z;
-	//UE_LOG(LogTemp, Error, TEXT("id: %d pos: %f %f %f"), m_ID ,pos.x, pos.y, pos.z);
+	static int d;
+	d++;
+	if (m_myCharacter != nullptr)
+	{
+		auto apos = m_myCharacter->GetActorLocation();
+		pos.x = apos.X + 20 * d;
+		pos.y = apos.Y;
+		pos.z = apos.Z;
+		UE_LOG(LogTemp, Error, TEXT("id: %d pos: %f %f %f"), m_ID, pos.x, pos.y, pos.z);
 
-	auto arot = m_myCharacter->GetActorRotation();
-	rot.Pitch = arot.Pitch;
-	rot.Roll = arot.Roll;
-	rot.Yaw = arot.Yaw;
+		auto arot = m_myCharacter->GetActorRotation();
+		rot.Pitch = arot.Pitch;
+		rot.Roll = arot.Roll;
+		rot.Yaw = arot.Yaw;
 
-	auto avel = m_myCharacter->GetVelocity();
-	vel.vx = avel.X;
-	vel.vy = avel.Y;
-	vel.vz = avel.Z;
+		auto avel = m_myCharacter->GetVelocity();
+		vel.vx = avel.X;
+		vel.vy = avel.Y;
+		vel.vz = avel.Z;
 
-	PlayerInfo info{ pos,rot,vel };
+		PlayerInfo info{ pos,rot,vel };
 
-	cs_packet_playerInfo p{};
-	p.m_id = m_myCharacter->m_ID;
-	p.size = sizeof(p);
-	p.type = e_PacketType::e_PlayerInfoPacket;
-	p.info = info;
-	
+		cs_packet_playerInfo p{};
+		p.m_id = m_myCharacter->m_ID;
+		p.size = sizeof(p);
+		p.type = e_PacketType::e_PlayerInfoPacket;
+		p.info = info;
 
-	DWORD SentBytes = 0;
-	DWORD flags = 0;
+		//UE_LOG(LogTemp, Error, TEXT("SendMyTransform's id : %d"), p.m_id);
 
-	memcpy(m_SendBuf, &p, sizeof(p));
-	m_WSASendBuf.len = sizeof(p);
-	int retval = WSASend(m_ClientSocket, &m_WSASendBuf, 1, &SentBytes, flags, NULL, NULL);
+		DWORD SentBytes = 0;
+		DWORD flags = 0;
 
+		memcpy(m_SendBuf, &p, sizeof(p));
+		m_WSASendBuf.len = sizeof(p);
+		int retval = WSASend(m_ClientSocket, &m_WSASendBuf, 1, &SentBytes, flags, NULL, NULL);
+	}
 }
 void ARBNetwork::Disconnect()
 {

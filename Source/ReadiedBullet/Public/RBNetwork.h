@@ -5,6 +5,7 @@
 #include "ReadiedBullet/ReadiedBullet.h"
 #include "GameFramework/Actor.h"
 #include <WS2tcpip.h>
+#include <map>
 #include "RBNetwork.generated.h"
 
 
@@ -57,14 +58,18 @@ public:
 	void SetMyCharacter(class ARBCharacter*);
 
 	class ARBCharacter* m_myCharacter;
+	class ARBCharacter* m_otherplayer;
 
 	struct FTimerHandle m_SendTimer;
 
 	UFUNCTION()
 	void SendMyTransform();
 	
-	TMap<int, class ARBCharacter*> m_OtherPlayers;
+	std::map<int, class ARBCharacter*> m_OtherPlayers;
 	UClass* BPCharacter;
+
+	class ARBPlayerController* pc;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
