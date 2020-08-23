@@ -69,6 +69,8 @@ public:
 	UClass* BPCharacter;
 
 	class ARBPlayerController* pc;
+	FVector m_myPos;
+	FRotator m_myRot;
 
 protected:
 	// Called when the game starts or when spawned

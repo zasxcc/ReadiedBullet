@@ -26,7 +26,7 @@ void ARBNetwork::BeginPlay()
 	Super::BeginPlay();
 	InitClientSocket();
 	Connect();
-	GetWorldTimerManager().SetTimer(m_SendTimer, this, &ARBNetwork::SendMyTransform, 1.0f, true);
+	GetWorldTimerManager().SetTimer(m_SendTimer, this, &ARBNetwork::SendMyTransform, 0.016f, true);
 }
 
 // Called every frame
@@ -150,11 +150,18 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 				
 				FVector pos = FVector(packet->pos.x, packet->pos.y, packet->pos.z);
 				FRotator rot = FRotator(packet->rot.Pitch, packet->rot.Yaw, packet->rot.Roll);
+				
+				////
+				m_myPos = pos;
+				m_myRot = rot;
+				////
 
 				UE_LOG(LogTemp, Error, TEXT("e_StartPacket'id : %d"), packet->m_id);
 			
 				//pc = GetWorld()->SpawnActor<ARBPlayerController>();
-				m_myCharacter = GetWorld()->SpawnActor<ARBCharacter>(BPCharacter, pos, rot, FActorSpawnParameters{});
+
+				//m_myCharacter = GetWorld()->SpawnActor<ARBCharacter>(BPCharacter, pos, rot, FActorSpawnParameters{});
+
 				//pc = Cast<ARBPlayerController>(UGameplayStatics::GetGameMode(GetWorld())->SpawnPlayerController(ENetRole::ROLE_None, FVector::ZeroVector, FRotator::ZeroRotator) );
 				
 				/*if (m_myCharacter->GetController() != nullptr)
@@ -165,7 +172,8 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 				
 				//pc->OnPossess(m_myCharacter);
 				//m_OtherPlayers.Add(m_ID, m_myCharacter);
-				m_myCharacter->m_ID = packet->m_id;
+				//m_myCharacter->m_ID = packet->m_id;
+
 				//UE_LOG(LogTemp, Error, TEXT("e_StartPacket : %d , %d"), m_myCharacter->m_ID, m_ID);
 				if (m_myCharacter == nullptr)
 					UE_LOG(LogTemp, Error, TEXT("e_StartPacket : m_myCharacter is nullptr!"));
@@ -192,6 +200,12 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 					UE_LOG(LogTemp, Error, TEXT("e_EnterPacket : m_OtherPlayers is nullptr!"));*/
 
 				//GetWorldTimerManager().SetTimer(m_SendTimer, this, &ARBNetwork::SendMyTransform, 0.016f, true, 1.0f);
+
+				m_myCharacter = GetWorld()->SpawnActor<ARBCharacter>(BPCharacter, m_myPos, m_myRot, FActorSpawnParameters{});
+				m_myCharacter->m_ID = m_ID;
+
+				if (m_myCharacter == nullptr)
+					UE_LOG(LogTemp, Error, TEXT("e_StartPacket : m_myCharacter is nullptr!"));
 			}
 			break;
 			case e_PacketType::e_PlayerInfoPacket:
@@ -217,15 +231,14 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 				auto pos = packet->info.m_Position;
 				auto rot = packet->info.m_Rotation;
 				auto vel = packet->info.m_Velocity;
-				UE_LOG(LogTemp, Error, TEXT("%f %f %f"), pos.x, pos.y, pos.z);
-				/// 안 들어온다 여기
-				/// 얘가 왜 널포인터?
+				UE_LOG(LogTemp, Error, TEXT("other's velocity : %f %f %f"), vel.vx, vel.vy, vel.vz);
+				
 				if (m_OtherPlayers[packet->m_id] != nullptr)
 				{
 					//UE_LOG(LogTemp, Error, TEXT("here come?"));
 					m_OtherPlayers[packet->m_id]->SetActorLocation(FVector(pos.x, pos.y, pos.z));
-					//m_OtherPlayers[packet->m_id]->SetActorRotation(FRotator(rot.Pitch, rot.Yaw, rot.Roll));
-					//m_OtherPlayers[packet->m_id]->AddMovementInput(FVector(vel.vx, vel.vy, vel.vz));
+					m_OtherPlayers[packet->m_id]->SetActorRotation(FRotator(rot.Pitch, rot.Yaw, rot.Roll));
+					m_OtherPlayers[packet->m_id]->AddMovementInput(FVector(vel.vx, vel.vy, vel.vz));
 				}
 			}
 			break;
@@ -266,7 +279,7 @@ void ARBNetwork::SendMyTransform()
 		pos.x = apos.X;
 		pos.y = apos.Y;
 		pos.z = apos.Z;
-		UE_LOG(LogTemp, Error, TEXT("id: %d pos: %f %f %f"), m_ID, pos.x, pos.y, pos.z);
+		//UE_LOG(LogTemp, Error, TEXT("id: %d pos: %f %f %f"), m_ID, pos.x, pos.y, pos.z);
 
 		auto arot = m_myCharacter->GetActorRotation();
 		rot.Pitch = arot.Pitch;

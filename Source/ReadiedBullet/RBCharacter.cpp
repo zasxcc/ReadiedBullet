@@ -152,7 +152,7 @@ void ARBCharacter::MoveForward(float Value)
 	
 	// 서버에선 이 값을 받지 않는다. 결국 이 정보는 보내지지 않는다.
 	// 이 정보를 보낼 방법을 찾아야 한다.
-	UE_LOG(LogTemp, Error, TEXT("MoveF : %f, %f, %f"), this->GetActorLocation().X, this->GetActorLocation().Y, this->GetActorLocation().Z);
+	//UE_LOG(LogTemp, Error, TEXT("MoveF : %f, %f, %f"), this->GetActorLocation().X, this->GetActorLocation().Y, this->GetActorLocation().Z);
 	//AddMovementInput(GetActorForwardVector() * Value);
 }
 
