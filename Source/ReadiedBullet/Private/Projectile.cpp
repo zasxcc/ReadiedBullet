@@ -73,6 +73,8 @@ void AProjectile::PostInitializeComponents()
 		CylinderTransform3 = GameInstance->InstanceCylinderSlot3;
 		SphereTransform3 = GameInstance->InstanceSphereSlot3;
 
+
+		// ¿©±âµµ ¹Ù²ã¾ßµÅ¿ë
 		SelectBulletSlot = GameInstance->SelectSlot;
 
 

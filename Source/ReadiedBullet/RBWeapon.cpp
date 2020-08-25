@@ -3,6 +3,7 @@
 
 #include "RBWeapon.h"
 #include "RBCharacter.h"
+#include "RBNetwork.h"
 
 
 // Sets default values
@@ -105,7 +106,22 @@ void ARBWeapon::Fire()
 			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
 			// spawn the projectile at the muzzle
-			GetWorld()->SpawnActor<AProjectile>(ProjectileClass, MuzzleLocation, EyeRotation, ActorSpawnParams);		
+			GetWorld()->SpawnActor<AProjectile>(ProjectileClass, MuzzleLocation, EyeRotation, ActorSpawnParams);
+			
+			TArray<AActor*> network;
+			UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARBNetwork::StaticClass(), network);
+			
+			if (network.Num() > 0)
+			{
+				auto nt = Cast<ARBNetwork>(network[0]);
+				if (nt)
+				{
+					if (nt->Get_Mode())
+					{
+						nt->SendProjectileSpawn(MuzzleLocation, EyeRotation);
+					}
+				}
+			}
 		}
 
 		//카메라 흔들기

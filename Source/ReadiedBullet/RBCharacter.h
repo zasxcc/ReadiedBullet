@@ -41,9 +41,6 @@ protected:
 	void BeginZoom();
 	void EndZoom();
 
-	void SelectSlot1();
-	void SelectSlot2();
-	void SelectSlot3();
 	
 	void Reload();
 
@@ -117,6 +114,13 @@ public:
 
 	FRotator GetCamRotator();
 
+	void SelectSlot1();
+	void SelectSlot2();
+	void SelectSlot3();
+
+	void SelectSlot1(int id);
+	void SelectSlot2(int id);
+	void SelectSlot3(int id);
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "HP")
 	float CurrentHP;

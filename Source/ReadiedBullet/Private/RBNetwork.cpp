@@ -18,6 +18,12 @@ ARBNetwork::ARBNetwork()
 	{
 		BPCharacter = Character.Class;
 	}
+
+	static ConstructorHelpers::FClassFinder<AProjectile> Proj(TEXT("/Game/Blueprints/BP_Projectile.BP_Projectile_C"));
+	if (Proj.Succeeded() && Proj.Class != NULL)
+	{
+		BPProjectile = Proj.Class;
+	}
 }
 
 // Called when the game starts or when spawned
@@ -193,6 +199,12 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 				m_OtherPlayers[packet->m_id] = character;
 				m_OtherPlayers[packet->m_id]->m_ID = packet->m_id;
 
+				pc = GetWorld()->SpawnActor<ARBPlayerController>();
+
+
+				pc->OnPossess(m_OtherPlayers[packet->m_id]);
+
+
 				//m_OtherPlayers.FindRef(packet->m_id)->m_ID = packet->m_id;
 				UE_LOG(LogTemp, Error, TEXT("other player's id : %d"), m_OtherPlayers[packet->m_id]->m_ID);
 
@@ -201,11 +213,25 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 
 				//GetWorldTimerManager().SetTimer(m_SendTimer, this, &ARBNetwork::SendMyTransform, 0.016f, true, 1.0f);
 
+				/*m_myCharacter = GetWorld()->SpawnActor<ARBCharacter>(BPCharacter, m_myPos, m_myRot, FActorSpawnParameters{});
+				m_myCharacter->m_ID = m_ID;*/
+
+				if (m_myCharacter == nullptr)
+					UE_LOG(LogTemp, Error, TEXT("e_StartPacket : m_myCharacter is nullptr!"));
+			}
+			break;
+			case e_PacketType::e_myCharacterPacket:
+			{
+				sc_packet_myCharacterPacket* packet = reinterpret_cast<sc_packet_myCharacterPacket*>(m_PacketBuf);
+
+				FVector pos = FVector(packet->pos.x, packet->pos.y, packet->pos.z);
+				FRotator rot = FRotator(packet->rot.Pitch, packet->rot.Yaw, packet->rot.Roll);
+
 				m_myCharacter = GetWorld()->SpawnActor<ARBCharacter>(BPCharacter, m_myPos, m_myRot, FActorSpawnParameters{});
 				m_myCharacter->m_ID = m_ID;
 
 				if (m_myCharacter == nullptr)
-					UE_LOG(LogTemp, Error, TEXT("e_StartPacket : m_myCharacter is nullptr!"));
+					UE_LOG(LogTemp, Error, TEXT("e_myCharacterPacket : m_myCharacter is nullptr!"));
 			}
 			break;
 			case e_PacketType::e_PlayerInfoPacket:
@@ -215,7 +241,7 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 				// 타 클라의 정보를 받아 내 클라에 set해주는 부분.
 				/*UE_LOG(LogTemp, Error, TEXT("%f %f %f"), m_myCharacter->GetActorLocation().X,
 					m_myCharacter->GetActorLocation().Y, m_myCharacter->GetActorLocation().Z);*/
-				int test = packet->m_id;
+				//int test = packet->m_id;
 				
 
 				//UE_LOG(LogTemp, Error, TEXT("e_PlayerInfoPacket's id : %d"), test);
@@ -239,6 +265,40 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 					m_OtherPlayers[packet->m_id]->SetActorLocation(FVector(pos.x, pos.y, pos.z));
 					m_OtherPlayers[packet->m_id]->SetActorRotation(FRotator(rot.Pitch, rot.Yaw, rot.Roll));
 					m_OtherPlayers[packet->m_id]->AddMovementInput(FVector(vel.vx, vel.vy, vel.vz));
+				}
+			}
+			break;
+			case e_PacketType::e_BulletSpawnPacket:
+			{
+				cs_packet_bulletSpawnPacket* packet = reinterpret_cast<cs_packet_bulletSpawnPacket*>(m_PacketBuf);
+				
+				FVector pos{ packet->pos.x, packet->pos.y, packet->pos.z };
+				FRotator rot{ packet->rot.Pitch, packet->rot.Yaw, packet->rot.Roll };
+
+				GetWorld()->SpawnActor<AProjectile>(BPProjectile, pos, rot, FActorSpawnParameters{});
+			}
+			break;
+			case e_PacketType::e_BulletSlotPacket:
+			{
+				sc_packet_bulletSlotPacket* packet = reinterpret_cast<sc_packet_bulletSlotPacket*>(m_PacketBuf);
+
+				switch (packet->bulletType)
+				{
+				case e_bulletType::e_Bullet1:
+				{
+					m_OtherPlayers[packet->m_id]->SelectSlot1(packet->m_id);
+				}
+				break;
+				case e_bulletType::e_Bullet2:
+				{
+					m_OtherPlayers[packet->m_id]->SelectSlot2(packet->m_id);
+				}
+				break;
+				case e_bulletType::e_Bullet3:
+				{
+					m_OtherPlayers[packet->m_id]->SelectSlot3(packet->m_id);
+				}
+				break;
 				}
 			}
 			break;
@@ -309,6 +369,57 @@ void ARBNetwork::SendMyTransform()
 		int retval = WSASend(m_ClientSocket, &m_WSASendBuf, 1, &SentBytes, flags, NULL, NULL);
 	}
 }
+
+void ARBNetwork::SendProjectileSpawn(FVector loc, FRotator rot)
+{
+	PlayerPosition Pos{};
+	PlayerRotation Rot{};
+
+	if (m_myCharacter != nullptr)
+	{
+		Pos.x = loc.X;
+		Pos.y = loc.Y;
+		Pos.z = loc.Z;
+
+		Rot.Pitch = rot.Pitch;
+		Rot.Yaw = rot.Yaw;
+		Rot.Roll = rot.Roll;
+
+		cs_packet_bulletSpawnPacket bp{};
+		bp.m_id = m_myCharacter->m_ID;
+		bp.pos = Pos;
+		bp.rot = Rot;
+		bp.size = sizeof(bp);
+		bp.type = e_PacketType::e_BulletSpawnPacket;
+
+		DWORD SentBytes = 0;
+		DWORD flags = 0;
+
+		memcpy(m_SendBuf, &bp, sizeof(bp));
+		m_WSASendBuf.len = sizeof(bp);
+		int retval = WSASend(m_ClientSocket, &m_WSASendBuf, 1, &SentBytes, flags, NULL, NULL);
+	}
+}
+
+void ARBNetwork::SendBulletType(e_bulletType type)
+{
+	if (m_myCharacter != nullptr)
+	{
+		cs_packet_bulletSlotPacket bp{};
+		bp.m_id = m_myCharacter->m_ID;
+		bp.bulletType = type;
+		bp.size = sizeof(bp);
+		bp.type = e_PacketType::e_BulletSlotPacket;
+
+		DWORD SentBytes = 0;
+		DWORD flags = 0;
+
+		memcpy(m_SendBuf, &bp, sizeof(bp));
+		m_WSASendBuf.len = sizeof(bp);
+		int retval = WSASend(m_ClientSocket, &m_WSASendBuf, 1, &SentBytes, flags, NULL, NULL);
+	}
+}
+
 void ARBNetwork::Disconnect()
 {
 	cs_packet_leavePacket p{};

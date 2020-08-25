@@ -25,7 +25,7 @@ public:
 
 	bool m_IsRun;
 	int m_ID;
-	
+
 	UPROPERTY(EditAnywhere)
 	bool m_IsReady;
 
@@ -64,9 +64,14 @@ public:
 
 	//UFUNCTION()
 	void SendMyTransform();
+
+	void SendProjectileSpawn(FVector loc, FRotator rot);
+
+	void SendBulletType(e_bulletType type);
 	
 	std::map<int, class ARBCharacter*> m_OtherPlayers;
 	UClass* BPCharacter;
+	UClass* BPProjectile;
 
 	class ARBPlayerController* pc;
 	FVector m_myPos;
@@ -79,6 +84,7 @@ protected:
 private:
 	SOCKET m_ClientSocket;
 	char m_gamemode;
+
 
 	char m_RecvBuf[MAX_BUFFER]; //사용자정의 수신버퍼
 	char m_SendBuf[MAX_BUFFER]; //사용자정의 송신버퍼

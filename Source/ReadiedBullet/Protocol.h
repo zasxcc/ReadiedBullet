@@ -15,6 +15,17 @@ enum class e_PacketType : uint8_t
 	e_StartPacket,
 	e_PlayerInfoPacket,
 	e_EnterPacket,
+	e_myCharacterPacket,
+	e_BulletSpawnPacket,
+	e_BulletSlotPacket,
+	e_BulletMovePacket,
+};
+
+enum class e_bulletType : uint8_t
+{
+	e_Bullet1,
+	e_Bullet2,
+	e_Bullet3,
 };
 
 //클라:처음에 게임에 로그인을 한다.(start scene, 로그인 버튼을 누르면)
@@ -133,5 +144,49 @@ struct sc_packet_enterPacket
 	PlayerPosition pos;
 	PlayerRotation rot;
 };
+ 
+struct sc_packet_myCharacterPacket
+{
+	char size;
+	e_PacketType type;
+	int m_id;
+	PlayerPosition pos;
+	PlayerRotation rot;
+};
+
+struct cs_packet_bulletSpawnPacket
+{
+	char size;
+	e_PacketType type;
+	int m_id;
+	PlayerPosition pos;
+	PlayerRotation rot;
+};
+
+struct sc_packet_bulletSpawnPacket
+{
+	char size;
+	e_PacketType type;
+	int m_id;
+	PlayerPosition pos;
+	PlayerRotation rot;
+};
+
+struct cs_packet_bulletSlotPacket
+{
+	char size;
+	e_PacketType type;
+	e_bulletType bulletType;
+	int m_id;
+};
+
+struct sc_packet_bulletSlotPacket
+{
+	char size;
+	e_PacketType type;
+	e_bulletType bulletType;
+	int m_id;
+};
+
 #pragma pack(pop)
 ////////////////
