@@ -3,6 +3,7 @@
 
 #include "Projectile.h"
 #include "Engine.h"
+#include "RBNetwork.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -64,11 +65,21 @@ void AProjectile::PostInitializeComponents()
 		CylinderTransform3 = GameInstance->InstanceCylinderSlot3;
 		SphereTransform3 = GameInstance->InstanceSphereSlot3;
 
+		/////////////////////
 
-		// 아이디 부분 바꿔야함 서버로
-		int id = 0;
-		SelectBulletSlot = GameInstance->SelectSlot[id];
+		TArray<AActor*> network;
+		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARBNetwork::StaticClass(), network);
 
+		if (network.Num() > 0)
+		{
+			auto nt = Cast<ARBNetwork>(network[0]);
+			if (nt)
+			{
+				SelectBulletSlot = GameInstance->SelectSlot[nt->m_ID];
+			}
+		}
+
+		///////////////////
 
 		//총알 가속도
 		RotateVector1.X = RotateVector1.X - (float)BoxTransform1.Num() - ((float)CylinderTransform1.Num() * 0.7f) - ((float)SphereTransform1.Num() * 0.5f);

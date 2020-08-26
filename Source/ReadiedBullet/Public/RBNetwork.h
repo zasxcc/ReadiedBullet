@@ -70,6 +70,9 @@ public:
 	void SendProjectileSpawn(FVector loc, FRotator rot);
 
 	void SendBulletType(e_bulletType type);
+
+	UFUNCTION(BlueprintCallable)
+	void SendBulletRotData();
 	
 	std::map<int, class ARBCharacter*> m_OtherPlayers;
 	UClass* BPCharacter;

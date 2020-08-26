@@ -19,11 +19,12 @@ enum class e_PacketType : uint8_t
 	e_BulletSpawnPacket,
 	e_BulletSlotPacket,
 	e_BulletMovePacket,
+	e_BulletRotPacket,
 };
 
 enum class e_bulletType : uint8_t
 {
-	e_Bullet1,
+	e_Bullet1 = 1,
 	e_Bullet2,
 	e_Bullet3,
 };
@@ -73,6 +74,12 @@ struct PlayerInfo
 	PlayerPosition m_Position;
 	PlayerRotation m_Rotation;
 	PlayerVelocity m_Velocity;
+};
+struct BulletSlotData
+{
+	float x;
+	float y;
+	float z;
 };
 
 struct sc_packet_loginOK
@@ -186,6 +193,26 @@ struct sc_packet_bulletSlotPacket
 	e_PacketType type;
 	e_bulletType bulletType;
 	int m_id;
+};
+
+struct cs_packet_bulletRotPacket
+{
+	char size;
+	e_PacketType type;
+	int m_id;
+	BulletSlotData slot1;
+	BulletSlotData slot2;
+	BulletSlotData slot3;
+};
+
+struct sc_packet_bulletRotPacket
+{
+	char size;
+	e_PacketType type;
+	int m_id;
+	BulletSlotData slot1;
+	BulletSlotData slot2;
+	BulletSlotData slot3;
 };
 
 #pragma pack(pop)

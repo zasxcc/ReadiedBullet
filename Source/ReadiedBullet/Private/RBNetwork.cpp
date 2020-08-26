@@ -146,6 +146,24 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 				m_ID = packet->m_id;
 			}
 			break;
+			case e_PacketType::e_BulletRotPacket:
+			{
+				sc_packet_bulletRotPacket* packet = reinterpret_cast<sc_packet_bulletRotPacket*>(m_PacketBuf);
+				
+				URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+				GameInstance->SaveSlot1_InstanceX[packet->m_id] = packet->slot1.x;
+				GameInstance->SaveSlot1_InstanceY[packet->m_id] = packet->slot1.y;
+				GameInstance->SaveSlot1_InstanceZ[packet->m_id] = packet->slot1.z;
+
+				GameInstance->SaveSlot2_InstanceX[packet->m_id] = packet->slot2.x;
+				GameInstance->SaveSlot2_InstanceY[packet->m_id] = packet->slot2.y;
+				GameInstance->SaveSlot2_InstanceZ[packet->m_id] = packet->slot2.z;
+
+				GameInstance->SaveSlot3_InstanceX = 0;//[packet->m_id] = packet->slot3.x;
+				GameInstance->SaveSlot3_InstanceY = 0;//[packet->m_id] = packet->slot3.y;
+				GameInstance->SaveSlot3_InstanceZ = 0;//[packet->m_id] = packet->slot3.z;
+			}
+			break;
 			case e_PacketType::e_StartPacket:
 			{
 				sc_packet_startPacket* packet = reinterpret_cast<sc_packet_startPacket*>(m_PacketBuf);
@@ -200,10 +218,7 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 				m_OtherPlayers[packet->m_id]->m_ID = packet->m_id;
 
 				pc = GetWorld()->SpawnActor<ARBPlayerController>();
-
-
 				pc->OnPossess(m_OtherPlayers[packet->m_id]);
-
 
 				//m_OtherPlayers.FindRef(packet->m_id)->m_ID = packet->m_id;
 				UE_LOG(LogTemp, Error, TEXT("other player's id : %d"), m_OtherPlayers[packet->m_id]->m_ID);
@@ -257,7 +272,6 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 				auto pos = packet->info.m_Position;
 				auto rot = packet->info.m_Rotation;
 				auto vel = packet->info.m_Velocity;
-				UE_LOG(LogTemp, Error, TEXT("other's velocity : %f %f %f"), vel.vx, vel.vy, vel.vz);
 				
 				if (m_OtherPlayers[packet->m_id] != nullptr)
 				{
@@ -274,6 +288,8 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 				
 				FVector pos{ packet->pos.x, packet->pos.y, packet->pos.z };
 				FRotator rot{ packet->rot.Pitch, packet->rot.Yaw, packet->rot.Roll };
+
+				UE_LOG(LogTemp, Error, TEXT("e_BulletSpawnPacket : Here come? "));
 
 				GetWorld()->SpawnActor<AProjectile>(BPProjectile, pos, rot, FActorSpawnParameters{});
 			}
@@ -418,6 +434,36 @@ void ARBNetwork::SendBulletType(e_bulletType type)
 		m_WSASendBuf.len = sizeof(bp);
 		int retval = WSASend(m_ClientSocket, &m_WSASendBuf, 1, &SentBytes, flags, NULL, NULL);
 	}
+}
+
+void ARBNetwork::SendBulletRotData()
+{
+	cs_packet_bulletRotPacket rp{};
+
+	rp.m_id = m_ID;
+	rp.size = sizeof(rp);
+	rp.type = e_PacketType::e_BulletRotPacket;
+	
+	// 게임 인스턴스에 저장되어 있는 총알의 회전 방향을 패킷에 저장해 보낸다.
+	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	rp.slot1.x = GameInstance->SaveSlot1_InstanceX[m_ID];
+	rp.slot1.y = GameInstance->SaveSlot1_InstanceY[m_ID];
+	rp.slot1.z = GameInstance->SaveSlot1_InstanceZ[m_ID];
+
+	rp.slot2.x = GameInstance->SaveSlot2_InstanceX[m_ID];
+	rp.slot2.y = GameInstance->SaveSlot2_InstanceY[m_ID];
+	rp.slot2.z = GameInstance->SaveSlot2_InstanceZ[m_ID];
+
+	rp.slot3.x = 0;//GameInstance->SaveSlot3_InstanceX[m_ID];
+	rp.slot3.y = 0;//GameInstance->SaveSlot3_InstanceY[m_ID];
+	rp.slot3.z = 0;//GameInstance->SaveSlot3_InstanceZ[m_ID];
+
+	DWORD SentBytes = 0;
+	DWORD flags = 0;
+
+	memcpy(m_SendBuf, &rp, sizeof(rp));
+	m_WSASendBuf.len = sizeof(rp);
+	int retval = WSASend(m_ClientSocket, &m_WSASendBuf, 1, &SentBytes, flags, NULL, NULL);
 }
 
 void ARBNetwork::Disconnect()
