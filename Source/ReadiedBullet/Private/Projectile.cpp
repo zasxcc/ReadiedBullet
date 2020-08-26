@@ -65,8 +65,9 @@ void AProjectile::PostInitializeComponents()
 		SphereTransform3 = GameInstance->InstanceSphereSlot3;
 
 
-		// 여기도 바꿔야돼용
-		SelectBulletSlot = GameInstance->SelectSlot;
+		// 아이디 부분 바꿔야함 서버로
+		int id = 0;
+		SelectBulletSlot = GameInstance->SelectSlot[id];
 
 
 		//총알 가속도

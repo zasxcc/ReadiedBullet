@@ -80,8 +80,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
 	float SaveSlot3_InstanceZ;
 
-
-	int32 SelectSlot;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "SelectSlot")
+	TArray<int32> SelectSlot = { 1, 1, 1 };
 	//////////////////////
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
@@ -166,8 +166,8 @@ public:
 	int CurrentStage = 1;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stage")
-		bool clearStage1 = false;
+	bool clearStage1 = false;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stage")
-		bool clearStage2 = false;
+	bool clearStage2 = false;
 
 };

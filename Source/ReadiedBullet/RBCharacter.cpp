@@ -189,7 +189,7 @@ void ARBCharacter::EndZoom()
 void ARBCharacter::SelectSlot1()
 {
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	GameInstance->SelectSlot = 1;
+	GameInstance->SelectSlot[m_ID] = 1;
 
 	if (GameInstance->IsPathMade1 == true)
 	{
@@ -227,7 +227,7 @@ void ARBCharacter::SelectSlot1()
 void ARBCharacter::SelectSlot2()
 {
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	GameInstance->SelectSlot = 2;
+	GameInstance->SelectSlot[m_ID] = 2;
 
 	if (GameInstance->IsPathMade2 == true)
 	{
@@ -265,7 +265,7 @@ void ARBCharacter::SelectSlot2()
 void ARBCharacter::SelectSlot1(int id)
 {
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	GameInstance->SelectSlot = 1;
+	GameInstance->SelectSlot[m_ID] = 1;
 
 	if (GameInstance->IsPathMade1 == true)
 	{
@@ -287,7 +287,7 @@ void ARBCharacter::SelectSlot1(int id)
 void ARBCharacter::SelectSlot2(int id)
 {
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	GameInstance->SelectSlot = 2;
+	GameInstance->SelectSlot[m_ID] = 2;
 
 	if (GameInstance->IsPathMade1 == true)
 	{
@@ -309,7 +309,7 @@ void ARBCharacter::SelectSlot2(int id)
 void ARBCharacter::SelectSlot3(int id)
 {
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	GameInstance->SelectSlot = 3;
+	GameInstance->SelectSlot[m_ID] = 3;
 
 	if (GameInstance->IsPathMade1 == true)
 	{
@@ -331,7 +331,7 @@ void ARBCharacter::SelectSlot3(int id)
 void ARBCharacter::SelectSlot3()
 {
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	GameInstance->SelectSlot = 3;
+	GameInstance->SelectSlot[m_ID] = 3;
 
 	if (GameInstance->IsPathMade3 == true)
 	{
