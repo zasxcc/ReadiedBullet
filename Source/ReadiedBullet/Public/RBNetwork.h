@@ -24,6 +24,8 @@ public:
 	ARBNetwork();
 
 	bool m_IsRun;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "ID")
 	int m_ID;
 
 	UPROPERTY(EditAnywhere)

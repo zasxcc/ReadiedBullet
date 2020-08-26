@@ -109,6 +109,7 @@ void ARBCharacter::BeginPlay()
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
 	MaxHP = GameInstance->PlayerMaxHP;
+
 	/*TArray<AActor*> arr;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARBNetwork::StaticClass(), arr);
 	m_NetWorkActor = Cast<ARBNetwork>(arr[0]);

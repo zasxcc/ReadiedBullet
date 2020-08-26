@@ -42,15 +42,6 @@ AProjectile::AProjectile()
 	RotateVector3.Z = 0.0f;
 
 	InitialLifeSpan = 80.0f;
-
-
-	
-	// static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeItem(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube'"));
-	// for(int i = 0; i<100; ++i)
-	// {
-	// 	BoxStaticMesh[i] = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("asd"));
-	// 	BoxStaticMesh[i]->SetStaticMesh(CubeItem.Object);
-	// }
 	
 }
 
@@ -101,23 +92,16 @@ void AProjectile::BeginPlay()
 	
 	CollisionComp->OnComponentBeginOverlap.AddDynamic(this, &AProjectile::BeginOverlap);
 	
-	////////////////////////////////// 작업중인 곳
-	//AddComponent(FName(TEXT("asd")), false, CollisionComp->GetComponentTransform(), BoxStaticMesh);
-	//CreateComponent(BoxStaticMesh, CollisionComp->GetComponentLocation(), CollisionComp->GetComponentRotation());
-	//BoxStaticMesh.Add(NewObject<UStaticMeshComponent>(this, UStaticMeshComponent::StaticClass()));
-	//BoxStaticMesh[0]->SetStaticMesh(StaticMesh->GetStaticMesh());
-	//BoxStaticMesh[0]->SetRelativeRotation(FRotator(45.0f, 45.0f,45.0f));
-	////////////////////////////////// 작업중인 곳
 	
 	float rotateRatio = 0.05f;
+	int id = 0;
+	RotateX1 = (GameInstance->SaveSlot1_InstanceX[0] * rotateRatio);
+	RotateY1 = (GameInstance->SaveSlot1_InstanceY[0] * rotateRatio);
+	RotateZ1 = (GameInstance->SaveSlot1_InstanceZ[0] * rotateRatio);
 
-	RotateX1 = (GameInstance->SaveSlot1_InstanceX * rotateRatio);
-	RotateY1 = (GameInstance->SaveSlot1_InstanceY * rotateRatio);
-	RotateZ1 = (GameInstance->SaveSlot1_InstanceZ * rotateRatio);
-
-	RotateX2 = (GameInstance->SaveSlot2_InstanceX * rotateRatio);
-	RotateY2 = (GameInstance->SaveSlot2_InstanceY * rotateRatio);
-	RotateZ2 = (GameInstance->SaveSlot2_InstanceZ * rotateRatio);
+	RotateX2 = (GameInstance->SaveSlot2_InstanceX[0] * rotateRatio);
+	RotateY2 = (GameInstance->SaveSlot2_InstanceY[0] * rotateRatio);
+	RotateZ2 = (GameInstance->SaveSlot2_InstanceZ[0] * rotateRatio);
 
 	RotateX3 = (GameInstance->SaveSlot3_InstanceX * rotateRatio);
 	RotateY3 = (GameInstance->SaveSlot3_InstanceY * rotateRatio);
@@ -254,31 +238,10 @@ void AProjectile::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	bool bFromSweep,
 	const FHitResult& SweepResult)
 {
-	/*OverlappedComponent->DestroyComponent();
-	Destroy();*/
-	UE_LOG(LogTemp, Warning, TEXT("AAAAAAAAAAAAAAAAAAAAAAAAAAAA"));
+	
 }
 
 
-void AProjectile::CreateComponent(UStaticMeshComponent* CompClass, const FVector& Location, const FRotator& Rotation)
-{
-	FName YourObjectName("Hiiii");
-
-	//CompClass can be a BP
-	UStaticMeshComponent* NewComp = NewObject<UStaticMeshComponent>();
-	if(!NewComp) 
-	{
-		return;
-	}
-	//~~~~~~~~~~~~~
-
-	NewComp->RegisterComponent();        //You must ConstructObject with a valid Outer that has world, see above
-	NewComp->SetStaticMesh(StaticMesh->GetStaticMesh());
-	NewComp->SetWorldLocation(Location); 
-	NewComp->SetWorldRotation(Rotation); 
-	NewComp->SetupAttachment(CollisionComp); 
-	//could use different than Root Comp
-}
 
 
 

@@ -135,7 +135,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")
 	int32 Magazine = 90;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "ID")
 	int m_ID;
 
 	UPROPERTY()

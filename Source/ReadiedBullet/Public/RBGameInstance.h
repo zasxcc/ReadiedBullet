@@ -31,56 +31,58 @@ public:
 	TArray<FTransform>  InstanceSphereSlot1;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
-		TArray<FTransform>  InstanceBoxSlot2;
+	TArray<FTransform>  InstanceBoxSlot2;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
-		TArray<FTransform>  InstanceCylinderSlot2;
+	TArray<FTransform>  InstanceCylinderSlot2;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
-		TArray<FTransform>  InstanceSphereSlot2;
+	TArray<FTransform>  InstanceSphereSlot2;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
-		TArray<FTransform>  InstanceBoxSlot3;
+	TArray<FTransform>  InstanceBoxSlot3;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
-		TArray<FTransform>  InstanceCylinderSlot3;
+	TArray<FTransform>  InstanceCylinderSlot3;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
-		TArray<FTransform>  InstanceSphereSlot3;
+	TArray<FTransform>  InstanceSphereSlot3;
 
 	TArray<FTransform> GetInstanceBoxSlot1();
 	TArray<FTransform> GetInstanceCylinderSlot1();
 	TArray<FTransform> GetInstanceSphereSlot1();
 
+	////////////////////////
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
-	float SaveSlot1_InstanceX;
+	TArray<float> SaveSlot1_InstanceX = { 0,0,0,0,0,0 };
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
-	float SaveSlot1_InstanceY;
+	TArray<float> SaveSlot1_InstanceY = { 0,0,0,0,0,0 };
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
-	float SaveSlot1_InstanceZ;
+	TArray<float> SaveSlot1_InstanceZ = { 0,0,0,0,0,0 };
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
-		float SaveSlot2_InstanceX;
+	TArray<float> SaveSlot2_InstanceX = { 0,0,0,0,0,0 };
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
-		float SaveSlot2_InstanceY;
+	TArray<float> SaveSlot2_InstanceY = { 0,0,0,0,0,0 };
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
-		float SaveSlot2_InstanceZ;
+	TArray<float> SaveSlot2_InstanceZ = { 0,0,0,0,0,0 };
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
-		float SaveSlot3_InstanceX;
+	float SaveSlot3_InstanceX;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
-		float SaveSlot3_InstanceY;
+	float SaveSlot3_InstanceY;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
-		float SaveSlot3_InstanceZ;
+	float SaveSlot3_InstanceZ;
 
 
 	int32 SelectSlot;
+	//////////////////////
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
 	float PlayerMaxHP = 100.0f;

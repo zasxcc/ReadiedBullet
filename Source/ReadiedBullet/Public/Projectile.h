@@ -45,8 +45,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	int32 SelectBulletSlot;
 
-	void CreateComponent(UStaticMeshComponent* CompClass, const FVector& Vector, const FRotator& Rotator);
-
 protected:
 	// Called when the game starts or when spawned
 
