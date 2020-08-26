@@ -4,6 +4,7 @@
 #include "Projectile.h"
 #include "Engine.h"
 #include "RBNetwork.h"
+#include "ReadiedBullet/RBCharacter.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -65,6 +66,9 @@ void AProjectile::PostInitializeComponents()
 		CylinderTransform3 = GameInstance->InstanceCylinderSlot3;
 		SphereTransform3 = GameInstance->InstanceSphereSlot3;
 
+
+
+
 		/////////////////////
 
 		TArray<AActor*> network;
@@ -75,11 +79,15 @@ void AProjectile::PostInitializeComponents()
 			auto nt = Cast<ARBNetwork>(network[0]);
 			if (nt)
 			{
-				SelectBulletSlot = GameInstance->SelectSlot[nt->m_ID];
+				nt->m_OtherPlayers[nt->bulletSpawnID]->SelectSlot1(nt->bulletSpawnID);
+				//SelectBulletSlot = GameInstance->SelectSlot[nt->bulletSpawnID];
 			}
 		}
 
 		///////////////////
+
+
+
 
 		//ÃÑ¾Ë °¡¼Óµµ
 		RotateVector1.X = RotateVector1.X - (float)BoxTransform1.Num() - ((float)CylinderTransform1.Num() * 0.7f) - ((float)SphereTransform1.Num() * 0.5f);

@@ -81,7 +81,7 @@ public:
 	float SaveSlot3_InstanceZ;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "SelectSlot")
-	TArray<int32> SelectSlot = { 0, 0, 0, 0, 0, 0 };
+	TArray<int32> SelectSlot = { 1, 1, 1, 1, 1, 1 };
 	//////////////////////
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")

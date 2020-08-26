@@ -288,9 +288,12 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 				
 				FVector pos{ packet->pos.x, packet->pos.y, packet->pos.z };
 				FRotator rot{ packet->rot.Pitch, packet->rot.Yaw, packet->rot.Roll };
-
+				
 				UE_LOG(LogTemp, Error, TEXT("e_BulletSpawnPacket : Here come? "));
 
+				// 타 클라의 총알을 스폰하기 위해 타클라 정보 받아왔음 (슬롯이 뭔지도 알아야지)
+				// 슬롯이 뭔지 어케 알지
+				bulletSpawnID = packet->m_id;
 				GetWorld()->SpawnActor<AProjectile>(BPProjectile, pos, rot, FActorSpawnParameters{});
 			}
 			break;
@@ -298,6 +301,7 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 			{
 				sc_packet_bulletSlotPacket* packet = reinterpret_cast<sc_packet_bulletSlotPacket*>(m_PacketBuf);
 
+				// 타 클라의 슬롯을 여기서 set했다.
 				switch (packet->bulletType)
 				{
 				case e_bulletType::e_Bullet1:
@@ -419,6 +423,7 @@ void ARBNetwork::SendProjectileSpawn(FVector loc, FRotator rot)
 
 void ARBNetwork::SendBulletType(e_bulletType type)
 {
+	// 내가 바꾼 슬롯을 다른 클라에게 알리기 위해
 	if (m_myCharacter != nullptr)
 	{
 		cs_packet_bulletSlotPacket bp{};

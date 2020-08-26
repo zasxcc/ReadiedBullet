@@ -82,6 +82,8 @@ public:
 	FVector m_myPos;
 	FRotator m_myRot;
 
+	int bulletSpawnID;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
