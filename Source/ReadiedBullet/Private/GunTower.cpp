@@ -51,7 +51,7 @@ void AGunTower::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	FVector Loc = GetActorLocation();
+	/*FVector Loc = GetActorLocation();
 	FVector PlayerLoc = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
 	float dis = UKismetMathLibrary::Vector_Distance(PlayerLoc, Loc);
 	if (dis < 3500)
@@ -88,7 +88,7 @@ void AGunTower::Tick(float DeltaTime)
 		Fire();
 		HPBarWidget->SetVisibility(true);
 		fireTime = 0.0f;
-	}
+	}*/
 }
 
 void AGunTower::Fire()

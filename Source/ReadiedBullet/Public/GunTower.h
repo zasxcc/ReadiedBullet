@@ -24,6 +24,8 @@ class READIEDBULLET_API AGunTower : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AGunTower();
+
+	UFUNCTION(BlueprintCallable)
 	void Fire();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Bodt)
