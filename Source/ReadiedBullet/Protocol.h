@@ -165,6 +165,7 @@ struct cs_packet_bulletSpawnPacket
 {
 	char size;
 	e_PacketType type;
+	e_bulletType bulletType;
 	int m_id;
 	PlayerPosition pos;
 	PlayerRotation rot;
@@ -174,6 +175,7 @@ struct sc_packet_bulletSpawnPacket
 {
 	char size;
 	e_PacketType type;
+	e_bulletType bulletType;
 	int m_id;
 	PlayerPosition pos;
 	PlayerRotation rot;

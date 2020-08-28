@@ -87,9 +87,9 @@ protected:
 	//RateOfFire을 나눠준다.
 	float TimeBetweenShots;
 
-	void Fire();
 
 public:
+	void Fire();
 	virtual void StartFire();
 
 	void StopFire();

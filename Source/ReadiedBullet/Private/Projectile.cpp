@@ -27,8 +27,27 @@ AProjectile::AProjectile()
 	CollisionComp->SetupAttachment(SceneComp);
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("sad"));
 
+
+
+	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	
-	SelectBulletSlot = 1;
+	TArray<AActor*> network;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARBNetwork::StaticClass(), network);
+
+	if (network.Num() > 0)
+	{
+		auto nt = Cast<ARBNetwork>(network[0]);
+		if (nt)
+		{
+			SelectBulletSlot = GameInstance->SelectSlot[nt->bulletSpawnID];
+			//UE_LOG(LogTemp, Error, TEXT("Projectile Spawn id : %d"), nt->bulletSpawnID);
+			//SelectBulletSlot = GameInstance->SelectSlot[nt->bulletSpawnID];
+		}
+	}
+	
+
+
+	//SelectBulletSlot = 1;
 
 	RotateVector1.X = 35.0f;
 	RotateVector1.Y = 0.0f;
@@ -67,22 +86,22 @@ void AProjectile::PostInitializeComponents()
 		SphereTransform3 = GameInstance->InstanceSphereSlot3;
 
 
-
+		
 
 		/////////////////////
 
-		TArray<AActor*> network;
-		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARBNetwork::StaticClass(), network);
+		//TArray<AActor*> network;
+		//UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARBNetwork::StaticClass(), network);
 
-		if (network.Num() > 0)
-		{
-			auto nt = Cast<ARBNetwork>(network[0]);
-			if (nt)
-			{
-				nt->m_OtherPlayers[nt->bulletSpawnID]->SelectSlot1(nt->bulletSpawnID);
-				//SelectBulletSlot = GameInstance->SelectSlot[nt->bulletSpawnID];
-			}
-		}
+		//if (network.Num() > 0)
+		//{
+		//	auto nt = Cast<ARBNetwork>(network[0]);
+		//	if (nt)
+		//	{
+		//		nt->m_OtherPlayers[nt->bulletSpawnID]->SelectSlot1(nt->bulletSpawnID);
+		//		//SelectBulletSlot = GameInstance->SelectSlot[nt->bulletSpawnID];
+		//	}
+		//}
 
 		///////////////////
 
@@ -111,17 +130,39 @@ void AProjectile::BeginPlay()
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	
 	CollisionComp->OnComponentBeginOverlap.AddDynamic(this, &AProjectile::BeginOverlap);
-	
-	
+
+
 	float rotateRatio = 0.05f;
 	int id = 0;
-	RotateX1 = (GameInstance->SaveSlot1_InstanceX[0] * rotateRatio);
-	RotateY1 = (GameInstance->SaveSlot1_InstanceY[0] * rotateRatio);
-	RotateZ1 = (GameInstance->SaveSlot1_InstanceZ[0] * rotateRatio);
+	
+	TArray<AActor*> network;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARBNetwork::StaticClass(), network);
+	
 
-	RotateX2 = (GameInstance->SaveSlot2_InstanceX[0] * rotateRatio);
-	RotateY2 = (GameInstance->SaveSlot2_InstanceY[0] * rotateRatio);
-	RotateZ2 = (GameInstance->SaveSlot2_InstanceZ[0] * rotateRatio);
+	if (network.Num() > 0)
+	{
+		auto nt = Cast<ARBNetwork>(network[0]);
+		if (nt)
+		{
+			//nt->m_OtherPlayers[nt->bulletSpawnID]->SelectSlot1(nt->bulletSpawnID);
+			//SelectBulletSlot = GameInstance->SelectSlot[nt->bulletSpawnID];
+			RotateX1 = (GameInstance->SaveSlot1_InstanceX[nt->bulletSpawnID] * rotateRatio);
+			RotateY1 = (GameInstance->SaveSlot1_InstanceY[nt->bulletSpawnID] * rotateRatio);
+			RotateZ1 = (GameInstance->SaveSlot1_InstanceZ[nt->bulletSpawnID] * rotateRatio);
+
+			RotateX2 = (GameInstance->SaveSlot2_InstanceX[nt->bulletSpawnID] * rotateRatio);
+			RotateY2 = (GameInstance->SaveSlot2_InstanceY[nt->bulletSpawnID] * rotateRatio);
+			RotateZ2 = (GameInstance->SaveSlot2_InstanceZ[nt->bulletSpawnID] * rotateRatio);
+		}
+	}
+	
+	/*RotateX1 = (GameInstance->SaveSlot1_InstanceX[nt->bulletSpawnID] * rotateRatio);
+	RotateY1 = (GameInstance->SaveSlot1_InstanceY[nt->bulletSpawnID] * rotateRatio);
+	RotateZ1 = (GameInstance->SaveSlot1_InstanceZ[nt->bulletSpawnID] * rotateRatio);
+
+	RotateX2 = (GameInstance->SaveSlot2_InstanceX[nt->bulletSpawnID] * rotateRatio);
+	RotateY2 = (GameInstance->SaveSlot2_InstanceY[nt->bulletSpawnID] * rotateRatio);
+	RotateZ2 = (GameInstance->SaveSlot2_InstanceZ[nt->bulletSpawnID] * rotateRatio);*/
 
 	RotateX3 = (GameInstance->SaveSlot3_InstanceX * rotateRatio);
 	RotateY3 = (GameInstance->SaveSlot3_InstanceY * rotateRatio);

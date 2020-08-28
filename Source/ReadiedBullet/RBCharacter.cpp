@@ -210,14 +210,14 @@ void ARBCharacter::SelectSlot1()
 		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARBNetwork::StaticClass(), network);
 		int32 size{};
 		network.Empty(size);
-		if (size != 0)
+		if (network.Num() > 0)
 		{
 			auto nt = Cast<ARBNetwork>(network[0]);
 			if (nt)
 			{
 				if (nt->Get_Mode())
 				{
-					nt->SendBulletType((e_bulletType)CurrentProjectile->SelectBulletSlot);
+					nt->SendBulletType((e_bulletType)GameInstance->SelectSlot[m_ID]);
 				}
 			}
 		}
@@ -248,14 +248,14 @@ void ARBCharacter::SelectSlot2()
 		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARBNetwork::StaticClass(), network);
 		int32 size{};
 		network.Empty(size);
-		if (size != 0)
+		if (network.Num() > 0)
 		{
 			auto nt = Cast<ARBNetwork>(network[0]);
 			if (nt)
 			{
 				if (nt->Get_Mode())
 				{
-					nt->SendBulletType((e_bulletType)CurrentProjectile->SelectBulletSlot);
+					nt->SendBulletType((e_bulletType)GameInstance->SelectSlot[m_ID]);
 				}
 			}
 		}
@@ -286,14 +286,14 @@ void ARBCharacter::SelectSlot3()
 		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARBNetwork::StaticClass(), network);
 		int32 size{};
 		network.Empty(size);
-		if (size != 0)
+		if (network.Num() > 0)
 		{
 			auto nt = Cast<ARBNetwork>(network[0]);
 			if (nt)
 			{
 				if (nt->Get_Mode())
 				{
-					nt->SendBulletType((e_bulletType)CurrentProjectile->SelectBulletSlot);
+					nt->SendBulletType((e_bulletType)GameInstance->SelectSlot[m_ID]);
 				}
 			}
 		}

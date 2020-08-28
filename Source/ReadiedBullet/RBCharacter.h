@@ -68,8 +68,6 @@ protected:
 	/*Default FOV set during begin play*/
 	float DefaultFOV;
 
-	ARBWeapon* CurrentWeapon;
-	AProjectile* CurrentProjectile;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
 	TSubclassOf<ARBWeapon> StarterWeaponClass;
@@ -113,6 +111,10 @@ public:
 	USpotLightComponent* SpotLightComp;
 
 	FRotator GetCamRotator();
+
+	ARBWeapon* CurrentWeapon;
+
+	AProjectile* CurrentProjectile;
 
 	void SelectSlot1();
 	void SelectSlot2();

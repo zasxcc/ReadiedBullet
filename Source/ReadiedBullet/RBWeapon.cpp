@@ -105,8 +105,6 @@ void ARBWeapon::Fire()
 			FActorSpawnParameters ActorSpawnParams;
 			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
-			// spawn the projectile at the muzzle
-			GetWorld()->SpawnActor<AProjectile>(ProjectileClass, MuzzleLocation, EyeRotation, ActorSpawnParams);
 			
 			TArray<AActor*> network;
 			UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARBNetwork::StaticClass(), network);
@@ -119,6 +117,11 @@ void ARBWeapon::Fire()
 					if (nt->Get_Mode())
 					{
 						nt->SendProjectileSpawn(MuzzleLocation, EyeRotation);
+					}
+					else
+					{
+						// spawn the projectile at the muzzle
+						GetWorld()->SpawnActor<AProjectile>(ProjectileClass, MuzzleLocation, EyeRotation, ActorSpawnParams);
 					}
 				}
 			}

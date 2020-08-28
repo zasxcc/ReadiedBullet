@@ -149,6 +149,11 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 			case e_PacketType::e_BulletRotPacket:
 			{
 				sc_packet_bulletRotPacket* packet = reinterpret_cast<sc_packet_bulletRotPacket*>(m_PacketBuf);
+
+				UE_LOG(LogTemp, Error, TEXT("e_BulletRotPacket id : %d"), packet->m_id);
+				UE_LOG(LogTemp, Error, TEXT("e_BulletRotPacket slot1 :  %f  /   %f  /   %f"), packet->slot1.x, packet->slot1.y, packet->slot1.z);
+				UE_LOG(LogTemp, Error, TEXT("e_BulletRotPacket slot2 :  %f  /   %f  /   %f"), packet->slot2.x, packet->slot2.y, packet->slot2.z);
+
 				
 				URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 				GameInstance->SaveSlot1_InstanceX[packet->m_id] = packet->slot1.x;
@@ -285,16 +290,61 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 			case e_PacketType::e_BulletSpawnPacket:
 			{
 				cs_packet_bulletSpawnPacket* packet = reinterpret_cast<cs_packet_bulletSpawnPacket*>(m_PacketBuf);
-				
+
+
 				FVector pos{ packet->pos.x, packet->pos.y, packet->pos.z };
 				FRotator rot{ packet->rot.Pitch, packet->rot.Yaw, packet->rot.Roll };
 				
-				UE_LOG(LogTemp, Error, TEXT("e_BulletSpawnPacket : Here come? "));
+				UE_LOG(LogTemp, Error, TEXT("e_BulletSpawnPacket id : %d"), packet->m_id);
+				UE_LOG(LogTemp, Error, TEXT("e_BulletSpawnPacket Pos : x %f  /  y %f  /  z %f"), packet->pos.x, packet->pos.y, packet->pos.z);
+				UE_LOG(LogTemp, Error, TEXT("e_BulletSpawnPacket Rot : Pit %f  /  Yaw %f  /  Rol %f"), packet->rot.Pitch, packet->rot.Yaw, packet->rot.Roll);
+
 
 				// 타 클라의 총알을 스폰하기 위해 타클라 정보 받아왔음 (슬롯이 뭔지도 알아야지)
 				// 슬롯이 뭔지 어케 알지
 				bulletSpawnID = packet->m_id;
-				GetWorld()->SpawnActor<AProjectile>(BPProjectile, pos, rot, FActorSpawnParameters{});
+
+				//URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+
+				switch (packet->bulletType)
+				{
+				case e_bulletType::e_Bullet1:
+				{
+					if (m_myCharacter->m_ID != packet->m_id)
+					{
+						m_OtherPlayers[packet->m_id]->SelectSlot1(packet->m_id);
+						GetWorld()->SpawnActor<AProjectile>(BPProjectile, pos, rot, FActorSpawnParameters{});
+					}
+					else
+					{
+						m_myCharacter->SelectSlot1(packet->m_id);
+						GetWorld()->SpawnActor<AProjectile>(BPProjectile, pos, rot, FActorSpawnParameters{});
+					}
+				}
+				break;
+				case e_bulletType::e_Bullet2:
+				{
+					if (m_myCharacter->m_ID != packet->m_id)
+					{
+						m_OtherPlayers[packet->m_id]->SelectSlot2(packet->m_id);
+						GetWorld()->SpawnActor<AProjectile>(BPProjectile, pos, rot, FActorSpawnParameters{});
+					}
+					else
+					{
+						m_myCharacter->SelectSlot2(packet->m_id);
+						GetWorld()->SpawnActor<AProjectile>(BPProjectile, pos, rot, FActorSpawnParameters{});
+					}
+				}
+				break;
+				case e_bulletType::e_Bullet3:
+				{
+					m_OtherPlayers[packet->m_id]->SelectSlot3(packet->m_id);
+				}
+				break;
+				}
+
+				
+				
 			}
 			break;
 			case e_PacketType::e_BulletSlotPacket:
@@ -386,7 +436,7 @@ void ARBNetwork::SendMyTransform()
 
 		memcpy(m_SendBuf, &p, sizeof(p));
 		m_WSASendBuf.len = sizeof(p);
-		int retval = WSASend(m_ClientSocket, &m_WSASendBuf, 1, &SentBytes, flags, NULL, NULL);
+		//int retval = WSASend(m_ClientSocket, &m_WSASendBuf, 1, &SentBytes, flags, NULL, NULL);
 	}
 }
 
@@ -405,10 +455,14 @@ void ARBNetwork::SendProjectileSpawn(FVector loc, FRotator rot)
 		Rot.Yaw = rot.Yaw;
 		Rot.Roll = rot.Roll;
 
+		URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+		GameInstance->SelectSlot[m_ID];
+
 		cs_packet_bulletSpawnPacket bp{};
 		bp.m_id = m_myCharacter->m_ID;
 		bp.pos = Pos;
 		bp.rot = Rot;
+		bp.bulletType = (e_bulletType)GameInstance->SelectSlot[m_ID];
 		bp.size = sizeof(bp);
 		bp.type = e_PacketType::e_BulletSpawnPacket;
 
@@ -454,7 +508,7 @@ void ARBNetwork::SendBulletRotData()
 	rp.slot1.x = GameInstance->SaveSlot1_InstanceX[m_ID];
 	rp.slot1.y = GameInstance->SaveSlot1_InstanceY[m_ID];
 	rp.slot1.z = GameInstance->SaveSlot1_InstanceZ[m_ID];
-
+	
 	rp.slot2.x = GameInstance->SaveSlot2_InstanceX[m_ID];
 	rp.slot2.y = GameInstance->SaveSlot2_InstanceY[m_ID];
 	rp.slot2.z = GameInstance->SaveSlot2_InstanceZ[m_ID];
