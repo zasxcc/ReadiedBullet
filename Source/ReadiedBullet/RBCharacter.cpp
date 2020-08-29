@@ -95,6 +95,7 @@ void ARBCharacter::BeginPlay()
 	///
 	DefaultFOV = CameraComp->FieldOfView;
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ARBCharacter::BeginOverlap);
+	GetMesh()->OnComponentBeginOverlap.AddDynamic(this, &ARBCharacter::BeginOverlap);
 	//Spawn a Default Weapon
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
