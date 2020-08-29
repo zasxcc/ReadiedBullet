@@ -42,7 +42,6 @@ protected:
 	void EndZoom();
 
 	
-	void Reload();
 
 	
 
@@ -84,8 +83,6 @@ protected:
 	void RemoteBulletPressed();
 	void RemoteBulletReleased();
 
-	void LightOnOff();
-
 
 
 	UFUNCTION()
@@ -124,11 +121,18 @@ public:
 	void SelectSlot2(int id);
 	void SelectSlot3(int id);
 
+	void LightOnOff();
+
+	void Reload();
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "HP")
 	float CurrentHP;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "HP")
 	float MaxHP;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "HP")
+	bool IsDead;
 
 	bool IsReloading = false;
 	bool LightTurn = false;

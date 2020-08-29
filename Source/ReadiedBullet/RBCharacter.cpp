@@ -3,6 +3,7 @@
 
 #include "RBCharacter.h"
 #include "RBNetwork.h"
+#include "RBAnimInstance.h"
 
 // Sets default values
 ARBCharacter::ARBCharacter()
@@ -81,6 +82,8 @@ ARBCharacter::ARBCharacter()
 	GetCapsuleComponent()->ComponentTags.Add(FName("Player"));
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	IsDead = false;
 }
 
 // Called when the game starts or when spawned
@@ -141,6 +144,7 @@ void ARBCharacter::Tick(float DeltaTime)
 			ReloadCount = 0.0f;
 		}
 	}
+
 
 	////Path ÀÛ¾÷
 	
@@ -528,6 +532,17 @@ void ARBCharacter::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 		URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 		GameInstance->PlayerMaxHP[m_ID] -= 10;
 		MaxHP = GameInstance->PlayerMaxHP[m_ID];
+
+
+		if (!IsDead)
+		{
+			if (GameInstance->PlayerMaxHP[m_ID] <= 0.0f)
+			{
+				IsDead = true;
+				auto animinstance = Cast<URBAnimInstance>(GetMesh()->GetAnimInstance());
+				animinstance->IsDead = true;
+			}
+		}
 
 		UE_LOG(LogTemp, Warning, TEXT("MaxHP : %f,  InstanceHP : %f"), MaxHP, GameInstance->PlayerMaxHP[m_ID]);
 	}
