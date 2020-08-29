@@ -44,7 +44,7 @@ AProjectile::AProjectile()
 			//SelectBulletSlot = GameInstance->SelectSlot[nt->bulletSpawnID];
 		}
 	}
-	else
+	/*else
 	{
 		TArray<AActor*> character;
 		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARBCharacter::StaticClass(), character);
@@ -55,7 +55,7 @@ AProjectile::AProjectile()
 			if (c)
 				SelectBulletSlot = GameInstance->SelectSlot[c->m_ID];
 		}
-	}
+	}*/
 	
 
 

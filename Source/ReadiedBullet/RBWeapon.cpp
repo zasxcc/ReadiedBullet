@@ -118,14 +118,12 @@ void ARBWeapon::Fire()
 					{
 						nt->SendProjectileSpawn(MuzzleLocation, EyeRotation);
 					}
+					else
+					{
+						// spawn the projectile at the muzzle
+						GetWorld()->SpawnActor<AProjectile>(ProjectileClass, MuzzleLocation, EyeRotation, ActorSpawnParams);
+					}
 				}
-			}
-			else
-			{
-				// spawn the projectile at the muzzle
-				/*URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-				GameInstance->SelectSlot[m_ID];*/
-				GetWorld()->SpawnActor<AProjectile>(ProjectileClass, MuzzleLocation, EyeRotation, ActorSpawnParams);
 			}
 		}
 

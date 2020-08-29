@@ -522,9 +522,9 @@ void ARBNetwork::SendBulletRotData()
 	rp.slot2.y = GameInstance->SaveSlot2_InstanceY[m_ID];
 	rp.slot2.z = GameInstance->SaveSlot2_InstanceZ[m_ID];
 
-	rp.slot3.x = 0;//GameInstance->SaveSlot3_InstanceX[m_ID];
-	rp.slot3.y = 0;//GameInstance->SaveSlot3_InstanceY[m_ID];
-	rp.slot3.z = 0;//GameInstance->SaveSlot3_InstanceZ[m_ID];
+	rp.slot3.x = GameInstance->SaveSlot3_InstanceX[m_ID];
+	rp.slot3.y = GameInstance->SaveSlot3_InstanceY[m_ID];
+	rp.slot3.z = GameInstance->SaveSlot3_InstanceZ[m_ID];
 
 	DWORD SentBytes = 0;
 	DWORD flags = 0;
