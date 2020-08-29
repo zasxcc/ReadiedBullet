@@ -72,13 +72,13 @@ public:
 	TArray<float> SaveSlot2_InstanceZ = { 0,0,0,0,0,0 };
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
-	float SaveSlot3_InstanceX;
+	TArray<float> SaveSlot3_InstanceX = { 0,0,0,0,0,0 };
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
-	float SaveSlot3_InstanceY;
+	TArray<float> SaveSlot3_InstanceY = { 0,0,0,0,0,0 };
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
-	float SaveSlot3_InstanceZ;
+	TArray<float> SaveSlot3_InstanceZ = { 0,0,0,0,0,0 };
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "SelectSlot")
 	TArray<int32> SelectSlot = { 1, 1, 1, 1, 1, 1 };

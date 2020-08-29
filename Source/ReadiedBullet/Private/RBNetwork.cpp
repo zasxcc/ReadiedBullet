@@ -153,7 +153,7 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 				UE_LOG(LogTemp, Error, TEXT("e_BulletRotPacket id : %d"), packet->m_id);
 				UE_LOG(LogTemp, Error, TEXT("e_BulletRotPacket slot1 :  %f  /   %f  /   %f"), packet->slot1.x, packet->slot1.y, packet->slot1.z);
 				UE_LOG(LogTemp, Error, TEXT("e_BulletRotPacket slot2 :  %f  /   %f  /   %f"), packet->slot2.x, packet->slot2.y, packet->slot2.z);
-
+				UE_LOG(LogTemp, Error, TEXT("e_BulletRotPacket slot3 :  %f  /   %f  /   %f"), packet->slot3.x, packet->slot3.y, packet->slot3.z);
 				
 				URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 				GameInstance->SaveSlot1_InstanceX[packet->m_id] = packet->slot1.x;
@@ -164,9 +164,9 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 				GameInstance->SaveSlot2_InstanceY[packet->m_id] = packet->slot2.y;
 				GameInstance->SaveSlot2_InstanceZ[packet->m_id] = packet->slot2.z;
 
-				GameInstance->SaveSlot3_InstanceX = 0;//[packet->m_id] = packet->slot3.x;
-				GameInstance->SaveSlot3_InstanceY = 0;//[packet->m_id] = packet->slot3.y;
-				GameInstance->SaveSlot3_InstanceZ = 0;//[packet->m_id] = packet->slot3.z;
+				GameInstance->SaveSlot3_InstanceX[packet->m_id] = packet->slot3.x;
+				GameInstance->SaveSlot3_InstanceY[packet->m_id] = packet->slot3.y;
+				GameInstance->SaveSlot3_InstanceZ[packet->m_id] = packet->slot3.z;
 			}
 			break;
 			case e_PacketType::e_StartPacket:
@@ -338,7 +338,16 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 				break;
 				case e_bulletType::e_Bullet3:
 				{
-					m_OtherPlayers[packet->m_id]->SelectSlot3(packet->m_id);
+					if (m_myCharacter->m_ID != packet->m_id)
+					{
+						m_OtherPlayers[packet->m_id]->SelectSlot3(packet->m_id);
+						GetWorld()->SpawnActor<AProjectile>(BPProjectile, pos, rot, FActorSpawnParameters{});
+					}
+					else
+					{
+						m_myCharacter->SelectSlot3(packet->m_id);
+						GetWorld()->SpawnActor<AProjectile>(BPProjectile, pos, rot, FActorSpawnParameters{});
+					}
 				}
 				break;
 				}
@@ -436,7 +445,7 @@ void ARBNetwork::SendMyTransform()
 
 		memcpy(m_SendBuf, &p, sizeof(p));
 		m_WSASendBuf.len = sizeof(p);
-		//int retval = WSASend(m_ClientSocket, &m_WSASendBuf, 1, &SentBytes, flags, NULL, NULL);
+		int retval = WSASend(m_ClientSocket, &m_WSASendBuf, 1, &SentBytes, flags, NULL, NULL);
 	}
 }
 

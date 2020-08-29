@@ -117,13 +117,15 @@ void ARBWeapon::Fire()
 					if (nt->Get_Mode())
 					{
 						nt->SendProjectileSpawn(MuzzleLocation, EyeRotation);
-					}
-					else
-					{
-						// spawn the projectile at the muzzle
-						GetWorld()->SpawnActor<AProjectile>(ProjectileClass, MuzzleLocation, EyeRotation, ActorSpawnParams);
+						UE_LOG(LogTemp, Error, TEXT("multi??"));
 					}
 				}
+			}
+			else
+			{
+				// spawn the projectile at the muzzle
+				GetWorld()->SpawnActor<AProjectile>(ProjectileClass, MuzzleLocation, EyeRotation, ActorSpawnParams);
+				UE_LOG(LogTemp, Error, TEXT("solo?"));
 			}
 		}
 

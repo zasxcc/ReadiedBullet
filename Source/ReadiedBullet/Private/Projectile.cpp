@@ -153,6 +153,10 @@ void AProjectile::BeginPlay()
 			RotateX2 = (GameInstance->SaveSlot2_InstanceX[nt->bulletSpawnID] * rotateRatio);
 			RotateY2 = (GameInstance->SaveSlot2_InstanceY[nt->bulletSpawnID] * rotateRatio);
 			RotateZ2 = (GameInstance->SaveSlot2_InstanceZ[nt->bulletSpawnID] * rotateRatio);
+
+			RotateX3 = (GameInstance->SaveSlot3_InstanceX[nt->bulletSpawnID] * rotateRatio);
+			RotateY3 = (GameInstance->SaveSlot3_InstanceY[nt->bulletSpawnID] * rotateRatio);
+			RotateZ3 = (GameInstance->SaveSlot3_InstanceZ[nt->bulletSpawnID] * rotateRatio);
 		}
 	}
 	
@@ -164,9 +168,9 @@ void AProjectile::BeginPlay()
 	RotateY2 = (GameInstance->SaveSlot2_InstanceY[nt->bulletSpawnID] * rotateRatio);
 	RotateZ2 = (GameInstance->SaveSlot2_InstanceZ[nt->bulletSpawnID] * rotateRatio);*/
 
-	RotateX3 = (GameInstance->SaveSlot3_InstanceX * rotateRatio);
+	/*RotateX3 = (GameInstance->SaveSlot3_InstanceX * rotateRatio);
 	RotateY3 = (GameInstance->SaveSlot3_InstanceY * rotateRatio);
-	RotateZ3 = (GameInstance->SaveSlot3_InstanceZ * rotateRatio);
+	RotateZ3 = (GameInstance->SaveSlot3_InstanceZ * rotateRatio);*/
 
 
 	//////Path를 만들기 위한 미리 계산된 궤적 정보 저장
