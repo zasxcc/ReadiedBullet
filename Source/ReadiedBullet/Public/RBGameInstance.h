@@ -85,7 +85,7 @@ public:
 	//////////////////////
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Instance")
-	float PlayerMaxHP = 100.0f;
+	TArray<float> PlayerMaxHP = { 100.0f, 100.0f,100.0f,100.0f,100.0f,100.0f };
 
 
 	

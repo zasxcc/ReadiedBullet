@@ -109,7 +109,7 @@ void ARBCharacter::BeginPlay()
 
 	URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
-	MaxHP = GameInstance->PlayerMaxHP;
+	MaxHP = GameInstance->PlayerMaxHP[m_ID];
 
 	/*TArray<AActor*> arr;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARBNetwork::StaticClass(), arr);
@@ -526,9 +526,9 @@ void ARBCharacter::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 		AudioComponent->SetSound(HitCue);
 		AudioComponent->Play();
 		URBGameInstance* GameInstance = Cast<URBGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-		GameInstance->PlayerMaxHP -= 10;
-		MaxHP = GameInstance->PlayerMaxHP;
+		GameInstance->PlayerMaxHP[m_ID] -= 10;
+		MaxHP = GameInstance->PlayerMaxHP[m_ID];
 
-		UE_LOG(LogTemp, Warning, TEXT("MaxHP : %f,  InstanceHP : %f"), MaxHP, GameInstance->PlayerMaxHP);
+		UE_LOG(LogTemp, Warning, TEXT("MaxHP : %f,  InstanceHP : %f"), MaxHP, GameInstance->PlayerMaxHP[m_ID]);
 	}
 }
