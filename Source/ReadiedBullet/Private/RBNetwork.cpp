@@ -444,7 +444,7 @@ void ARBNetwork::SendMyTransform()
 		pos.z = apos.Z;
 		//UE_LOG(LogTemp, Error, TEXT("id: %d pos: %f %f %f"), m_ID, pos.x, pos.y, pos.z);
 
-		auto arot = m_myCharacter->GetActorRotation();
+		auto arot = m_myCharacter->GetBaseAimRotation();//m_myCharacter->GetActorRotation();
 		rot.Pitch = arot.Pitch;
 		rot.Roll = arot.Roll;
 		rot.Yaw = arot.Yaw;
