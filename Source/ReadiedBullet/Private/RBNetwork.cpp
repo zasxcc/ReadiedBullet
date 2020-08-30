@@ -5,6 +5,7 @@
 #include "Blueprint/WidgetLayoutLibrary.h"
 #include "ReadiedBullet/RBCharacter.h"
 #include "ReadiedBullet/RBPlayerController.h"
+#include "RBAnimInstance.h"
 // Sets default values
 ARBNetwork::ARBNetwork()
 {
@@ -382,6 +383,28 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 				}
 			}
 			break;
+			case e_PacketType::e_CharacterDeadPacket:
+			{
+				sc_packet_deadPacket* packet = reinterpret_cast<sc_packet_deadPacket*>(m_PacketBuf);
+				
+				auto animinstance = Cast<URBAnimInstance>(m_OtherPlayers[packet->m_id]->GetMesh()->GetAnimInstance());
+				animinstance->IsDead = true;
+			}
+			break;
+			case e_PacketType::e_CharacterReloadPacket:
+			{
+				sc_packet_deadPacket* packet = reinterpret_cast<sc_packet_deadPacket*>(m_PacketBuf);
+
+				m_OtherPlayers[packet->m_id]->Reload();
+			}
+			break;
+			case e_PacketType::e_CharacterLightPacket:
+			{
+				sc_packet_lightPacket* packet = reinterpret_cast<sc_packet_lightPacket*>(m_PacketBuf);
+
+				m_OtherPlayers[packet->m_id]->LightOnOff();
+			}
+			break;
 			}
 			m_PrevSize = 0;
 		}
@@ -501,6 +524,63 @@ void ARBNetwork::SendBulletType(e_bulletType type)
 
 		memcpy(m_SendBuf, &bp, sizeof(bp));
 		m_WSASendBuf.len = sizeof(bp);
+		int retval = WSASend(m_ClientSocket, &m_WSASendBuf, 1, &SentBytes, flags, NULL, NULL);
+	}
+}
+
+void ARBNetwork::SendCharacterDeadState(int id)
+{
+	if (m_myCharacter != nullptr)
+	{
+		cs_packet_deadPacket dp{};
+		dp.m_id = id;
+		dp.size = sizeof(dp);
+		dp.type = e_PacketType::e_CharacterDeadPacket;
+		
+
+		DWORD SentBytes = 0;
+		DWORD flags = 0;
+
+		memcpy(m_SendBuf, &dp, sizeof(dp));
+		m_WSASendBuf.len = sizeof(dp);
+		int retval = WSASend(m_ClientSocket, &m_WSASendBuf, 1, &SentBytes, flags, NULL, NULL);
+	}
+}
+
+void ARBNetwork::SendCharacterReloadState(int id)
+{
+	if (m_myCharacter != nullptr)
+	{
+		cs_packet_reloadPacket rp{};
+		rp.m_id = id;
+		rp.size = sizeof(rp);
+		rp.type = e_PacketType::e_CharacterReloadPacket;
+
+
+		DWORD SentBytes = 0;
+		DWORD flags = 0;
+
+		memcpy(m_SendBuf, &rp, sizeof(rp));
+		m_WSASendBuf.len = sizeof(rp);
+		int retval = WSASend(m_ClientSocket, &m_WSASendBuf, 1, &SentBytes, flags, NULL, NULL);
+	}
+}
+
+void ARBNetwork::SendCharacterLightState(int id)
+{
+	if (m_myCharacter != nullptr)
+	{
+		cs_packet_lightPacket lp{};
+		lp.m_id = id;
+		lp.size = sizeof(lp);
+		lp.type = e_PacketType::e_CharacterLightPacket;
+
+
+		DWORD SentBytes = 0;
+		DWORD flags = 0;
+
+		memcpy(m_SendBuf, &lp, sizeof(lp));
+		m_WSASendBuf.len = sizeof(lp);
 		int retval = WSASend(m_ClientSocket, &m_WSASendBuf, 1, &SentBytes, flags, NULL, NULL);
 	}
 }

@@ -404,6 +404,18 @@ void ARBCharacter::Reload()
 		CurrentWeapon->Reload();
 		PlayAnimMontage(ReloadMontage, 1.0f);
 	}
+
+	TArray<AActor*> network;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARBNetwork::StaticClass(), network);
+	if (network.Num() > 0)
+	{
+		auto nt = Cast<ARBNetwork>(network[0]);
+		if (nt)
+		{
+			if (nt->m_ID == m_ID)
+				nt->SendCharacterReloadState(m_ID);
+		}
+	}
 }
 
 
@@ -452,6 +464,18 @@ void ARBCharacter::LightOnOff()
 	{
 		SpotLightComp->SetVisibility(true);
 		LightTurn = false;
+	}
+
+	TArray<AActor*> network;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARBNetwork::StaticClass(), network);
+	if (network.Num() > 0)
+	{
+		auto nt = Cast<ARBNetwork>(network[0]);
+		if (nt)
+		{
+			if (nt->m_ID == m_ID)
+				nt->SendCharacterLightState(m_ID);
+		}
 	}
 }
 
@@ -541,6 +565,17 @@ void ARBCharacter::BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 				IsDead = true;
 				auto animinstance = Cast<URBAnimInstance>(GetMesh()->GetAnimInstance());
 				animinstance->IsDead = true;
+
+				TArray<AActor*> network;
+				UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARBNetwork::StaticClass(), network);
+				if (network.Num() > 0)
+				{
+					auto nt = Cast<ARBNetwork>(network[0]);
+					if (nt)
+					{
+						nt->SendCharacterDeadState(m_ID);
+					}
+				}
 			}
 		}
 

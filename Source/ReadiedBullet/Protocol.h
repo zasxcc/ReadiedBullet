@@ -20,6 +20,9 @@ enum class e_PacketType : uint8_t
 	e_BulletSlotPacket,
 	e_BulletMovePacket,
 	e_BulletRotPacket,
+	e_CharacterDeadPacket,
+	e_CharacterReloadPacket,
+	e_CharacterLightPacket,
 };
 
 enum class e_bulletType : uint8_t
@@ -194,6 +197,48 @@ struct sc_packet_bulletRotPacket
 	BulletSlotData slot1;
 	BulletSlotData slot2;
 	BulletSlotData slot3;
+};
+
+struct cs_packet_deadPacket
+{
+	char size;
+	e_PacketType type;
+	int m_id;
+};
+
+struct sc_packet_deadPacket
+{
+	char size;
+	e_PacketType type;
+	int m_id;
+};
+
+struct cs_packet_reloadPacket
+{
+	char size;
+	e_PacketType type;
+	int m_id;
+};
+
+struct sc_packet_reloadPacket
+{
+	char size;
+	e_PacketType type;
+	int m_id;
+};
+
+struct cs_packet_lightPacket
+{
+	char size;
+	e_PacketType type;
+	int m_id;
+};
+
+struct sc_packet_lightPacket
+{
+	char size;
+	e_PacketType type;
+	int m_id;
 };
 
 #pragma pack(pop)

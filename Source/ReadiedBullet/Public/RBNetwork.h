@@ -71,6 +71,12 @@ public:
 
 	void SendBulletType(e_bulletType type);
 
+	void SendCharacterDeadState(int id);
+
+	void SendCharacterReloadState(int id);
+	
+	void SendCharacterLightState(int id);
+
 	UFUNCTION(BlueprintCallable)
 	void SendBulletRotData();
 	
