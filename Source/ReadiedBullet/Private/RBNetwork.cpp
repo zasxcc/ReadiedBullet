@@ -444,7 +444,8 @@ void ARBNetwork::SendMyTransform()
 		pos.z = apos.Z;
 		//UE_LOG(LogTemp, Error, TEXT("id: %d pos: %f %f %f"), m_ID, pos.x, pos.y, pos.z);
 
-		auto arot = m_myCharacter->GetBaseAimRotation();//m_myCharacter->GetActorRotation();
+		//auto arot = m_myCharacter->GetBaseAimRotation();
+		auto arot = m_myCharacter->GetActorRotation();
 		rot.Pitch = arot.Pitch;
 		rot.Roll = arot.Roll;
 		rot.Yaw = arot.Yaw;
@@ -734,7 +735,7 @@ void ARBNetwork::Connect()//const char* serverIP)
 
 	serveraddr.sin_family = AF_INET;
 	serveraddr.sin_port = htons(SERVER_PORT);
-	serveraddr.sin_addr.s_addr = inet_addr("127.0.0.1");//(serverIP);
+	serveraddr.sin_addr.s_addr = inet_addr("192.168.120.54");//(serverIP);
 
 	int retval = connect(m_ClientSocket, (SOCKADDR*)&serveraddr, sizeof(serveraddr));
 	UE_LOG(LogTemp, Error, TEXT("%d"), retval);
