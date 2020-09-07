@@ -176,7 +176,7 @@ void ARBNetwork::ProcessPacket(int iobytes, char* buf)
 
 				UWidgetLayoutLibrary::RemoveAllWidgets(GetWorld());
 				//UGameplayStatics::LoadStreamLevel(GetWorld(), FName("NewCity"), true, false, FLatentActionInfo{});
-				UGameplayStatics::LoadStreamLevel(GetWorld(), FName("Desert1"), true, false, FLatentActionInfo{});
+				UGameplayStatics::LoadStreamLevel(GetWorld(), FName("NewCity"), true, false, FLatentActionInfo{});
 				UGameplayStatics::UnloadStreamLevel(GetWorld(), FName("Room"), FLatentActionInfo{}, false);
 				
 				FVector pos = FVector(packet->pos.x, packet->pos.y, packet->pos.z);
