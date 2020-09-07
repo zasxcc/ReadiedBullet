@@ -126,9 +126,9 @@ void AProjectile::PostInitializeComponents()
 		RotateVector3.X = RotateVector3.X - (float)BoxTransform3.Num() - ((float)CylinderTransform3.Num() * 0.7f) - ((float)SphereTransform3.Num() * 0.5f);
 		
 
-		RotateVector1.X = RotateVector1.X * 4;
-		RotateVector3.X = RotateVector3.X * 4;
-		RotateVector2.X = RotateVector2.X * 4;
+		RotateVector1.X = RotateVector1.X * 2;
+		RotateVector3.X = RotateVector3.X * 2;
+		RotateVector2.X = RotateVector2.X * 2;
 		//Bullet 효과 적용
 		BulletImpactSolt1 = GameInstance->BulletImpactSolt1;
 		BulletImpactSolt2 = GameInstance->BulletImpactSolt2;
