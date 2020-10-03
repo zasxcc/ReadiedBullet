@@ -735,7 +735,7 @@ void ARBNetwork::Connect()//const char* serverIP)
 
 	serveraddr.sin_family = AF_INET;
 	serveraddr.sin_port = htons(SERVER_PORT);
-	serveraddr.sin_addr.s_addr = inet_addr("192.168.120.54");//(serverIP);
+	serveraddr.sin_addr.s_addr = inet_addr("172.30.1.5");//(serverIP);
 
 	int retval = connect(m_ClientSocket, (SOCKADDR*)&serveraddr, sizeof(serveraddr));
 	UE_LOG(LogTemp, Error, TEXT("%d"), retval);
